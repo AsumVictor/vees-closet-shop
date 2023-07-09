@@ -1,7 +1,13 @@
-import React from "react";
+import {useState} from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
-import LoginPanel from "../components/LoginPanel";
+import {LoginPanel} from "../components/LoginPanel";
+import { Link } from "react-router-dom";
 function Login() {
+
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const canSubmit  = email.trim() !=='' && password.trim() !== ''
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
       <div className="py-3 w-full order-1 lg:order-2 flex flex-col justify-center items-center h-screen">
@@ -15,17 +21,15 @@ function Login() {
               <InputLabel
                 label={"Email"}
                 type={"email"}
-                handleChange={() => {
-                  console.log("d");
-                }}
+                value={email}
+                handleChange={(e) =>setEmail(e.target.value)}
                 name={"userEmail"}
               />
               <InputLabel
                 label={"Password"}
                 type={"password"}
-                handleChange={() => {
-                  console.log("d");
-                }}
+                value={password}
+                handleChange={(e) =>setPassword(e.target.value)}
                 name={"userPassword"}
               />
             </div>
@@ -43,15 +47,15 @@ function Login() {
               </a>
               </div>
             </div>
-            <Button classname={"mt-6 bg-wine_primary w-full "}>Login</Button>
+            <Button classname={"mt-6 bg-wine_primary w-full "} disabled={!canSubmit}>Login</Button>
             <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
               I don't have an account?
-              <a
+              <Link
                 className="font-medium text-wine_primary transition-colors hover:text-blue-700"
-                href="#"
+                to="../signup"
               >
                 Create account
-              </a>
+              </Link>
             </p>
           </form>
         </div>
