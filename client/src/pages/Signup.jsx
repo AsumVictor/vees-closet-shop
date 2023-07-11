@@ -2,6 +2,8 @@ import { useState } from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
 import {SignupPanel} from "../components/LoginPanel";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+import { server } from "../../server";
 
 function Signup() {
   const [fullname, setFullname] = useState('');
@@ -13,8 +15,30 @@ function Signup() {
   const hasSpecialChar =  /[^\w\s]/.test(password)
   const hasMoreThan7char = password.trim().length >= 8
   const passwordMatch = password === confirmPassword
+  const containNumbers = /\d+/.test(password)
   const isValidemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  const canSubmit = hasUppercase && hasSpecialChar && hasMoreThan7char && passwordMatch && fullname.trim() !== '' && isValidemail
+  const canSubmit = hasUppercase && hasSpecialChar && hasMoreThan7char && passwordMatch && fullname.trim() !== '' && isValidemail && containNumbers
+
+
+const handleSubmit = async (e)=>{
+  e.preventDefault()
+  const userIformation = {
+    avatar: null,
+    fullname,
+    email,
+    password
+  }
+  
+   axios.post(`${server}/user/create-user`,userIformation,{
+    headers:{
+      'Content-Type': 'application/json'
+    }
+   }).then(res=>{
+    console.log(res);
+   }).catch(err=>{
+    console.log(err);
+   })
+}
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
@@ -24,7 +48,7 @@ function Signup() {
             Create an account
           </h4>
           <p className="text-center">We're excited to welcome you</p>
-          <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+          <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
             <div className="mb-4 flex flex-col gap-6">
               <InputLabel
                 label={"Full name"}
@@ -62,6 +86,9 @@ function Signup() {
                 {!hasMoreThan7char && <li className="text-red-700 font-semibold text-[14px]">
                   Password must contain at least 8 characters
                 </li>}
+                {!containNumbers && <li className="text-red-700 font-semibold text-[14px]">
+                  Password must contain at a digit
+                </li>}
                 {!hasUppercase && <li className="text-red-700 font-semibold text-[14px]">
                   Password must contain at least uppercase letter
                 </li>}
@@ -74,7 +101,7 @@ function Signup() {
               </ul>
             )}
 
-            <Button classname={"mt-6 bg-wine_primary w-full "} disabled={!canSubmit}>Sign up</Button>
+            <Button classname={"mt-6 bg-wine_primary w-full "} disabled={!canSubmit} handleClick={handleSubmit}>Sign up</Button>
             <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
               I already have an account?
               <Link

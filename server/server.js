@@ -1,5 +1,5 @@
 const app = require("./app");
-
+const connectDb = require('./db/Database')
 // handling uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.message}`);
@@ -11,6 +11,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "./config/.env",
   });
 }
+
+connectDb()
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running on https://localhost:${process.env.PORT}`);
