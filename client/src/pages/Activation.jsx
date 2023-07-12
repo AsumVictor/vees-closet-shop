@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { server } from "../../server";
+import  server  from "../../server";
 
 function Activation() {
   const { url } = useParams();
@@ -10,6 +10,7 @@ function Activation() {
   const token = {
     activation_token: url,
   }
+  
   useEffect(() => {
     if (url) {
       const activationEmail = async () => {
@@ -26,16 +27,16 @@ function Activation() {
             }
           );
           if (res) setloading(false);
-          console.log(res.data.message);
+          console.log(res);
         } catch (error) {
           setError(true);
           setloading(false);
-          console.log(error.response.data.message);
+          console.log(error);
         }
       };
       activationEmail();
     }
-  }, [url]);
+  }, []);
 
   if (loading) {
     return <h1>Loading</h1>;

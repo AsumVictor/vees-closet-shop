@@ -1,12 +1,37 @@
-import {useState} from "react";
+import { useState } from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
-import {LoginPanel} from "../components/LoginPanel";
-import { Link } from "react-router-dom";
-function Login() {
+import { LoginPanel } from "../components/LoginPanel";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import server from "../../server";
 
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const canSubmit  = email.trim() !=='' && password.trim() !== ''
+function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const canSubmit = email.trim() !== "" && password.trim() !== "";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const userIformation = {
+      email,
+      password,
+    };
+
+    axios
+      .post(`${server}/user/auth0`, userIformation, {withCredentials: true})
+      .then((res) => {
+        toast.success("Success");
+        setEmail("");
+        setPassword("");
+        navigate("/", { replace: true });
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
@@ -15,21 +40,21 @@ const canSubmit  = email.trim() !=='' && password.trim() !== ''
           <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-wine_primary capitalize text-center">
             Customer login
           </h4>
-         <p className="text-center">We're excited to welcome you</p>
+          <p className="text-center">We're excited to welcome you</p>
           <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
             <div className="mb-4 flex flex-col gap-6">
               <InputLabel
                 label={"Email"}
                 type={"email"}
                 value={email}
-                handleChange={(e) =>setEmail(e.target.value)}
+                handleChange={(e) => setEmail(e.target.value)}
                 name={"userEmail"}
               />
               <InputLabel
                 label={"Password"}
                 type={"password"}
                 value={password}
-                handleChange={(e) =>setPassword(e.target.value)}
+                handleChange={(e) => setPassword(e.target.value)}
                 name={"userPassword"}
               />
             </div>
@@ -39,15 +64,21 @@ const canSubmit  = email.trim() !=='' && password.trim() !== ''
                 Remember me
               </div>
               <div className="flex items-center justify-end">
-              <a
-                className="font-medium text-wine_primary transition-colors hover:text-blue-700"
-                href="#"
-              >
-                Forget password
-              </a>
+                <a
+                  className="font-medium text-wine_primary transition-colors hover:text-blue-700"
+                  href="#"
+                >
+                  Forget password
+                </a>
               </div>
             </div>
-            <Button classname={"mt-6 bg-wine_primary w-full "} disabled={!canSubmit}>Login</Button>
+            <Button
+              classname={"mt-6 bg-wine_primary w-full "}
+              disabled={!canSubmit}
+              handleClick={handleSubmit}
+            >
+              Login
+            </Button>
             <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
               I don't have an account?
               <Link
@@ -62,7 +93,6 @@ const canSubmit  = email.trim() !=='' && password.trim() !== ''
       </div>
       <div className="py-3 w-full order-1 lg:order-1 h-full bg-gray-200 px-10">
         <LoginPanel />
-          
       </div>
     </div>
   );
