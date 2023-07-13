@@ -2,43 +2,60 @@ export const categoriesData = [
   {
     id: 1,
     title: "Dresses",
-    image_Url:
-      "./dessess.jpg",
+    image_Url: "./dressess.jpg",
   },
   {
     id: 2,
     title: "Footwears",
-    image_Url:
-      "./footwears.jpg",
+    image_Url: "./footwears.jpg",
   },
   {
     id: 3,
     title: "Loungewear",
-    image_Url:
-      "./lounge.jpg",
+    image_Url: "./lounge.jpg",
   },
   {
     id: 4,
     title: "Tops",
-    image_Url:
-      "./tops.jpg",
+    image_Url: "./tops.jpg",
   },
   {
     id: 5,
     title: "Bottoms",
-    image_Url:
-      "./bottoms.png",
+    image_Url: "./bottoms.png",
   },
   {
     id: 6,
     title: "Outerwears",
-    image_Url:
-      "./outwears.png",
+    image_Url: "./outwears.png",
   },
   {
     id: 7,
     title: "Accessories",
-    image_Url: "./access.png./",
+    image_Url: "./access.png",
+  },
+];
+
+export const navItems = [
+  {
+    title: "Home",
+    url: "/",
+  },
+  {
+    title: "Best Selling",
+    url: "/best-selling",
+  },
+  {
+    title: "Products",
+    url: "/products",
+  },
+  {
+    title: "Contacts",
+    url: "/contacts",
+  },
+  {
+    title: "FAQ",
+    url: "/faq",
   },
 ];
 
