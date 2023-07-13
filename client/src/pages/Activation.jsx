@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import  server  from "../../server";
 
 function Activation() {
+  const navigate = useNavigate()
   const { url } = useParams();
   const [error, setError] = useState(false);
   const [loading, setloading] = useState(false);
@@ -26,8 +27,9 @@ function Activation() {
               },
             }
           );
-          if (res) setloading(false);
-          console.log(res);
+          if (res) {
+            setloading(false)
+          };
         } catch (error) {
           setError(true);
           setloading(false);

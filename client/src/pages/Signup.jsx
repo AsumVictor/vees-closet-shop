@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
 import { SignupPanel } from "../components/LoginPanel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "../../server";
 import { toast } from "react-toastify";
 
 function Signup() {
+
+  const navigate = useNavigate()
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +50,7 @@ function Signup() {
         setEmail("");
         setPassword("");
         setconfirmPassword("");
+        navigate("/signup/success");
       })
       .catch((err) => {
         toast.error(err.response.data.message);

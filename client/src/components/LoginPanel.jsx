@@ -25,8 +25,7 @@ export function LoginPanel() {
 export function SignupPanel() {
   return (
     <div className="w-full ">
-      <img src="./dressess.jpg" alt="cfwedf" />
-      wefwe
+    
       <div className="flex flex-row gap-3">
         <img src={Logo} alt="" />
         <h1 className="text-3xl font-bold text-wine_primary">Vees</h1>

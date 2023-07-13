@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Logo from "../../assets/vite.svg";
 import { HiPhone } from "react-icons/hi";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
@@ -106,6 +106,9 @@ function Header() {
 
         </div>
       </div>
+
+<Outlet />
+
     </>
   );
 }
