@@ -36,7 +36,7 @@ function Login() {
   return (
     <div className="grid grid-cols-1 w-full min-h-screen">
       <div className="py-3 w-full flex flex-col justify-center items-center h-screen">
-        <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-3xl py-10 px-5">
+        <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl py-10 px-5">
           <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-wine_primary capitalize text-center">
             Customer login
           </h4>

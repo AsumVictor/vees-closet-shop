@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
+import { InputLabel, Button } from "../components/Inputs";
 import { SignupPanel } from "../components/LoginPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -58,9 +58,9 @@ function Signup() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
-      <div className="py-3 w-full order-1 lg:order-2 flex flex-col justify-center items-center h-screen">
-        <div className="relative flex flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">
+    <div className="grid grid-cols-1 w-full min-h-screen">
+      <div className="py-3 w-full order-1 flex flex-col justify-center items-center h-screen">
+        <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl py-5 px-5">
           <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-wine_primary text-center">
             Create an account
           </h4>
@@ -153,9 +153,6 @@ function Signup() {
             </p>
           </form>
         </div>
-      </div>
-      <div className="py-3 w-full order-1 lg:order-1 h-full bg-gray-200 px-10">
-        <SignupPanel />
       </div>
     </div>
   );
