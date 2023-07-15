@@ -17,18 +17,6 @@ function Header() {
 
   return (
     <>
-      <div className="w-full py-2 bg-wine_secondary hidden flex-row justify-between px-4 md:px-10 800px:flex">
-        <Link to="/" className="flex flex-row items-center">
-          <img src={Logo} alt="Logo" className="w-[1.2cm]" />
-          <p className="text-xl font-extrabold text-white">Vees Closet</p>
-        </Link>
-        <div className="flex flex-row gap-2 text-xl font-bold items-center text-white">
-          <HiPhone />
-          <p>050000000</p>
-        </div>
-      </div>
-
-      {/* Navigation */}
       {/* Desktop */}
       <div
         className={`shadow-sm sticky top-0 z-10 null

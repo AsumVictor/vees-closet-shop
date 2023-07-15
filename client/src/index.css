@@ -10,4 +10,6 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background: #f6f6f5;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100vw;
 }

@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { InputLabel, Button } from "../components/Inputs";
-import { SignupPanel } from "../components/LoginPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "../../server";
 import { toast } from "react-toastify";
+import Loader from "../components/loader/loader";
 
 function Signup() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const hasUppercase = /[A-Z]/.test(password);
   const hasSpecialChar = /[^\w\s]/.test(password);
   const hasMoreThan7char = password.trim().length >= 8;
@@ -31,6 +30,8 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const userIformation = {
       avatar: null,
       fullname,
@@ -46,14 +47,16 @@ function Signup() {
       })
       .then((res) => {
         toast.success(res.data.message);
+        navigate("/signup/success", {state:{email}});
         setFullname("");
         setEmail("");
         setPassword("");
         setconfirmPassword("");
-        navigate("/signup/success");
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        setLoading(false);
+        let errMessage = err.response ? err.response.data.message : err.message;
+        toast.error(errMessage);
       });
   };
 
@@ -136,13 +139,21 @@ function Signup() {
             )}
 
             <Button
-              classname={"mt-6 bg-wine_primary w-full "}
+              classname={
+                "mt-6 bg-wine_primary w-full flex flex-row justify-center items-center"
+              }
               disabled={!canSubmit}
               handleClick={handleSubmit}
             >
-              Sign up
+              {loading ? (
+                <Loader
+                  extendclass={`h-[.7cm] w-[.7cm] border-[5px] border-white`}
+                />
+              ) : (
+                "Sign up"
+              )}
             </Button>
-            <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
+            <p className="mt-4 flex flex-row gap-1 text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
               I already have an account?
               <Link
                 className="font-medium text-wine_primary transition-colors hover:text-blue-700"
