@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { navItems } from "../../static/data";
 import styles from "../../styles/styles";
 
-const Navbar = () => {
+const Navbar = ({handleClick}) => {
   const normalStyle = "pb-[30px] 800px:pb-0 font-[500] px-5 cursor-pointer";
 
   return (
@@ -12,11 +12,12 @@ const Navbar = () => {
         navItems.map((i) => (
           <div className="flex">
             <NavLink
+            onClick={()=>handleClick()}
               to={i.url}
               className={({ isActive }) =>
                 isActive
-                  ? `${normalStyle} 800px:text-wine_primary underline font-bold`
-                  : `${normalStyle} 800px:text-wine_dark_deep`
+                  ? `${normalStyle} text-wine_primary underline font-extrabold`
+                  : `${normalStyle} text-wine_dark_deep`
               }
             >
               {i.title}

@@ -18,6 +18,7 @@ export default withMT({
         wine_secondary: '#5e2127',
         wine_dark_light: '#361c1e',
         wine_dark_deep: '#181112',
+        navy_blue: '#2660A4',
       },
       screens: {
         "1000px": "1050px",

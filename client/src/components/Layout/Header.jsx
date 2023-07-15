@@ -10,13 +10,14 @@ import styles from "../../styles/styles";
 import DropDown from "./DropDown";
 import { categoriesData } from "../../static/data";
 import Navbar from "./Navbar";
+import MobileNav from "./MobileNav";
 
 function Header() {
   const [dropDown, setDropDown] = useState(false);
 
   return (
     <>
-      <div className="w-full py-2 bg-wine_secondary flex flex-row justify-between px-4 md:px-10">
+      <div className="w-full py-2 bg-wine_secondary hidden flex-row justify-between px-4 md:px-10 800px:flex">
         <Link to="/" className="flex flex-row items-center">
           <img src={Logo} alt="Logo" className="w-[1.2cm]" />
           <p className="text-xl font-extrabold text-white">Vees Closet</p>
@@ -107,6 +108,8 @@ function Header() {
         </div>
       </div>
 
+ {/* Mobile menu */}
+<MobileNav />
 <Outlet />
 
     </>
