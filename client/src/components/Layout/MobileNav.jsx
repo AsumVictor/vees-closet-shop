@@ -86,7 +86,7 @@ function MobileNav() {
               >
                 Login /
               </Link>
-              <Link to="/sign-up" className="text-[18px] text-[#000000b7]  font-bold">
+              <Link to="/signup" className="text-[18px] text-[#000000b7]  font-bold">
                 Sign up
               </Link>
             </div>
