@@ -34,9 +34,9 @@ function Login() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
-      <div className="py-3 w-full order-1 lg:order-2 flex flex-col justify-center items-center h-screen">
-        <div className="relative flex flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">
+    <div className="grid grid-cols-1 w-full min-h-screen">
+      <div className="py-3 w-full flex flex-col justify-center items-center h-screen">
+        <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-3xl py-10 px-5">
           <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-wine_primary capitalize text-center">
             Customer login
           </h4>
@@ -90,9 +90,6 @@ function Login() {
             </p>
           </form>
         </div>
-      </div>
-      <div className="py-3 w-full order-1 lg:order-1 h-full bg-gray-200 px-10">
-        <LoginPanel />
       </div>
     </div>
   );
