@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
-import { SignupPanel } from "../components/LoginPanel";
-import { Link } from "react-router-dom";
+import { InputLabel, Button } from "../components/Inputs";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "../../server";
 import { toast } from "react-toastify";
+import Loader from "../components/loader/loader";
 
 function Signup() {
+  const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const hasUppercase = /[A-Z]/.test(password);
   const hasSpecialChar = /[^\w\s]/.test(password);
   const hasMoreThan7char = password.trim().length >= 8;
@@ -29,6 +30,8 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const userIformation = {
       avatar: null,
       fullname,
@@ -44,20 +47,23 @@ function Signup() {
       })
       .then((res) => {
         toast.success(res.data.message);
+        navigate("/signup/success", {state:{email}});
         setFullname("");
         setEmail("");
         setPassword("");
         setconfirmPassword("");
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        setLoading(false);
+        let errMessage = err.response ? err.response.data.message : err.message;
+        toast.error(errMessage);
       });
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-screen">
-      <div className="py-3 w-full order-1 lg:order-2 flex flex-col justify-center items-center h-screen">
-        <div className="relative flex flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">
+    <div className="grid grid-cols-1 w-full min-h-screen">
+      <div className="py-3 w-full order-1 flex flex-col justify-center items-center h-screen">
+        <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl py-5 px-5">
           <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-wine_primary text-center">
             Create an account
           </h4>
@@ -133,13 +139,21 @@ function Signup() {
             )}
 
             <Button
-              classname={"mt-6 bg-wine_primary w-full "}
+              classname={
+                "mt-6 bg-wine_primary w-full flex flex-row justify-center items-center"
+              }
               disabled={!canSubmit}
               handleClick={handleSubmit}
             >
-              Sign up
+              {loading ? (
+                <Loader
+                  extendclass={`h-[.7cm] w-[.7cm] border-[5px] border-white`}
+                />
+              ) : (
+                "Sign up"
+              )}
             </Button>
-            <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
+            <p className="mt-4 flex flex-row gap-1 text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
               I already have an account?
               <Link
                 className="font-medium text-wine_primary transition-colors hover:text-blue-700"
@@ -150,9 +164,6 @@ function Signup() {
             </p>
           </form>
         </div>
-      </div>
-      <div className="py-3 w-full order-1 lg:order-1 h-full bg-gray-200 px-10">
-        <SignupPanel />
       </div>
     </div>
   );
