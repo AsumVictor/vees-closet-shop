@@ -13,3 +13,7 @@ body {
   overflow-x: hidden;
   width: 100vw;
 }
+
+.hero-burb {
+  background-image: url('../public/hero-blurb.png');
+}

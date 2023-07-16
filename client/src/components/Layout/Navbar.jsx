@@ -14,6 +14,7 @@ const Navbar = ({handleClick}) => {
             <NavLink
             onClick={()=>handleClick()}
               to={i.url}
+              end
               className={({ isActive }) =>
                 isActive
                   ? `${normalStyle} text-wine_primary underline font-extrabold`
