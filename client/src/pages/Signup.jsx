@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InputLabel, Button } from "../components/Inputs";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "../../server";
 import { toast } from "react-toastify";
 import Loader from "../components/loader/loader";
+import { useSelector } from "react-redux";
 
 function Signup() {
+  const { isAuthenticated } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -31,7 +33,6 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     const userIformation = {
       avatar: null,
       fullname,
@@ -47,7 +48,7 @@ function Signup() {
       })
       .then((res) => {
         toast.success(res.data.message);
-        navigate("/signup/success", {state:{email}});
+        navigate("/signup/success", { state: { email } });
         setFullname("");
         setEmail("");
         setPassword("");
@@ -59,6 +60,12 @@ function Signup() {
         toast.error(errMessage);
       });
   };
+
+  useEffect(() => {
+    if (isAuthenticated===true) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="grid grid-cols-1 w-full min-h-screen">
