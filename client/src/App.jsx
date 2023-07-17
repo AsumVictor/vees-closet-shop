@@ -7,6 +7,7 @@ import {
   HomePage,
   Header,
   SignupSuccessPage,
+  ProductsPage,
   Underconstruction
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/signup/success" element={<SignupSuccessPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
+          <Route path="/products" element={<ProductsPage />}/>
           <Route path="*" element={<Underconstruction />}/>
         </Route>
         <Route path="/login" element={<LoginPage />} />
