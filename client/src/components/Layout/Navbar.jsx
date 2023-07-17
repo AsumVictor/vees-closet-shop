@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { navItems } from "../../static/data";
 import styles from "../../styles/styles";
 
-const Navbar = ({handleClick}) => {
+const Navbar = ({ handleClick }) => {
   const normalStyle = "pb-[30px] 800px:pb-0 font-[500] px-5 cursor-pointer";
 
   return (
@@ -12,9 +12,11 @@ const Navbar = ({handleClick}) => {
         navItems.map((i) => (
           <div className="flex">
             <NavLink
-            onClick={()=>handleClick()}
+              onClick={() => {
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                handleClick()
+              }}
               to={i.url}
-              end
               className={({ isActive }) =>
                 isActive
                   ? `${normalStyle} text-wine_primary underline font-extrabold`

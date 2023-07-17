@@ -5,43 +5,67 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import styles from "../../styles/styles";
-import { IoIosArrowForward } from "react-icons/io";
 import Logo from "../../assets/vite.svg";
+import { CgProfile } from "react-icons/cg";
+import { useSelector } from "react-redux";
 
-
-
-function MobileNav() {
+function MobileNav({ handleUserDropDown }) {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
 
   return (
     <div
-      className={`shadow-md top-0 left-0 z-10" 
-                w-full h-[60px] bg-[#fff] z-50 sticky 800px:hidden flex items-center`}
+      className={`shadow-md top-0 left-0 z-10 w-full h-[60px] bg-[#fff] sticky 800px:hidden flex items-center`}
     >
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between px-2">
         <div>
-          <BiMenuAltLeft
-            size={40}
-            className="ml-4"
-            onClick={() => setOpen(true)}
-          />
+          <BiMenuAltLeft size={40} className="" onClick={() => setOpen(true)} />
         </div>
         <div className="flex flex-row items-center gap-3">
           <Link to="/">
-            <img
-              src={Logo}
-              alt="Logo"
-              className="mt-3 cursor-pointer"
-            />
+            <img src={Logo} alt="Logo" className="mt-3 cursor-pointer" />
           </Link>
           <p className="text-2xl font-extrabold">Vees</p>
         </div>
-        <div>
-          <div className="relative mr-[20px]">
-            <AiOutlineShoppingCart size={30} />
-            <span class="absolute right-0 top-0 rounded-full bg-navy_blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-              0
-            </span>
+        <div className="flex gap-2 items-center">
+          <div className={`${styles.noramlFlex}`}>
+            <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
+              <AiOutlineShoppingCart size={30} color="#000" />
+              <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                0
+              </span>
+              <span className="text-[14px] font-bold -mt-1">Cart</span>
+            </div>
+          </div>
+          <div className={`${styles.noramlFlex}`}>
+            <div className="relative cursor-pointer ">
+              {isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    handleUserDropDown();
+                  }}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <img
+                    src={user.avatar.url}
+                    alt="Avatar"
+                    className="h-[.8cm] w-[.8cm] border border-black rounded-full"
+                  />
+                  <span className="text-[14px] font-bold -mt-1">{`${user.email.slice(
+                    0,
+                    4
+                  )}...com`}</span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex flex-col items-center justify-center"
+                >
+                  <CgProfile size={30} color="rgb(0 0 0 / 83%)" />
+                  <span className="text-[14px] font-bold -mt-1">Login</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -77,18 +101,29 @@ function MobileNav() {
               />
             </div>
 
-            <Navbar handleClick={()=>setOpen(false)}/>
+            <Navbar handleClick={() => setOpen(false)} />
 
             <div className="flex w-full justify-center">
-              <Link
-                to="/login"
-                className="text-[18px] pr-[10px] text-[#000000b7] font-bold"
-              >
-                Login /
-              </Link>
-              <Link to="/signup" className="text-[18px] text-[#000000b7]  font-bold">
-                Sign up
-              </Link>
+              {isAuthenticated ? (
+                <button className="px-3 flex gap-2 text-white bg-wine_primary rounded-md font-bold py-1">
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="text-[18px] pr-[10px] text-[#000000b7] font-bold"
+                  >
+                    Login /
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-[18px] text-[#000000b7]  font-bold"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
