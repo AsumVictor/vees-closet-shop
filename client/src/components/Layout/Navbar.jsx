@@ -12,7 +12,10 @@ const Navbar = ({ handleClick }) => {
         navItems.map((i) => (
           <div className="flex">
             <NavLink
-              onClick={() => handleClick()}
+              onClick={() => {
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                handleClick()
+              }}
               to={i.url}
               className={({ isActive }) =>
                 isActive
