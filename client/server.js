@@ -1,2 +1,2 @@
-const server = "http://localhost:5000/api/vees";
+const server = "https://vees-closet.onrender.com";
 export default server;
