@@ -9,6 +9,7 @@ import {
   SignupSuccessPage,
   ProductsPage,
   Underconstruction,
+  CartPage
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,12 +18,14 @@ import { loadUser } from "./redux/actions/user.js";
 import { useSelector } from "react-redux";
 
 export default function App() {
+  const { loading } = useSelector((state) => state.user);
   useEffect(() => {
     Store.dispatch(loadUser());
-  }),[];
+  }, []);
 
   return (
     <>
+      {loading ? null : (
         <BrowserRouter>
           <Routes>
             <Route element={<Header />}>
@@ -30,6 +33,7 @@ export default function App() {
               <Route path="/signup/success" element={<SignupSuccessPage />} />
               <Route path="/activation/:url" element={<ActivationPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/cart" element={<CartPage />} />
               <Route path="*" element={<Underconstruction />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
@@ -49,6 +53,7 @@ export default function App() {
             theme="dark"
           />
         </BrowserRouter>
+      )}
     </>
   );
 }

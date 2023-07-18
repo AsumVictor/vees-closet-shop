@@ -23,7 +23,7 @@ function ProductCard({ title, price, image }) {
           {title}
         </h4>
         <h4 className="font-bold text-[17px] text-wine_primary mt-2">
-          {`GHC ${price}`}
+          {`GH₵ ${price}`}
         </h4>
       </Link>
       <div className="w-full">

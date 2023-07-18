@@ -5,7 +5,8 @@ import HomePage from './pages/HomePage'
 import Header from "./components/Layout/Header";
 import SignupSuccessPage from "./pages/SignupSuccessPage";
 import Underconstruction from "./components/indication/Underconstruction";
-import ProductsPage from './pages/ProductPage.jsx'
+import ProductsPage from './pages/ProductPage'
+import CartPage from './pages/CartPage.jsx'
 export {
     LoginPage,
     SignupPage,
@@ -14,5 +15,6 @@ export {
     Header,
     SignupSuccessPage,
     ProductsPage,
-    Underconstruction
+    Underconstruction,
+    CartPage
 }
