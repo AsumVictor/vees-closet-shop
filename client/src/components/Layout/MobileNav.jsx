@@ -15,7 +15,7 @@ function MobileNav({ handleUserDropDown }) {
 
   return (
     <div
-      className={`shadow-md top-0 left-0 z-10 w-full h-[60px] bg-[#fff] sticky 800px:hidden flex items-center`}
+      className={`shadow-md top-0 left-0 z-50 w-full h-[60px] bg-[#fff] sticky 800px:hidden flex items-center`}
     >
       <div className="w-full flex items-center justify-between px-2">
         <div>

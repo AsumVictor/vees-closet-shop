@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 
-export function DesktopImageView() {
+function DesktopImageView() {
   const product = {
     category: "women's clothing",
     description:
       "95% RAYON 5% SPANDEX, Made in USA or Imported, Do Not Bleach, Lightweight fabric with great stretch for comfort, Ribbed on sleeves and neckline / Double stitching on bottom hem",
     id: 18,
     images: [
-      "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -21,7 +20,7 @@ export function DesktopImageView() {
   return (
     <>
       <div className="hidden 800px:flex flex-col">
-        <div className="overflow-hidden w-[370px] rounded-2xl h-[400px] bg-yellow-500 self-center">
+        <div className="overflow-hidden w-[370px] rounded-2xl h-[400px] bg-white-500 self-center">
           <img
             src={product.images[activeImage]}
             alt=""
@@ -50,3 +49,5 @@ export function DesktopImageView() {
     </>
   );
 }
+
+export default DesktopImageView

@@ -22,7 +22,7 @@ function Header() {
     <>
       {/* Desktop */}
       <div
-        className={`shadow-sm sticky top-0 z-10 null
+        className={`shadow-sm sticky top-0 z-50 null
          transition hidden 800px:flex items-center justify-between w-full bg-white h-[70px] `}
       >
         <div
