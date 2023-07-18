@@ -9,7 +9,8 @@ import {
   SignupSuccessPage,
   ProductsPage,
   Underconstruction,
-  CartPage
+  CartPage,
+  ProductDetailPage
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="/signup/success" element={<SignupSuccessPage />} />
               <Route path="/activation/:url" element={<ActivationPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:name" element={<ProductDetailPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="*" element={<Underconstruction />} />
             </Route>
