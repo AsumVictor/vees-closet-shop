@@ -10,7 +10,8 @@ import {
   ProductsPage,
   Underconstruction,
   CartPage,
-  ProductDetailPage
+  ProductDetailPage,
+  WishListPage
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:name" element={<ProductDetailPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/saved-to-later" element={<WishListPage />} />
               <Route path="*" element={<Underconstruction />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />

@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import CartLogo from "../assets/images/cart.png";
-import { Link } from "react-router-dom";
+import React from "react";
 import Cart from "../components/cart/Cart";
 import CartSummary from "../components/cart/CartSummary";
 

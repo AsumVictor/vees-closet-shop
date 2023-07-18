@@ -6,7 +6,7 @@ function DesktopImageView({images}) {
   return (
     <>
       <div className="hidden 800px:flex flex-col">
-        <div className="overflow-hidden w-[370px] rounded-2xl h-[400px] bg-white-500 self-center">
+        <div className="overflow-hidden w-[370px] rounded-2xl h-[400px] self-center">
           <img
             src={images[activeImage]}
             alt=""

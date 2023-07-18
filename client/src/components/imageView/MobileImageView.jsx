@@ -35,7 +35,7 @@ function MobileImageView({ images }) {
 
   return (
     <div className="flex flex-col w-full 800px:hidden">
-      <div className="overflow-hidden w-full 550px:w-[400px] rounded-2xl h-[400px] bg-white-500 self-center relative flex justify-center items-center">
+      <div className="overflow-hidden w-full 550px:w-[400px] rounded-2xl h-[400px] self-center relative flex justify-center items-center">
         <img
           src={images[activeImage]}
           alt=""
