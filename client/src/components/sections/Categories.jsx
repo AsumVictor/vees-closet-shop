@@ -35,6 +35,7 @@ const Categories = () => {
           {categoriesData &&
             categoriesData.map((i) => {
               const handleSubmit = (i) => {
+                  window.scrollTo(0,0)
                 navigate(`/products?category=${i.title}`);
               };
               return (

@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? <h1>Loading</h1> : (
         <BrowserRouter>
           <Routes>
             <Route element={<Header />}>
