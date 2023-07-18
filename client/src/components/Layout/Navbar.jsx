@@ -13,8 +13,8 @@ const Navbar = ({ handleClick }) => {
           <div className="flex">
             <NavLink
               onClick={() => {
-                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                handleClick()
+                window.scrollTo(0, 0);
+                handleClick();
               }}
               to={i.url}
               className={({ isActive }) =>

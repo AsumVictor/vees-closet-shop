@@ -1,24 +1,8 @@
 import React, { useState } from "react";
 import { HiArrowRight, HiArrowLeft } from "react-icons/hi";
 
-function MobileImageView() {
+function MobileImageView({ images }) {
   const [activeImage, setactiveImage] = useState(0);
-
-  const product = {
-    category: "women's clothing",
-    description:
-      "95% RAYON 5% SPANDEX, Made in USA or Imported, Do Not Bleach, Lightweight fabric with great stretch for comfort, Ribbed on sleeves and neckline / Double stitching on bottom hem",
-    id: 18,
-    images: [
-      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
-      "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
-      "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
-      "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-    ],
-    price: 9.85,
-    rating: { rate: 4.7, count: 130 },
-    title: "MBJ Women's Solid Short Sleeve Boat Neck V ",
-  };
 
   const handleActiveImage = (type) => {
     switch (type) {
@@ -34,7 +18,7 @@ function MobileImageView() {
   };
 
   const moveImageRight = () => {
-    if ((activeImage + 1) / product.images.length === 1) {
+    if ((activeImage + 1) / images.length === 1) {
       setactiveImage(0);
     } else {
       setactiveImage((prev) => prev + 1);
@@ -53,7 +37,7 @@ function MobileImageView() {
     <div className="flex flex-col w-full 800px:hidden">
       <div className="overflow-hidden w-full 550px:w-[400px] rounded-2xl h-[400px] bg-white-500 self-center relative flex justify-center items-center">
         <img
-          src={product.images[activeImage]}
+          src={images[activeImage]}
           alt=""
           className="w-full h-full absolute top-0 left-0"
         />
@@ -73,7 +57,7 @@ function MobileImageView() {
         </div>
       </div>
       <div className="overflow-hidden flex justify-center flex-wrap gap-2 w-full 550px:w-[400px mt-2  self-center">
-        {product.images.map((image, index) => {
+        {images.map((image, index) => {
           return (
             <button
               className={`col-span-1 ${
