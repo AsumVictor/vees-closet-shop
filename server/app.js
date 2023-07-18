@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://vees-closet.onrender.com",
+    origin: "https://veescloset.onrender.com",
     credentials: true,
   })
 );
