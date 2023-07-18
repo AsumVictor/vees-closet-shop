@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import server from "../../server";
 import Loader from "../components/loader/loader";
+import { useSelector } from "react-redux";
 
 function Login() {
+  const { isAuthenticated } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -35,6 +37,12 @@ function Login() {
         toast.error(errMessage);
       });
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="grid grid-cols-1 w-full min-h-screen">
@@ -76,7 +84,9 @@ function Login() {
               </div>
             </div>
             <Button
-              classname={"mt-6 bg-wine_primary w-full flex justify-center items-center"}
+              classname={
+                "mt-6 bg-wine_primary w-full flex justify-center items-center"
+              }
               disabled={!canSubmit || loading}
               handleClick={handleSubmit}
             >

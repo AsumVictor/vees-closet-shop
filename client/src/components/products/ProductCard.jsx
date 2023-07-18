@@ -11,7 +11,12 @@ function ProductCard({ title, price, image }) {
         size={35}
         className="absolute cursor-pointer text-wine_primary"
       />
-      <Link to={`/products/${productUrl}`}>
+      <Link
+        to={`/products/${productUrl}`}
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
+      >
         <div className="h-[4.5cm] w-full">
           <img
             src={image}
@@ -23,7 +28,7 @@ function ProductCard({ title, price, image }) {
           {title}
         </h4>
         <h4 className="font-bold text-[17px] text-wine_primary mt-2">
-          {`GHC ${price}`}
+          {`GH₵ ${price}`}
         </h4>
       </Link>
       <div className="w-full">

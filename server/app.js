@@ -6,16 +6,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const user = require("./controllers/user");
 
-app.use((req, res, next) => {
-  console.log(`${req.method}: ${req.path}`);
-  next();
-});
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://veescloset.onrender.com",
+    origin: "https://vees-closet.onrender.com",
     credentials: true,
   })
 );

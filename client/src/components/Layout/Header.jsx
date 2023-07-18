@@ -22,7 +22,7 @@ function Header() {
     <>
       {/* Desktop */}
       <div
-        className={`shadow-sm sticky top-0 z-10 null
+        className={`shadow-sm sticky top-0 z-50 null
          transition hidden 800px:flex items-center justify-between w-full bg-white h-[70px] `}
       >
         <div
@@ -72,7 +72,7 @@ function Header() {
             </div>
 
             {/* Save cart */}
-            <div className={`${styles.noramlFlex}`}>
+            <Link to='/cart' className={`${styles.noramlFlex}`}>
               <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                 <AiOutlineShoppingCart size={30} color="#000" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
@@ -80,7 +80,7 @@ function Header() {
                 </span>
                 <span className="text-[14px] font-bold -mt-1">Cart</span>
               </div>
-            </div>
+            </Link>
 
             {/* loging in */}
             <div className={`${styles.noramlFlex}`}>

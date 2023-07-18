@@ -15,7 +15,7 @@ function MobileNav({ handleUserDropDown }) {
 
   return (
     <div
-      className={`shadow-md top-0 left-0 z-10 w-full h-[60px] bg-[#fff] sticky 800px:hidden flex items-center`}
+      className={`shadow-md top-0 left-0 z-50 w-full h-[60px] bg-[#fff] sticky 800px:hidden flex items-center`}
     >
       <div className="w-full flex items-center justify-between px-2">
         <div>
@@ -28,15 +28,17 @@ function MobileNav({ handleUserDropDown }) {
           <p className="text-2xl font-extrabold">Vees</p>
         </div>
         <div className="flex gap-2 items-center">
-          <div className={`${styles.noramlFlex}`}>
-            <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
-              <AiOutlineShoppingCart size={30} color="#000" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                0
-              </span>
-              <span className="text-[14px] font-bold -mt-1">Cart</span>
-            </div>
-          </div>
+
+          <Link to='/cart' className={`${styles.noramlFlex}`}>
+              <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
+                <AiOutlineShoppingCart size={30} color="#000" />
+                <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                  0
+                </span>
+                <span className="text-[14px] font-bold -mt-1">Cart</span>
+              </div>
+            </Link>
+
           <div className={`${styles.noramlFlex}`}>
             <div className="relative cursor-pointer ">
               {isAuthenticated ? (
@@ -67,6 +69,7 @@ function MobileNav({ handleUserDropDown }) {
               )}
             </div>
           </div>
+
         </div>
       </div>
 
