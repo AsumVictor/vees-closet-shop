@@ -21,6 +21,7 @@ function Header() {
   const [userdropDown, setUserDropDown] = useState(false);
   const { logoutHandler } = useLogout();
   const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
 
 
   return (
@@ -63,7 +64,6 @@ function Header() {
 
           <div className="flex flex-row justify-center items-center gap-x-5">
             {/* Save items in browser */}
-
             <Link
               to="/saved-to-later"
               className="flex"
@@ -74,9 +74,9 @@ function Header() {
               <div className={`${styles.noramlFlex}`}>
                 <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                   <AiOutlineHeart size={30} color="#000" />
-                  <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                    0
-                  </span>
+                  {wishlist && wishlist.length !== 0 && <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                    {wishlist.length}
+                  </span>}
                   <span className="text-[14px] font-bold -mt-1 ">Saved</span>
                 </div>
               </div>

@@ -17,8 +17,6 @@ function CartPage() {
     return accumulator + item.price * item.qty;
   }, 0);
 
-  console.log(totalAmount)
-
   const quantityChangeHandler = (data) => {
     dispatch(addTocart(data));
   };

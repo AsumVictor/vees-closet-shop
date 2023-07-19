@@ -1,19 +1,46 @@
-import { AiOutlineShoppingCart, AiOutlineHeart } from "react-icons/ai";
+import {
+  AiOutlineShoppingCart,
+  AiOutlineHeart,
+  AiFillHeart,
+} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addTocart, removeFromCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import { HiMinus, HiPlus } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
 
 function ProductCard({ product }) {
   const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const [click, setClick] = useState(false);
   const { _id, title, images, price } = product;
   const isItemExists = cart && cart.find((i) => i._id === _id);
   const [value, setValue] = useState(isItemExists ? isItemExists.qty : 0);
-
   const dispatch = useDispatch();
   const productUrl = title.replace(/\s+/g, "-");
+
+  useEffect(() => {
+    if (wishlist && wishlist.find((i) => i._id === product._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishlist]);
+
+  const removeFromWishlistHandler = (product) => {
+    setClick(!click);
+    dispatch(removeFromWishlist(product));
+  };
+
+  const addToWishlistHandler = (product) => {
+    setClick(!click);
+    dispatch(addToWishlist(product));
+  };
 
   const addToCartHandler = (id) => {
     const cartData = { ...product, qty: 1 };
@@ -57,12 +84,26 @@ function ProductCard({ product }) {
     <div
       className={`h-[9cm] w-[7cm] bg-white relative rounded-xl px-2 py-2 shadow-lg hover:scale-105 transition-all`}
     >
-      <AiOutlineHeart
-        size={35}
-        className="absolute cursor-pointer text-wine_primary"
-      />
+      {click ? (
+        <AiFillHeart
+          size={30}
+          className="absolute cursor-pointer text-wine_primary"
+          onClick={() => removeFromWishlistHandler(product)}
+          color={click ? "red" : "#333"}
+          title="Remove from wishlist"
+        />
+      ) : (
+        <AiOutlineHeart
+          size={30}
+          className="absolute cursor-pointer text-wine_primary"
+          onClick={() => addToWishlistHandler(product)}
+          color={click ? "red" : "#333"}
+          title="Add to wishlist"
+        />
+      )}
       <Link
         to={`/products/${productUrl}`}
+        state={{ productData: product }}
         onClick={() => {
           window.scrollTo(0, 0);
         }}
