@@ -1,10 +1,10 @@
 import React from "react";
 import Cart from "../components/cart/Cart";
 import CartSummary from "../components/cart/CartSummary";
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
+import NoCartItem from "../components/cart/NoCartItem";
 
 function CartPage() {
-
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -29,10 +29,7 @@ function CartPage() {
         <div className="w-full rounded-md pt-1 pb-5 bg-white px-2 800px:px-5">
           <h3 className="self-start font-bold text-xl">{`Shopping cart (6)`}</h3>
           <hr className="mt-2" />
-          <Cart />
-          <Cart />
-          <Cart />
-          <Cart />
+          {cart && cart.length !== 0 ? <Cart /> : <NoCartItem />}
         </div>
       </div>
       <div className="py-2 800px:col-span-4 relative  px-2 800px:px-5">
@@ -43,5 +40,3 @@ function CartPage() {
 }
 
 export default CartPage;
-
-

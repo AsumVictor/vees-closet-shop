@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import CartLogo from '../../assets/images/cart.png'
+
 function NoCartItem() {
   return (
     <div className="flex flex-col items-center mt-10">

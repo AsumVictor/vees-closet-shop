@@ -228,8 +228,9 @@ export const productData = [
     _id: 1,
     title: "MBJ Women's Solid Short Sleeve Boat Neck V ",
      images: [
-      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
+      
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
+      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
     ],
@@ -247,9 +248,10 @@ export const productData = [
     _id: 2,
     title: "Rain Jacket Women Windbreaker Striped Climbing Raincoats",
      images: [
+      
+      "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
-      "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
     ],
     price: 39.99,
@@ -267,10 +269,11 @@ export const productData = [
     title:
       "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
      images: [
-      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
+      "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
-      "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
+      
     ],
       price: 29.95,
     description:
@@ -286,10 +289,10 @@ export const productData = [
     _id: 4,
     title: "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats",
      images: [
-      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
     ],
     price: 56.99,
     description:
