@@ -59,7 +59,7 @@ function Header() {
           <div className="flex flex-row justify-center items-center gap-x-5">
             {/* Save items in browser */}
 
-            <div className="flex">
+            <Link to='/saved-to-later' className="flex">
               <div className={`${styles.noramlFlex}`}>
                 <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                   <AiOutlineHeart size={30} color="#000" />
@@ -69,7 +69,7 @@ function Header() {
                   <span className="text-[14px] font-bold -mt-1 ">Saved</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Save cart */}
             <Link to='/cart' className={`${styles.noramlFlex}`}>

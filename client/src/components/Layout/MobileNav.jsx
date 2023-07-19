@@ -79,7 +79,7 @@ function MobileNav({ handleUserDropDown }) {
           <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
             <div className="w-full justify-between flex pr-3">
               <div>
-                <div
+                <Link to='/saved-to-later'
                   className="relative mr-[15px]"
                   onClick={() => setOpen(false)}
                 >
@@ -87,7 +87,7 @@ function MobileNav({ handleUserDropDown }) {
                   <span class="absolute right-0 top-0 rounded-full bg-navy_blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                     0
                   </span>
-                </div>
+                </Link>
               </div>
               <RxCross1
                 size={30}
