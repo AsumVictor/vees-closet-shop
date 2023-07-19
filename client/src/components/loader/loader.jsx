@@ -7,3 +7,10 @@ function Loader({extendclass}) {
 }
 
 export default Loader
+
+export const PageLoader = () =>{
+  return (
+    <>
+    </>
+  )
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { InputLabel, CheckboxLabel, Button } from "../components/Inputs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import server from "../../server";
@@ -9,6 +9,10 @@ import { useSelector } from "react-redux";
 
 function Login() {
   const { isAuthenticated } = useSelector((state) => state.user);
+  const {
+    state: { message, pathname },
+  } = useLocation();
+  const path = pathname ? pathname : "/";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -29,7 +33,8 @@ function Login() {
         toast.success("Success");
         setEmail("");
         setPassword("");
-        navigate("/", { replace: true });
+        navigate(path, { replace: true });
+        window.location.reload(true); 
       })
       .catch((err) => {
         setLoading(false);
@@ -40,7 +45,7 @@ function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate(path);
     }
   }, []);
 
@@ -52,6 +57,11 @@ function Login() {
             Customer login
           </h4>
           <p className="text-center">We're excited to welcome you</p>
+          {message && (
+            <p className="text-center mt-3 text-red-600 font-semibold bg-red-100 py-1 rounded-md">
+              {message}
+            </p>
+          )}
           <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
             <div className="mb-4 flex flex-col gap-6">
               <InputLabel

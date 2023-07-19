@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { RxCross1 } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import styles from "../../styles/styles";
 import Logo from "../../assets/vite.svg";
 import { CgProfile } from "react-icons/cg";
 import { useSelector } from "react-redux";
+import useLogout from "../../hooks/useLogout";
 
 function MobileNav({ handleUserDropDown }) {
+  const { logoutHandler } = useLogout();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
 
@@ -22,22 +24,32 @@ function MobileNav({ handleUserDropDown }) {
           <BiMenuAltLeft size={40} className="" onClick={() => setOpen(true)} />
         </div>
         <div className="flex flex-row items-center gap-3">
-          <Link to="/">
+          <Link
+            to="/"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
             <img src={Logo} alt="Logo" className="mt-3 cursor-pointer" />
           </Link>
           <p className="text-2xl font-extrabold">Vees</p>
         </div>
         <div className="flex gap-2 items-center">
-
-          <Link to='/cart' className={`${styles.noramlFlex}`}>
-              <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
-                <AiOutlineShoppingCart size={30} color="#000" />
-                <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  0
-                </span>
-                <span className="text-[14px] font-bold -mt-1">Cart</span>
-              </div>
-            </Link>
+          <Link
+            to="/cart"
+            className={`${styles.noramlFlex}`}
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
+              <AiOutlineShoppingCart size={30} color="#000" />
+              <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                0
+              </span>
+              <span className="text-[14px] font-bold -mt-1">Cart</span>
+            </div>
+          </Link>
 
           <div className={`${styles.noramlFlex}`}>
             <div className="relative cursor-pointer ">
@@ -69,7 +81,6 @@ function MobileNav({ handleUserDropDown }) {
               )}
             </div>
           </div>
-
         </div>
       </div>
 
@@ -79,9 +90,13 @@ function MobileNav({ handleUserDropDown }) {
           <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
             <div className="w-full justify-between flex pr-3">
               <div>
-                <Link to='/saved-to-later'
+                <Link
+                  to="/saved-to-later"
                   className="relative mr-[15px]"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    window.scrollTo(0, 0);
+                  }}
                 >
                   <AiOutlineHeart size={30} className="mt-5 ml-3" />
                   <span class="absolute right-0 top-0 rounded-full bg-navy_blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
@@ -108,7 +123,10 @@ function MobileNav({ handleUserDropDown }) {
 
             <div className="flex w-full justify-center">
               {isAuthenticated ? (
-                <button className="px-3 flex gap-2 text-white bg-wine_primary rounded-md font-bold py-1">
+                <button
+                  className="px-3 flex gap-2 text-white bg-wine_primary rounded-md font-bold py-1"
+                  onClick={() => logoutHandler()}
+                >
                   Logout
                 </button>
               ) : (

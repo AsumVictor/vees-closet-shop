@@ -9,6 +9,7 @@ import ProductsPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import WishListPage from "./pages/WishListPage.jsx";
+import ProfilePage from "./pages/ProfilePage";
 
 export {
   LoginPage,
@@ -22,4 +23,5 @@ export {
   CartPage,
   ProductDetailPage,
   WishListPage,
+  ProfilePage
 };

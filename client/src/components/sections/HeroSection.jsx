@@ -16,7 +16,9 @@ function HeroSection() {
           ultimate destination for self-discovery and sartorial excellence.
         </p>
         <button className="mt-14 px-5 py-2 rounded-md bg-wine_primary text-white font-bold">
-          <Link to="/products">Shop now!</Link>
+          <Link to="/products"  onClick={()=>{
+        window.scrollTo(0,0)
+      }}>Shop now!</Link>
         </button>
       </div>
       <div className="hero-burb md:px-4 hidden lg:flex flex-col items-center im">

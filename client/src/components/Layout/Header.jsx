@@ -13,11 +13,14 @@ import MobileNav from "./MobileNav";
 import FAQPage from "../sections/FAQPage";
 import Footer from "../sections/Footer";
 import { useSelector } from "react-redux";
+import useLogout  from "../../hooks/useLogout";
 
 function Header() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.user);
   const [dropDown, setDropDown] = useState(false);
   const [userdropDown, setUserDropDown] = useState(false);
+  const {logoutHandler} = useLogout();
+
   return (
     <>
       {/* Desktop */}
@@ -59,7 +62,9 @@ function Header() {
           <div className="flex flex-row justify-center items-center gap-x-5">
             {/* Save items in browser */}
 
-            <Link to='/saved-to-later' className="flex">
+            <Link to="/saved-to-later" className="flex"  onClick={()=>{
+        window.scrollTo(0,0)
+      }}>
               <div className={`${styles.noramlFlex}`}>
                 <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                   <AiOutlineHeart size={30} color="#000" />
@@ -72,7 +77,9 @@ function Header() {
             </Link>
 
             {/* Save cart */}
-            <Link to='/cart' className={`${styles.noramlFlex}`}>
+            <Link to="/cart" className={`${styles.noramlFlex}`}  onClick={()=>{
+        window.scrollTo(0,0)
+      }}>
               <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                 <AiOutlineShoppingCart size={30} color="#000" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
@@ -96,9 +103,9 @@ function Header() {
                       className="h-[.8cm] w-[.8cm] border border-black rounded-full"
                     />
                     <span className="text-[14px] font-bold -mt-1">{`${user.email.slice(
-                    0,
-                    4
-                  )}...com`}</span>
+                      0,
+                      4
+                    )}...com`}</span>
                   </button>
                 ) : (
                   <Link
@@ -120,11 +127,18 @@ function Header() {
 
       {userdropDown && (
         <div className="w-[4cm] h-[2.5cm] bg-white shadow-2xl rounded-b-md self-end right-1 fixed top-[1.65cm] z-10 px-2 flex flex-col gap-3 py-3 md:right-3">
-          <Link className="w-full text-black font-semibold flex items-center gap-3 rounded-md text-[17px] px-2 hover:bg-wine_primary hover:text-white">
+          <Link
+            to="/profile"
+            className="w-full text-black font-semibold flex items-center gap-3 rounded-md text-[17px] px-2 hover:bg-wine_primary hover:text-white"
+            onClick={() => setUserDropDown(false)}
+          >
             <CgProfile />
             <span>Profile</span>
           </Link>
-          <button className="w-full text-black font-semibold flex items-center gap-3 rounded-md text-[17px] px-2 hover:bg-wine_primary hover:text-white">
+          <button
+            className="w-full text-black font-semibold flex items-center gap-3 rounded-md text-[17px] px-2 hover:bg-wine_primary hover:text-white"
+            onClick={() => logoutHandler()}
+          >
             <HiLogout />
             <span>Logout</span>
           </button>

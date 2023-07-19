@@ -11,23 +11,27 @@ import {
   Underconstruction,
   CartPage,
   ProductDetailPage,
-  WishListPage
+  WishListPage,
+  ProfilePage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store.js";
 import { loadUser } from "./redux/actions/user.js";
 import { useSelector } from "react-redux";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function App() {
-  const { loading } = useSelector((state) => state.user);
+  const { isAuthenticated, loading } = useSelector((state) => state.user);
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
 
   return (
     <>
-      {loading ? <h1>Loading</h1> : (
+      {loading ? (
+        <h1>Loading</h1>
+      ) : (
         <BrowserRouter>
           <Routes>
             <Route element={<Header />}>
@@ -39,6 +43,9 @@ export default function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/saved-to-later" element={<WishListPage />} />
               <Route path="*" element={<Underconstruction />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />

@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@material-tailwind/react": "^2.0.5",
+    "@mui/material": "^5.14.1",
+    "@mui/x-data-grid": "^6.10.0",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "country-state-city": "^3.1.4",
