@@ -1,8 +1,26 @@
 import React from "react";
 import Cart from "../components/cart/Cart";
 import CartSummary from "../components/cart/CartSummary";
+import {useSelector, useDispatch} from 'react-redux'
 
 function CartPage() {
+
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const removeFromCartHandler = (data) => {
+    dispatch(removeFromCart(data));
+  };
+
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.qty * item.discountPrice,
+    0
+  );
+
+  const quantityChangeHandler = (data) => {
+    dispatch(addTocart(data));
+  };
+
   return (
     <div
       className={`w-full py-10 px-2 md:px-5 lg:px-10 relative grid gap-3 800px:grid-cols-10`}

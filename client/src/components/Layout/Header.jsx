@@ -13,13 +13,15 @@ import MobileNav from "./MobileNav";
 import FAQPage from "../sections/FAQPage";
 import Footer from "../sections/Footer";
 import { useSelector } from "react-redux";
-import useLogout  from "../../hooks/useLogout";
+import useLogout from "../../hooks/useLogout";
 
 function Header() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.user);
   const [dropDown, setDropDown] = useState(false);
   const [userdropDown, setUserDropDown] = useState(false);
-  const {logoutHandler} = useLogout();
+  const { logoutHandler } = useLogout();
+  const { cart } = useSelector((state) => state.cart);
+
 
   return (
     <>
@@ -62,9 +64,13 @@ function Header() {
           <div className="flex flex-row justify-center items-center gap-x-5">
             {/* Save items in browser */}
 
-            <Link to="/saved-to-later" className="flex"  onClick={()=>{
-        window.scrollTo(0,0)
-      }}>
+            <Link
+              to="/saved-to-later"
+              className="flex"
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
+            >
               <div className={`${styles.noramlFlex}`}>
                 <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                   <AiOutlineHeart size={30} color="#000" />
@@ -77,14 +83,20 @@ function Header() {
             </Link>
 
             {/* Save cart */}
-            <Link to="/cart" className={`${styles.noramlFlex}`}  onClick={()=>{
-        window.scrollTo(0,0)
-      }}>
+            <Link
+              to="/cart"
+              className={`${styles.noramlFlex}`}
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
+            >
               <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                 <AiOutlineShoppingCart size={30} color="#000" />
-                <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  0
-                </span>
+                {cart.length > 0 && (
+                  <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                   {cart.length}
+                  </span>
+                )}
                 <span className="text-[14px] font-bold -mt-1">Cart</span>
               </div>
             </Link>

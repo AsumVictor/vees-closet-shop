@@ -17,10 +17,12 @@ function Cart() {
           className="w-full h-full object-scale-down"
         />
       </Link>
-      <Link to="/products/item-details" className=" col-span-7 py-1 800px:px-4"
-      onClick={()=>{
-        window.scrollTo(0,0)
-      }}
+      <Link
+        to="/products/item-details"
+        className=" col-span-7 py-1 800px:px-4"
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
       >
         <h2 className="800px:text-[18px]">
           MBJ Women's Solid Short Sleeve Boat Neck V
