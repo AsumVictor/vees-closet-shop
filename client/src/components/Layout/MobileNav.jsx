@@ -14,6 +14,8 @@ function MobileNav({ handleUserDropDown }) {
   const { logoutHandler } = useLogout();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
 
   return (
     <div
@@ -44,9 +46,11 @@ function MobileNav({ handleUserDropDown }) {
           >
             <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
               <AiOutlineShoppingCart size={30} color="#000" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                0
-              </span>
+              {cart.length > 0 && (
+                <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                  {cart.length}
+                </span>
+              )}
               <span className="text-[14px] font-bold -mt-1">Cart</span>
             </div>
           </Link>
@@ -99,9 +103,11 @@ function MobileNav({ handleUserDropDown }) {
                   }}
                 >
                   <AiOutlineHeart size={30} className="mt-5 ml-3" />
-                  <span class="absolute right-0 top-0 rounded-full bg-navy_blue w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                    0
-                  </span>
+                  {wishlist && wishlist.length !== 0 && (
+                    <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                      {wishlist.length}
+                    </span>
+                  )}
                 </Link>
               </div>
               <RxCross1

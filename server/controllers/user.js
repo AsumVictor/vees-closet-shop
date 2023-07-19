@@ -45,7 +45,7 @@ router.post("/create-user", async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
     const URLToken = encodeToken(activationToken);
-    const activationURL = `http://localhost:5173/activation/${URLToken}`;
+    const activationURL = `https://veescloset.onrender.com/activation/${URLToken}`;
     try {
       await sendMail({
         email: email,

@@ -15,8 +15,8 @@ if(productsData.length === 0){
     <div className={`${styles.section} pb-20 flex flex-col`}>
       <div className=" flex flex-row justify-center flex-wrap gap-x-5 800px:grid 800px:grid-cols-3 1300px:grid-cols-4 gap-5">
         {productsData &&
-          productsData.map(({ title, price, image }) => (
-            <ProductCard title={title} price={price} image={image} />
+          productsData.map((product) => (
+            <ProductCard product={product} />
           ))}
       </div>
     </div>

@@ -1,4 +1,6 @@
 // add to cart
+import {toast} from 'react-toastify'
+
 export const addTocart = (data) => async (dispatch, getState) => {
   dispatch({
     type: "addToCart",
@@ -16,5 +18,6 @@ export const removeFromCart = (data) => async (dispatch, getState) => {
     payload: data._id,
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cart));
+  toast.info('Product removed from cart')
   return data;
 };
