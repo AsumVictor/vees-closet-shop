@@ -10,9 +10,9 @@ import { useSelector } from "react-redux";
 function Login() {
   const { isAuthenticated } = useSelector((state) => state.user);
   const {
-    state: { message, pathname },
+    state
   } = useLocation();
-  const path = pathname ? pathname : "/";
+  const path = state?.pathname ? state.pathname : "/";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -57,9 +57,9 @@ function Login() {
             Customer login
           </h4>
           <p className="text-center">We're excited to welcome you</p>
-          {message && (
+          {state?.message && (
             <p className="text-center mt-3 text-red-600 font-semibold bg-red-100 py-1 rounded-md">
-              {message}
+              {state.message}
             </p>
           )}
           <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
