@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const user = require("./controllers/user");
+const payment = require("./controllers/payment");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 // import router
 app.use("/api/vees/user", user);
+app.use("/api/vees/payment", payment);
 
 app.use(ErrorHandler);
 module.exports = app;

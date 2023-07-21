@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   LoginPage,
@@ -13,6 +13,8 @@ import {
   ProductDetailPage,
   WishListPage,
   ProfilePage,
+  CheckoutPage,
+  PaymentPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +28,7 @@ export default function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
-console.log(loading)
+  console.log(isAuthenticated);
 
   return (
     <>
@@ -46,6 +48,8 @@ console.log(loading)
               <Route path="*" element={<Underconstruction />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/payment" element={<PaymentPage />} />
               </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />
