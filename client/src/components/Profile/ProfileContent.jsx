@@ -11,11 +11,14 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { MdTrackChanges } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import {
+  deleteUserAddress,
   updatUserAddress,
   updateUserInformation,
 } from "../../redux/actions/user";
 import { toast } from "react-toastify";
 import { Country, State } from "country-state-city";
+import axios from "axios";
+import server from "../../../server";
 
 function ProfileContent({ active }) {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -146,6 +149,13 @@ function ProfileContent({ active }) {
       {active === 5 && (
         <div>
           <TrackOrder />
+        </div>
+      )}
+
+      {/* Change Password */}
+      {active === 6 && (
+        <div>
+          <ChangePassword />
         </div>
       )}
 
@@ -424,6 +434,83 @@ const TrackOrder = () => {
   );
 };
 
+const ChangePassword = () => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const passwordChangeHandler = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .put(
+        `${server}/user/update-user-password`,
+        { oldPassword, newPassword, confirmPassword },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.success);
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+  return (
+    <div className="w-full px-5">
+      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+        Change Password
+      </h1>
+      <div className="w-full">
+        <form
+          aria-required
+          onSubmit={passwordChangeHandler}
+          className="flex flex-col items-center"
+        >
+          <div className=" w-[100%] 800px:w-[50%] mt-5">
+            <label className="block pb-2">Enter your old password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Enter your new password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Enter your confirm password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <input
+              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
+              required
+              value="Update"
+              type="submit"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const Address = () => {
   const { user } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
@@ -651,7 +738,11 @@ const Address = () => {
                 </h6>
               </div>
               <div className="min-w-[10%] flex items-center justify-between pl-8">
-                <AiOutlineDelete size={25} className="cursor-pointer" />
+                <AiOutlineDelete
+                  size={25}
+                  className="cursor-pointer"
+                  onClick={() => handleDelete(item)}
+                />
               </div>
             </div>
           ))}
