@@ -13,12 +13,14 @@ const createActivationToken = (user) => {
     expiresIn: "5m",
   });
 };
+
 const encodeToken = (token) => {
   const placeholder = "VerifyVees";
   const encodedToken = token.replace(/\./g, placeholder);
 
   return encodedToken;
 };
+
 const decodeToken = (token) => {
   const placeholder = "VerifyVees";
   const decodedToken = token.replace(new RegExp(placeholder, "g"), ".");
@@ -159,6 +161,84 @@ router.get(
       res.status(201).json({
         success: true,
         message: "Log out successful!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// update user addresses
+router.put(
+  "/update-user-addresses",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      const sameTypeAddress = user.addresses.find(
+        (address) => address.addressType === req.body.addressType
+      );
+      if (sameTypeAddress) {
+        return next(
+          new ErrorHandler(`${req.body.addressType} address already exists`)
+        );
+      }
+
+      const existsAddress = user.addresses.find(
+        (address) => address._id === req.body._id
+      );
+
+      if (existsAddress) {
+        Object.assign(existsAddress, req.body);
+      } else {
+        // add the new address to the array
+        user.addresses.push(req.body);
+      }
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// update user info
+router.put(
+  "/update-user-info",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const { email, password, phoneNumber, name } = req.body;
+
+      const user = await User.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(new ErrorHandler("User not found", 400));
+      }
+
+      const isPasswordValid = await user.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(
+          new ErrorHandler("Please provide the correct information", 400)
+        );
+      }
+
+      user.name = name;
+      user.email = email;
+      user.phoneNumber = phoneNumber;
+
+      await user.save();
+
+      res.status(201).json({
+        success: true,
+        user,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

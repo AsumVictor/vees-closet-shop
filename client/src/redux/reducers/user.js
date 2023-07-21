@@ -22,4 +22,32 @@ export const userReducers = createReducer(initialState, {
   ClearError: (state) => {
     state.error = null;
   },
+
+  // update user information
+  updateUserInfoRequest: (state) => {
+    state.loading = true;
+  },
+  updateUserInfoSuccess: (state, action) => {
+    state.loading = false;
+    state.user = action.payload;
+  },
+  updateUserInfoFailed: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+
+  // update user address
+  updateUserAddressRequest: (state) => {
+    state.addressloading = true;
+  },
+  updateUserAddressSuccess: (state, action) => {
+    state.addressloading = false;
+    state.successMessage = action.payload.successMessage;
+    state.user = action.payload.user;
+  },
+  updateUserAddressFailed: (state, action) => {
+    state.addressloading = false;
+    state.error = action.payload;
+  },
+  
 });
