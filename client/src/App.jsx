@@ -26,6 +26,7 @@ export default function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
+console.log(loading)
 
   return (
     <>
