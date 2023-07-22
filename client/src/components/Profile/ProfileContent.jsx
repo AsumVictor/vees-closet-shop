@@ -499,7 +499,7 @@ const ChangePassword = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <input
-              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
+              className={`w-[95%] h-[40px] border border-wine_primary text-center text-wine_primary rounded-[3px] mt-8 cursor-pointer`}
               required
               value="Update"
               type="submit"
