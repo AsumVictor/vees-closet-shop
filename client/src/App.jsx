@@ -14,7 +14,6 @@ import {
   WishListPage,
   ProfilePage,
   CheckoutPage,
-  PaymentPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -49,7 +48,6 @@ export default function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/payment" element={<PaymentPage />} />
               </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />
