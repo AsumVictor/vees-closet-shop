@@ -8,9 +8,10 @@ import Underconstruction from "./components/indication/Underconstruction";
 import ProductsPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import WishListPage from "./pages/WishListPage.jsx";
+import WishListPage from "./pages/WishListPage";
 import ProfilePage from "./pages/ProfilePage";
-
+import CheckoutPage from './pages/CheckoutPage'
+import PaymentPage from "./pages/PaymentPage";
 export {
   LoginPage,
   SignupPage,
@@ -23,5 +24,7 @@ export {
   CartPage,
   ProductDetailPage,
   WishListPage,
-  ProfilePage
+  ProfilePage,
+  CheckoutPage,
+  PaymentPage
 };
