@@ -93,16 +93,16 @@ function MobileNav({ handleUserDropDown }) {
         <div className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}>
           <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
             <div className="w-full justify-between flex pr-3">
-              <div>
+              <div className="mt-5 ml-5">
                 <Link
                   to="/saved-to-later"
-                  className="relative mr-[15px]"
+                  className=" relative"
                   onClick={() => {
                     setOpen(false);
                     window.scrollTo(0, 0);
                   }}
                 >
-                  <AiOutlineHeart size={30} className="mt-5 ml-3" />
+                  <AiOutlineHeart size={30} className="" />
                   {wishlist && wishlist.length !== 0 && (
                     <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                       {wishlist.length}

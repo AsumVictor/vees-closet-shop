@@ -120,23 +120,7 @@ function Wishlist({ product }) {
           </button>
         )}
       </div>
-      {click ? (
-        <AiFillHeart
-          size={30}
-          className="absolute cursor-pointer text-wine_primary"
-          onClick={() => removeFromWishlistHandler(product)}
-          color={click ? "red" : "#333"}
-          title="Remove from wishlist"
-        />
-      ) : (
-        <AiOutlineHeart
-          size={30}
-          className="absolute cursor-pointer text-wine_primary"
-          onClick={() => addToWishlistHandler(product)}
-          color={click ? "red" : "#333"}
-          title="Add to wishlist"
-        />
-      )}
+     
       <hr className=" col-span-full mt-3 mb-3" />
     </div>
   );
