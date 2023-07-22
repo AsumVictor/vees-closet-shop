@@ -227,8 +227,7 @@ export const productData = [
   {
     _id: 1,
     title: "MBJ Women's Solid Short Sleeve Boat Neck V ",
-     images: [
-      
+    images: [
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -247,8 +246,7 @@ export const productData = [
   {
     _id: 2,
     title: "Rain Jacket Women Windbreaker Striped Climbing Raincoats",
-     images: [
-      
+    images: [
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
@@ -268,14 +266,13 @@ export const productData = [
     _id: 3,
     title:
       "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
-      
     ],
-      price: 29.95,
+    price: 29.95,
     description:
       "100% POLYURETHANE(shell) 100% POLYESTER(lining) 75% POLYESTER 25% COTTON (SWEATER), Faux leather material for style and comfort / 2 pockets of front, 2-For-One Hooded denim style faux leather jacket, Button detail on waist / Detail stitching at sides, HAND WASH ONLY / DO NOT BLEACH / LINE DRY / DO NOT IRON",
     category: "women's clothing",
@@ -288,7 +285,7 @@ export const productData = [
   {
     _id: 4,
     title: "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
@@ -307,7 +304,7 @@ export const productData = [
   {
     _id: 5,
     title: "Mens Casual Premium Slim Fit T-Shirts ",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -327,7 +324,7 @@ export const productData = [
   {
     _id: 6,
     title: "Mens Cotton Jacket",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -346,7 +343,7 @@ export const productData = [
   {
     _id: 7,
     title: "Opna Women's Short Sleeve Moisture",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -365,7 +362,7 @@ export const productData = [
   {
     _id: 8,
     title: "DANVOUY Womens T Shirt Casual Cotton Short",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -384,7 +381,7 @@ export const productData = [
   {
     _id: 9,
     title: "MBJ Women's Solid Short Sleeve Boat Neck V ",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -403,7 +400,7 @@ export const productData = [
   {
     _id: 10,
     title: "Rain Jacket Women Windbreaker Striped Climbing Raincoats",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -423,13 +420,13 @@ export const productData = [
     _id: 11,
     title:
       "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
       "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
     ],
-      price: 29.95,
+    price: 29.95,
     description:
       "100% POLYURETHANE(shell) 100% POLYESTER(lining) 75% POLYESTER 25% COTTON (SWEATER), Faux leather material for style and comfort / 2 pockets of front, 2-For-One Hooded denim style faux leather jacket, Button detail on waist / Detail stitching at sides, HAND WASH ONLY / DO NOT BLEACH / LINE DRY / DO NOT IRON",
     category: "women's clothing",
@@ -442,7 +439,7 @@ export const productData = [
   {
     _id: 12,
     title: "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -461,7 +458,7 @@ export const productData = [
   {
     _id: 13,
     title: "Mens Casual Premium Slim Fit T-Shirts ",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -481,7 +478,7 @@ export const productData = [
   {
     _id: 14,
     title: "Mens Cotton Jacket",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -500,7 +497,7 @@ export const productData = [
   {
     _id: 15,
     title: "Opna Women's Short Sleeve Moisture",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -519,7 +516,7 @@ export const productData = [
   {
     _id: 16,
     title: "DANVOUY Womens T Shirt Casual Cotton Short",
-     images: [
+    images: [
       "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
       "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
       "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
@@ -599,5 +596,72 @@ export const footerSupportLinks = [
   },
   {
     name: "Live chat",
+  },
+];
+
+export const GhanaRegions = [
+  {
+    region: "Upper East",
+    cities: ["Bolgatanga", "Bawku", "Navrongo", "Zebilla", "Paga", "Sandema"],
+  },
+  {
+    region: "Northern",
+    cities: ["Tamale", "Yendi", "Bimbilla", "Walewale", "Gambaga"],
+  },
+  {
+    region: "Upper West",
+    cities: ["Wa", "Tumu", "Nandom", "Lawra", "Jirapa"],
+  },
+  {
+    region: "North East",
+    cities: ["Nalerigu", "Walewale", "Gambaga", "Bunkpurugu"],
+  },
+  {
+    region: "Savannah",
+    cities: ["Damongo", "Bole", "Salaga", "Sawla"],
+  },
+  {
+    region: "Bono East",
+    cities: ["Techiman", "Nkoranza", "Kintampo", "Atebubu"],
+  },
+  {
+    region: "Ahafo",
+    cities: ["Goaso", "Bechem", "Duayaw Nkwanta"],
+  },
+  {
+    region: "Bono",
+    cities: ["Sunyani", "Dormaa Ahenkro", "Berekum", "Nsoatre"],
+  },
+  {
+    region: "Oti",
+    cities: ["Dambai", "Jasikan", "Kadjebi", "Nkwanta"],
+  },
+  {
+    region: "Volta",
+    cities: ["Ho", "Keta", "Hohoe", "Aflao", "Anloga"],
+  },
+  {
+    region: "Greater Accra",
+    cities: ["Accra", "Tema", "Madina", "Ashaiman", "Teshie"],
+  },
+  {
+    region: "Eastern",
+    cities: ["Koforidua", "Akropong", "Nkawkaw", "Akosombo", "Aburi"],
+  },
+  {
+    region: "Western North",
+    cities: ["Sefwi Wiawso", "Enchi", "Bibiani"],
+  },
+  {
+    region: "Western",
+    cities: ["Sekondi-Takoradi", "Tarkwa", "Axim", "Prestea"],
+  },
+  {
+    region: "Central",
+    cities: ["Cape Coast", "Kasoa", "Elmina", "Winneba", "Mankessim"],
+  },
+  {
+    region: "Ashanti",
+    cities: ["Kumasi", "Obuasi", "Asokore Mampong", "Ejisu", "Konongo"],
   },
 ];
