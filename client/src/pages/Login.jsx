@@ -9,9 +9,7 @@ import { useSelector } from "react-redux";
 
 function Login() {
   const { isAuthenticated } = useSelector((state) => state.user);
-  const {
-    state
-  } = useLocation();
+  const { state } = useLocation();
   const path = state?.pathname ? state.pathname : "/";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -28,13 +26,18 @@ function Login() {
     };
 
     axios
-      .post(`${server}/user/auth0`, userIformation, { withCredentials: true })
+      .post(
+        `${server}/user/auth0`,
+        userIformation,
+        { credentials: "include" },
+        { withCredentials: true }
+      )
       .then((res) => {
         toast.success("Success");
         setEmail("");
         setPassword("");
         navigate(path, { replace: true });
-        window.location.reload(true); 
+        window.location.reload(true);
       })
       .catch((err) => {
         setLoading(false);
