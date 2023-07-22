@@ -29,7 +29,6 @@ function Login() {
       .post(
         `${server}/user/auth0`,
         userIformation,
-        { credentials: "include" },
         { withCredentials: true }
       )
       .then((res) => {
