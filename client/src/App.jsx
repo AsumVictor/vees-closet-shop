@@ -14,7 +14,8 @@ import {
   WishListPage,
   ProfilePage,
   CheckoutPage,
-} from "./Routes.js";
+} from "./Routes";
+import { ShopLoginPage } from './ShopRoutes.js'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store.js";
@@ -27,7 +28,6 @@ export default function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
-  console.log(isAuthenticated);
 
   return (
     <>
@@ -52,6 +52,7 @@ export default function App() {
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/shop" element={<ShopLoginPage />} />
           </Routes>
 
           <ToastContainer
