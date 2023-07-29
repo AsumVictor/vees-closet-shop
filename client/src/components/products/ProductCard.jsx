@@ -15,15 +15,14 @@ import {
 } from "../../redux/actions/wishlist";
 
 function ProductCard({ product }) {
+  const { _id, name, images, priceWithDiscount, originalPrice } = product;
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
-  const { _id, title, images, price } = product;
   const isItemExists = cart && cart.find((i) => i._id === _id);
   const [value, setValue] = useState(isItemExists ? isItemExists.qty : 0);
   const dispatch = useDispatch();
-  const productUrl = title.replace(/\s+/g, "-");
-
+  const productUrl = name.replace(/\s+/g, "-");
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === product._id)) {
       setClick(true);
@@ -108,19 +107,25 @@ function ProductCard({ product }) {
           window.scrollTo(0, 0);
         }}
       >
-        <div className="h-[4.5cm] w-full">
+        <div className="h-[4.5cm] w-full bg-red-400">
           <img
-            src={images[0]}
-            alt={title}
-            className="w-full h-full object-scale-down"
+            src={images[0].url}
+            alt={name}
+            className="w-full h-full"
           />
         </div>
         <h4 className={`font-semibold pr-3 h-[1.4cm] overflow-hidden`}>
-          {title}
+          {name}
         </h4>
-        <h4 className="font-bold text-[17px] text-wine_primary mt-2">
-          {`GH₵ ${price}`}
+        <div className="w-full flex flex-row gap-3">
+
+        <h4 className="font-bold text-[17px] text-wine_primary">
+          {`GH₵ ${priceWithDiscount.toFixed(2)}`}
         </h4>
+        <h4 className="font-bold text-[12px]">
+          <del>{`GH₵ ${originalPrice.toFixed(2)}`}</del>
+        </h4>
+        </div>
       </Link>
       <div className="w-full">
         {isItemExists ? (

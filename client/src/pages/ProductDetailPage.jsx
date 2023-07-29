@@ -121,13 +121,13 @@ function ProductDetailPage() {
           <MobileImageView images={product?.images} />
         </div>
         <div className=" w-full py-1 flex flex-col mt-10 800px:mt-0">
-          <h2 className="font-bold text-2xl">{product?.title}</h2>
+          <h2 className="font-bold text-2xl">{product?.name}</h2>
           <p className="mt-10 font-semibold text-wine_dark_deep">
             {`${product?.description.slice(0, 520)}...`}
           </p>
           <div className="w-full mt-6 flex flex-row justify-between">
             <p className="text-2xl font-bold text-wine_primary">
-              {`GH₵ ${product?.price}`}
+              {`GH₵ ${product?.priceWithDiscount.toFixed(2)}`}
             </p>
             <p>
             {click ? (

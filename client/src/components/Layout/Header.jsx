@@ -23,7 +23,6 @@ function Header() {
   const { logoutHandler } = useLogout();
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
-console.log(isSeller, seller)
   return (
     <>
       {/* Desktop */}

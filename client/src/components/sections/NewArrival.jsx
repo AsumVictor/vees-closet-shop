@@ -3,13 +3,26 @@ import styles from "../../styles/styles";
 import ProductCard from "../products/ProductCard";
 import { productData } from "../../static/data";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NewArrival() {
   const [data, setData] = useState(null);
+  const { allProducts, isLoading } = useSelector((state) => state.product);
+
   useEffect(() => {
-    let sliceData = productData.slice(0, 4);
+    let sliceData = allProducts.slice(0, 4);
     setData(sliceData);
   }, []);
+
+if(isLoading){
+  return (
+    <div className={`${styles.section} pb-20 flex flex-col`}>
+      <h2 className={`${styles.heading}`}>New arrival</h2>
+   <h2>Loading...</h2>
+    </div>
+  );
+
+}
 
   return (
     <div className={`${styles.section} pb-20 flex flex-col`}>

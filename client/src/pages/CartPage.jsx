@@ -14,7 +14,7 @@ function CartPage() {
   };
 
   const totalAmount = cart.reduce((accumulator, item) => {
-    return accumulator + item.price * item.qty;
+    return accumulator + item.priceWithDiscount * item.qty;
   }, 0);
 
   const quantityChangeHandler = (data) => {

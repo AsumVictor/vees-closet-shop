@@ -3,10 +3,10 @@ import { HiMinus, HiPlus, HiTrash } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 function Cart({ data, quantityChangeHandler, removeFromCartHandler }) {
-  const productUrl = data.title.replace(/\s+/g, "-");
+  const productUrl = data.name.replace(/\s+/g, "-");
 
   const [value, setValue] = useState(data.qty);
-  const totalPrice = data.price * value;
+  const totalPrice = data.priceWithDiscount * value;
 
   const increment = (data) => {
     setValue(prev =>prev + 1);
@@ -29,9 +29,9 @@ function Cart({ data, quantityChangeHandler, removeFromCartHandler }) {
         className=" col-span-3 h-[3.5cm] overflow-hidden bg-white rounded-2xl"
       >
         <img
-          src={data.images[0]}
-          alt={data.title}
-          className="w-full h-full object-scale-down"
+          src={data.images[0].url}
+          alt={data.name}
+          className="w-full h-full"
         />
       </Link>
       <Link
@@ -41,9 +41,9 @@ function Cart({ data, quantityChangeHandler, removeFromCartHandler }) {
           window.scrollTo(0, 0);
         }}
       >
-        <h2 className="800px:text-[18px]">{data.title}</h2>
+        <h2 className="800px:text-[18px]">{data.name}</h2>
         <p className="mt-5 flex flex-row gap-2">
-          <span className="text-wine_primary font-bold  800px:text-xl ">{`GH₵ ${data.price}`}</span>
+          <span className="text-wine_primary font-bold  800px:text-xl ">{`GH₵ ${data.priceWithDiscount.toFixed(2)}`}</span>
           <span className=" text-wine_dark_deep font-semibold">{`* ${value}`}</span>{" "}
         </p>
         <p className="font-bold text-[16px] mt-2 flex flex-row gap-2">

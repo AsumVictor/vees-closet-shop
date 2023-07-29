@@ -21,7 +21,7 @@ const Shipping = ({ props }) => {
   const [shippingAddress, setShippingAddress, setActiveTap] = props;
 
   const subTotalPrice = cart.reduce((accumulator, item) => {
-    return accumulator + item.price * item.qty;
+    return accumulator + item.priceWithDiscount * item.qty;
   }, 0);
 
   // this is shipping cost variable
@@ -264,7 +264,7 @@ const CartData = ({
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">GH₵ {subTotalPrice}</h5>
+        <h5 className="text-[18px] font-[600]">GH₵ {subTotalPrice.toFixed(2)}</h5>
       </div>
       <br />
       <div className="flex justify-between">
