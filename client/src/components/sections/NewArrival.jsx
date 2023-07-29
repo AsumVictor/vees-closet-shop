@@ -10,19 +10,20 @@ function NewArrival() {
   const { allProducts, isLoading } = useSelector((state) => state.product);
 
   useEffect(() => {
-    let sliceData = allProducts.slice(0, 4);
-    setData(sliceData);
+    if (allProducts) {
+      let sliceData = allProducts.slice(0, 4);
+      setData(sliceData);
+    }
   }, []);
 
-if(isLoading){
-  return (
-    <div className={`${styles.section} pb-20 flex flex-col`}>
-      <h2 className={`${styles.heading}`}>New arrival</h2>
-   <h2>Loading...</h2>
-    </div>
-  );
-
-}
+  if (isLoading) {
+    return (
+      <div className={`${styles.section} pb-20 flex flex-col`}>
+        <h2 className={`${styles.heading}`}>New arrival</h2>
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.section} pb-20 flex flex-col`}>
