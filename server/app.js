@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
@@ -27,11 +27,13 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 const user = require("./controllers/user");
 const payment = require("./controllers/payment");
 const shop = require("./controllers/shop");
+const product = require("./controllers/products");
 
 // import router
 app.use("/api/vees/user", user);
 app.use("/api/vees/payment", payment);
 app.use("/api/vees/shop", shop);
+app.use("/api/vees/product", product);
 
 app.use(ErrorHandler);
 module.exports = app;

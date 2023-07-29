@@ -8,7 +8,7 @@ import { addTocart, removeFromCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 
 function Wishlist({ product }) {
-  const productUrl = product.title.replace(/\s+/g, "-");
+  const productUrl = product.name.replace(/\s+/g, "-");
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
   const isItemExists = cart && cart.find((i) => i._id === product._id);
@@ -63,9 +63,9 @@ function Wishlist({ product }) {
         className=" col-span-3 h-[3.5cm] overflow-hidden bg-white rounded-2xl"
       >
         <img
-          src={product?.images[0]}
-          alt={product?.title}
-          className="w-full h-full object-scale-down"
+          src={product?.images[0].url}
+          alt={product?.name}
+          className="w-full h-full"
         />
       </Link>
       <Link
@@ -75,9 +75,9 @@ function Wishlist({ product }) {
           window.scrollTo(0, 0);
         }}
       >
-        <h2 className="800px:text-[18px]">{product.title}</h2>
+        <h2 className="800px:text-[18px]">{product.name}</h2>
         <p className="font-bold 800px:text-xl mt-5 flex flex-row gap-2">
-          <span className="text-wine_primary ">{`GH₵ ${product.price}`}</span>
+          <span className="text-wine_primary ">{`GH₵ ${product.priceWithDiscount.toFixed(2)}`}</span>
         </p>
       </Link>
       <div className="col-span-full mt-7 flex flex-row justify-between">

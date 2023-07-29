@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, InputLabel } from "../components/Inputs";
 import { Option, Select, Textarea } from "@material-tailwind/react";
 import { categoriesData } from "../static/data";
 import { HiTrash } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { createProduct } from "../redux/actions/product";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/loader/loader";
 
 function ShopAddProductPage() {
   const [images, setImages] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { error, success, isLoading } = useSelector((state) => state.product);
   const [productInfo, setProductInfo] = useState({
     name: "",
     description: "",
@@ -20,7 +21,6 @@ function ShopAddProductPage() {
     originalPrice: "",
     priceWithDiscount: "",
     stock: "",
-    images: images,
   });
 
   const handleChange = (e) => {
@@ -65,23 +65,43 @@ function ShopAddProductPage() {
     }).every(
       (value) => value !== undefined && value !== null && value.trim() !== ""
     );
-console.log(canSubmit, productInfo)
-    if (canSubmit) {
+
+    if (!canSubmit) {
       toast.error("Please filled all required fields");
       return null;
     }
 
-    if (canSubmit && productInfo.images < 1) {
+    if (canSubmit && images < 1) {
       toast.error("Please select at least one image");
       return null;
     }
 
-    if (productInfo.images > 4) {
+    if (images > 4) {
       toast.error("Please select at least up to 4 images");
       return null;
     }
-    dispatch(createProduct(productInfo));
+    dispatch(createProduct({ ...productInfo, images }));
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success("Product created successfully!");
+      setProductInfo({
+        name: "",
+        description: "",
+        category: "",
+        gender: "",
+        tags: "",
+        originalPrice: "",
+        priceWithDiscount: "",
+        stock: "",
+      });
+      setImages([]);
+    }
+  }, [dispatch, error, success]);
 
   return (
     <div className="w-full py-2 px-2 800px:px-10 pb-20">
@@ -98,6 +118,7 @@ console.log(canSubmit, productInfo)
             handleChange={handleChange}
             type={"text"}
             name={"name"}
+            value={productInfo.name}
           />
 
           <Select label="Category *" color="brown" value={productInfo.category}>
@@ -120,8 +141,10 @@ console.log(canSubmit, productInfo)
             <Textarea
               label="Description *"
               className=" col-span-2"
+              name="description"
               color="brown"
               onChange={handleChange}
+              value={productInfo.description}
             />
           </div>
           <Select label="Gender *" color="brown" value={productInfo.gender}>
@@ -167,12 +190,14 @@ console.log(canSubmit, productInfo)
             handleChange={handleChange}
             type={"number"}
             name={"originalPrice"}
+            value={productInfo.originalPrice}
           />
           <InputLabel
             label={"Price with discount ( GHC ) *"}
             handleChange={handleChange}
             type={"number"}
             name={"priceWithDiscount"}
+            value={productInfo.priceWithDiscount}
           />
 
           <InputLabel
@@ -180,6 +205,7 @@ console.log(canSubmit, productInfo)
             handleChange={handleChange}
             type={"number"}
             name={"stock"}
+            value={productInfo.stock}
           />
 
           <div className="flex items-center justify-center w-full col-span-full">
@@ -246,12 +272,20 @@ console.log(canSubmit, productInfo)
           </div>
 
           <div className="col-span-full flex justify-center pb-20 mt-10">
-            <button
-              type="submit"
-              className="px-5 w-10/12 md:w-8/12 lg:w-4/12 py-2 cursor-pointer rounded-md font-bold bg-wine_primary text-white"
+          <Button
+              classname={
+                "mt-6 bg-wine_primary w-full flex justify-center items-center"
+              }
+              handleClick={handleSubmit}
             >
-              Add product
-            </button>
+              {isLoading ? (
+                <Loader
+                  extendclass={`h-[.7cm] w-[.7cm] border-[5px] border-white`}
+                />
+              ) : (
+                "Login"
+              )}
+            </Button>
           </div>
         </form>
       </div>

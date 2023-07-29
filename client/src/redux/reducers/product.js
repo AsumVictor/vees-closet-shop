@@ -1,16 +1,21 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
+  error: null,
+  success: false,
 };
 
 export const productReducer = createReducer(initialState, {
   productCreateRequest: (state) => {
     state.isLoading = true;
+    state.error = null;
+    state.success = false;
   },
   productCreateSuccess: (state, action) => {
     state.isLoading = false;
     state.product = action.payload;
+    state.error = null;
     state.success = true;
   },
   productCreateFail: (state, action) => {
@@ -57,7 +62,7 @@ export const productReducer = createReducer(initialState, {
     state.isLoading = false;
     state.error = action.payload;
   },
-  
+
   clearErrors: (state) => {
     state.error = null;
   },

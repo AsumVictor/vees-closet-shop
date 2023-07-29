@@ -24,10 +24,12 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./ProtectedRoute";
 import ShopProtected from "./shopProtectedRoutes";
 import Layout from "./ShopPages/layout/layout";
+import { getAllProducts } from "./redux/actions/product";
 export default function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadShop());
+    Store.dispatch(getAllProducts());
   }, []);
 
   return (

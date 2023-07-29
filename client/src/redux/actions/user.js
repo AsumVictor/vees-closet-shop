@@ -139,8 +139,9 @@ export const loadShop = () => async (dispatch) => {
       });
     }
   } catch (error) {
-    let errorMessage = error.response? error.response.data.message : 
-    error.message
+    let errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
     dispatch({
       type: "LoadSellerFail",
       payload: errorMessage,

@@ -8,7 +8,7 @@ function DesktopImageView({images}) {
       <div className="hidden 800px:flex flex-col">
         <div className="overflow-hidden w-[370px] rounded-2xl h-[400px] self-center">
           <img
-            src={images[activeImage]}
+            src={images[activeImage].url}
             alt=""
             className="w-full h-full"
           />
@@ -23,7 +23,7 @@ function DesktopImageView({images}) {
                 onClick={() => setactiveImage(index)}
               >
                 <img
-                  src={image}
+                  src={image.url}
                   alt={`image-${index}`}
                   className="h-full w-full"
                 />

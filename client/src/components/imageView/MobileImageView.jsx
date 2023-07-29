@@ -37,7 +37,7 @@ function MobileImageView({ images }) {
     <div className="flex flex-col w-full 800px:hidden">
       <div className="overflow-hidden w-full 550px:w-[400px] rounded-2xl h-[400px] self-center relative flex justify-center items-center">
         <img
-          src={images[activeImage]}
+          src={images[activeImage].url}
           alt=""
           className="w-full h-full absolute top-0 left-0"
         />
@@ -66,7 +66,7 @@ function MobileImageView({ images }) {
               onClick={() => setactiveImage(index)}
             >
               <img
-                src={image}
+                src={image.url}
                 alt={`image-${index}`}
                 className="h-full w-full object-scale-down"
               />
