@@ -5,12 +5,13 @@ import { categoriesData } from "../static/data";
 import { HiTrash } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { createProduct } from "../redux/actions/product";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 function ShopAddProductPage() {
   const [images, setImages] = useState([]);
   const dispatch = useDispatch()
+  const {error} = useSelector(state=>state.product);
   const [productInfo, setProductInfo] = useState({
     name: "",
     description: "",
@@ -20,7 +21,6 @@ function ShopAddProductPage() {
     originalPrice: "",
     priceWithDiscount: "",
     stock: "",
-    images: images,
   });
 
   const handleChange = (e) => {
@@ -65,23 +65,25 @@ function ShopAddProductPage() {
     }).every(
       (value) => value !== undefined && value !== null && value.trim() !== ""
     );
-console.log(canSubmit, productInfo)
-    if (canSubmit) {
+
+    if (!canSubmit) {
       toast.error("Please filled all required fields");
       return null;
     }
 
-    if (canSubmit && productInfo.images < 1) {
+    if (canSubmit && images < 1) {
       toast.error("Please select at least one image");
       return null;
     }
 
-    if (productInfo.images > 4) {
+    if (images > 4) {
       toast.error("Please select at least up to 4 images");
       return null;
     }
-    dispatch(createProduct(productInfo));
+    dispatch(createProduct({...productInfo, images}));
   };
+
+  console.log(error)
 
   return (
     <div className="w-full py-2 px-2 800px:px-10 pb-20">
@@ -120,6 +122,7 @@ console.log(canSubmit, productInfo)
             <Textarea
               label="Description *"
               className=" col-span-2"
+              name="description"
               color="brown"
               onChange={handleChange}
             />
