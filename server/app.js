@@ -4,14 +4,12 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const user = require("./controllers/user");
-const payment = require("./controllers/payment");
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://veescloset.onrender.com",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -25,9 +23,15 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
+// import controllers
+const user = require("./controllers/user");
+const payment = require("./controllers/payment");
+const shop = require("./controllers/shop");
+
 // import router
 app.use("/api/vees/user", user);
 app.use("/api/vees/payment", payment);
+app.use("/api/vees/shop", shop);
 
 app.use(ErrorHandler);
 module.exports = app;

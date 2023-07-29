@@ -1,17 +1,17 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 
-const ProtectedRoute = () => {
+const ShopRoutes = () => {
   const location = useLocation();
-  const { loading, isAuthenticated } = useSelector((state) => state.user);
-  if (!loading) {
-    if (!isAuthenticated) {
+  const { isSeller, seller, isLoading } = useSelector((state) => state.shop);
+  if (!isLoading) {
+    if (!isSeller || !seller) {
       return (
         <Navigate
-          to="/login"
+          to="/shop/login"
           replace
           state={{
-            message: "You must login first",
+            message: "Login in to continue.",
             pathname: location.pathname,
           }}
         />
@@ -22,4 +22,4 @@ const ProtectedRoute = () => {
   }
 };
 
-export default ProtectedRoute;
+export default ShopRoutes;

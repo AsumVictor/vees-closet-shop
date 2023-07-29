@@ -1,0 +1,89 @@
+:root {
+  --dashboardWidth: 5.5cm;
+  --minDashboardWidth: ;
+}
+
+.sidebar .text {
+  display: none;
+}
+
+.sideToolTop {
+  background-color: #01051b;
+  color: white;
+  padding: 3px 10px 3px 10px;
+  border-radius: 4px;
+  transition: 0.001s;
+}
+
+.sidebar {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  scrollbar-width: thin;
+  width: 1.5cm;
+  font-size: 24px;
+  padding-top: 1.3cm;
+}
+
+.dashContent {
+  padding-left: 1.5cm;
+}
+
+.sidebar.open .text {
+  width: var(--dashboardWidth);
+  display: block;
+}
+
+.sidebar.open {
+  width: var(--dashboardWidth);
+}
+
+.dashContent.open {
+  padding-left: var(--dashboardWidth);
+}
+
+@media screen and (min-width: 800px) {
+  .sidebar {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    scrollbar-width: thin;
+    width: 2cm;
+    font-size: 24px;
+  }
+  .dashContent {
+    padding-left: 2cm;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .dash-sidebar {
+    width: var(--dashboardWidth);
+  }
+  .sidebar {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    scrollbar-width: thin;
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .sidebar .text {
+    display: block;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    width: 0.1cm;
+  }
+
+  .sideToolTop {
+    display: none;
+  }
+
+  .toggleSide {
+    display: none;
+    visibility: hidden;
+  }
+
+  .dashContent {
+    padding-left: var(--dashboardWidth);
+  }
+}

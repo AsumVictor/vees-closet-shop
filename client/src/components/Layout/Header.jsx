@@ -17,16 +17,28 @@ import useLogout from "../../hooks/useLogout";
 
 function Header() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.user);
+  const { isSeller, seller } = useSelector((state) => state.shop);
   const [dropDown, setDropDown] = useState(false);
   const [userdropDown, setUserDropDown] = useState(false);
   const { logoutHandler } = useLogout();
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
-
-
+console.log(isSeller, seller)
   return (
     <>
       {/* Desktop */}
+
+      {isSeller && (
+        <div className="w-full py-1 sticky top-0 bg-wine_primary flex flex-row justify-end px-10">
+          <Link
+            to="shop"
+            className="py-2 px-6 font-semibold text-wine_primary bg-white rounded-md"
+          >
+            My dashboard
+          </Link>
+        </div>
+      )}
+
       <div
         className={`shadow-sm sticky top-0 z-50 null
          transition hidden 800px:flex items-center justify-between w-full bg-white h-[70px] `}
@@ -74,9 +86,11 @@ function Header() {
               <div className={`${styles.noramlFlex}`}>
                 <div className="relative cursor-pointer mr-[15px] flex flex-col items-center justify-center">
                   <AiOutlineHeart size={30} color="#000" />
-                  {wishlist && wishlist.length !== 0 && <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                    {wishlist.length}
-                  </span>}
+                  {wishlist && wishlist.length !== 0 && (
+                    <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                      {wishlist.length}
+                    </span>
+                  )}
                   <span className="text-[14px] font-bold -mt-1 ">Saved</span>
                 </div>
               </div>
@@ -94,7 +108,7 @@ function Header() {
                 <AiOutlineShoppingCart size={30} color="#000" />
                 {cart.length > 0 && (
                   <span className="absolute right-0 top-0 rounded-full bg-[#2660A4] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                   {cart.length}
+                    {cart.length}
                   </span>
                 )}
                 <span className="text-[14px] font-bold -mt-1">Cart</span>
