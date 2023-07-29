@@ -8,7 +8,7 @@ import Loader from "../components/loader/loader";
 import { useSelector } from "react-redux";
 
 function Login() {
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isSeller } = useSelector((state) => state.shop);
   const { state } = useLocation();
   const path = state?.pathname ? state.pathname : "/";
   const navigate = useNavigate();
@@ -26,17 +26,13 @@ function Login() {
     };
 
     axios
-      .post(
-        `${server}/shop/auth01`,
-        userIformation,
-        { withCredentials: true }
-      )
+      .post(`${server}/shop/auth01`, userIformation, { withCredentials: true })
       .then((res) => {
         toast.success("Success");
         setEmail("");
         setPassword("");
-        // navigate(path, { replace: true });
-        // window.location.reload(true);
+        navigate(path, { replace: true });
+        window.location.reload(true);
       })
       .catch((err) => {
         setLoading(false);
@@ -45,6 +41,11 @@ function Login() {
       });
   };
 
+useEffect(()=>{
+if(isSeller){
+  navigate('/shop')
+}
+},[])
 
   return (
     <div className="grid grid-cols-1 w-full min-h-screen">

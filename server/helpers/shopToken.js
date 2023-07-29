@@ -1,24 +1,19 @@
-const nodemailer = require("nodemailer");
-
-const sendMail = async (options) => {
-    const transporter = nodemailer.createTransport({
-        host: process.env.SMPT_HOST,
-        port: process.env.SMPT_PORT,
-        service: process.env.SMPT_SERVICE,
-        auth:{
-            user: process.env.SMPT_MAIL,
-            pass: process.env.SMPT_PASSWORD,
-        },
-    });
-
-    const mailOptions = {
-        from: process.env.SMPT_MAIL,
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
+const sendShopToken = (user, statusCode, res) => {
+    const token = user.getJwtToken();
+  
+    const options = {
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
     };
-
-    await transporter.sendMail(mailOptions);
-};
-
-module.exports = sendMail;
+  
+    res.status(statusCode).cookie("shop_token", token, options).json({
+      success: true,
+      user,
+      token,
+    });
+  };
+  
+  module.exports = sendShopToken;
+  

@@ -106,7 +106,6 @@ const ShippingInfo = ({ props }) => {
           name="phoneNumber"
           handleChange
           value={shippingAddress && shippingAddress.phoneNumber}
-          disabled={true}
         />
       </div>
       <h5 className="text-[18px] font-[500] mt-5 mb-5">Address</h5>

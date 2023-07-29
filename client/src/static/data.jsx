@@ -566,6 +566,10 @@ export const footerProductLinks = [
   {
     name: "Our Blog",
   },
+  {
+    name: "Shop",
+    link:'/shop'
+  },
 ];
 
 export const footercompanyLinks = [

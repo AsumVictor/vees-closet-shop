@@ -102,7 +102,6 @@ router.post(
       }
 
       const user = await Shop.findOne({ email }).select("+password");
-
       if (!user) {
         return next(new ErrorHandler("User doesn't exists!", 400));
       }
@@ -124,7 +123,7 @@ router.post(
 
 // load shop
 router.get(
-  "/getSeller",
+  "/getShop",
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {

@@ -1,5 +1,6 @@
 const app = require("./app");
 const connectDb = require('./db/Database')
+const cloudinary = require("cloudinary");
 // handling uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.message}`);
@@ -25,3 +26,10 @@ process.on("onhandleRejection", (err) => {
     process.exit(1);
   });
 });
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
