@@ -3,15 +3,17 @@ import React, { useEffect } from "react";
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteProduct } from "../redux/actions/product";
+import { deleteProduct, getAllProducts } from "../redux/actions/product";
 import { Tooltip } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 const AllProducts = () => {
-  const { allProducts, isLoading, isDeleting } = useSelector((state) => state.product);
+  const { allProducts, isLoading, isDeleting, deletingSuccess, deleteError } =
+    useSelector((state) => state.product);
   const { seller } = useSelector((state) => state.shop);
 
   const dispatch = useDispatch();
-console.log(isDeleting)
+  console.log(isDeleting);
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
   };
@@ -144,6 +146,20 @@ console.log(isDeleting)
         sold: item?.sold_out,
       });
     });
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, []);
+
+  useEffect(() => {
+    if (deleteError) {
+      toast.error(deleteError);
+    }
+    if (deletingSuccess) {
+      toast.success("Product deleted successfully!");
+      dispatch(getAllProducts());
+    }
+  }, [dispatch, deleteError, deletingSuccess]);
 
   return (
     <>

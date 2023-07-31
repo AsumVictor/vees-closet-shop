@@ -39,7 +39,6 @@ router.post(
         success: true,
         product,
       });
-
     } catch (error) {
       return next(new ErrorHandler(error, 400));
     }
@@ -51,25 +50,30 @@ router.delete(
   "/delete-shop-product/:id",
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
+    const { id } = req.params;
     try {
-      const product = await Product.findById(req.params.id);
-
+      const product = await Product.findById(id);
       if (!product) {
         return next(new ErrorHandler("Product is not found with this id", 404));
       }
+      
+      for (const image of product.images) {
+        const { public_id } = image;
+        await cloudinary.uploader.destroy(public_id);
+      }
+  
+      const deletedProduct = await product.deleteOne();
 
-      for (let i = 0; 1 < product.images.length; i++) {
-        const result = await cloudinary.v2.uploader.destroy(
-          product.images[i].public_id
+      if (deletedProduct) {
+        res.status(201).json({
+          success: true,
+          message: "Product Deleted successfully!",
+        });
+      } else {
+        return next(
+          new ErrorHandler("Opps! Error occured deleting product", 400)
         );
       }
-
-      await product.remove();
-
-      res.status(201).json({
-        success: true,
-        message: "Product Deleted successfully!",
-      });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
     }
