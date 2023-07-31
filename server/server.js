@@ -1,6 +1,7 @@
 const app = require("./app");
 const connectDb = require('./db/Database')
 const cloudinary = require("cloudinary");
+
 // handling uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.message}`);
