@@ -15,7 +15,12 @@ import {
   ProfilePage,
   CheckoutPage,
 } from "./Routes";
-import { ShopLoginPage, Addproduct, AllProducts } from "./ShopRoutes.js";
+import {
+  ShopLoginPage,
+  Addproduct,
+  AllProducts,
+  Coupoun,
+} from "./ShopRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store.js";
@@ -58,6 +63,7 @@ export default function App() {
           <Route path="shop" element={<Layout />}>
             <Route path="add-product" element={<Addproduct />} />
             <Route path="products" element={<AllProducts />} />
+            <Route path="coupouns" element={<Coupoun />} />
           </Route>
         </Route>
       </Routes>

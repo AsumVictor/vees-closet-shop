@@ -1,5 +1,6 @@
-import ShopLoginPage from "./ShopPages/login.jsx";
-import Addproduct from './ShopPages/addproduct.jsx'
-import AllProducts from "./ShopPages/Allproducts.jsx";
+import ShopLoginPage from "./ShopPages/login";
+import Addproduct from './ShopPages/addproduct'
+import AllProducts from "./ShopPages/Allproducts";
+import Coupoun from "./ShopPages/coupouns";
 
-export { ShopLoginPage, Addproduct, AllProducts };
+export { ShopLoginPage, Addproduct, AllProducts, Coupoun };

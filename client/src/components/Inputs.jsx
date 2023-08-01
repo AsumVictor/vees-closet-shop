@@ -60,7 +60,7 @@ export function CheckboxLabel({value, isChecked, name}){
 export function Button({handleClick, classname, children, disabled}){
   return (
     <button
-    className={`block select-none rounded-lg  py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-80 disabled:shadow-none ${classname} `}
+    className={`${classname} block select-none rounded-lg  py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-80 disabled:shadow-none  `}
     type="button"
     data-ripple-light="true"
     onClick={handleClick}

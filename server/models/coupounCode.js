@@ -24,7 +24,6 @@ const couponSchema = new mongoose.Schema(
     },
     expirationDate: {
       type: Date,
-      required: true,
     },
   },
   { timestamps: true }
