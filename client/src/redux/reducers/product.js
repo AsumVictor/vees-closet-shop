@@ -11,56 +11,66 @@ export const productReducer = createReducer(initialState, {
     state.isLoading = true;
     state.error = null;
     state.success = false;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
   productCreateSuccess: (state, action) => {
     state.isLoading = false;
     state.product = action.payload;
     state.error = null;
     state.success = true;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
   productCreateFail: (state, action) => {
     state.isLoading = false;
     state.error = action.payload;
     state.success = false;
-  },
-
-  // get all products of shop
-  getAllProductsShopRequest: (state) => {
-    state.isLoading = true;
-  },
-  getAllProductsShopSuccess: (state, action) => {
-    state.isLoading = false;
-    state.products = action.payload;
-  },
-  getAllProductsShopFailed: (state, action) => {
-    state.isLoading = false;
-    state.error = action.payload;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
 
   // delete product of a shop
   deleteProductRequest: (state) => {
-    state.isLoading = true;
-  },
+    state.isDeleting = true;
+    state.deletingSuccess = false;
+    state.deleteError = null;
+    },
   deleteProductSuccess: (state, action) => {
-    state.isLoading = false;
-    state.message = action.payload;
+    state.isDeleting = false;
+    state.deletingSuccess = true;
+    state.deleteError = null;
+
   },
   deleteProductFailed: (state, action) => {
-    state.isLoading = false;
-    state.error = action.payload;
+    state.isDeleting = false;
+    state.deleteError = action.payload;
+    state.deletingSuccess = false;
   },
 
   // get all products
   getAllProductsRequest: (state) => {
     state.isLoading = true;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
   getAllProductsSuccess: (state, action) => {
     state.isLoading = false;
     state.allProducts = action.payload;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
   getAllProductsFailed: (state, action) => {
     state.isLoading = false;
     state.error = action.payload;
+    state.isDeleting = false;
+    state.deletingSuccess = false;
+    state.deleteError = null;
   },
 
   clearErrors: (state) => {

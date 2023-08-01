@@ -283,7 +283,7 @@ function ShopAddProductPage() {
                   extendclass={`h-[.7cm] w-[.7cm] border-[5px] border-white`}
                 />
               ) : (
-                "Login"
+                "Add product"
               )}
             </Button>
           </div>

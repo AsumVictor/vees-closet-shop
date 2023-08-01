@@ -11,7 +11,7 @@ export const createProduct = (product) => async (dispatch) => {
     const { data } = await axios.post(
       `${server}/product/create-product`,
       product,
-      {withCredentials: true},
+      { withCredentials: true }
     );
     dispatch({
       type: "productCreateSuccess",
@@ -21,28 +21,6 @@ export const createProduct = (product) => async (dispatch) => {
     console.log(error);
     dispatch({
       type: "productCreateFail",
-      payload: error.response.data.message,
-    });
-  }
-};
-
-// get All Products of a shop
-export const getAllProductsShop = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllProductsShopRequest",
-    });
-
-    const { data } = await axios.get(
-      `${server}/product/get-all-products-shop/${id}`
-    );
-    dispatch({
-      type: "getAllProductsShopSuccess",
-      payload: data.products,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllProductsShopFailed",
       payload: error.response.data.message,
     });
   }
@@ -61,15 +39,24 @@ export const deleteProduct = (id) => async (dispatch) => {
         withCredentials: true,
       }
     );
-
-    dispatch({
-      type: "deleteProductSuccess",
-      payload: data.message,
-    });
+    if (data.success) {
+      dispatch({
+        type: "deleteProductSuccess",
+        payload: data.message,
+      });
+    } else {
+      dispatch({
+        type: "deleteProductFailed",
+        payload: "Opps! Error occured deleting",
+      });
+    }
   } catch (error) {
+    let errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
     dispatch({
       type: "deleteProductFailed",
-      payload: error.response.data.message,
+      payload: errorMessage,
     });
   }
 };

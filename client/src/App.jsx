@@ -15,7 +15,7 @@ import {
   ProfilePage,
   CheckoutPage,
 } from "./Routes";
-import { ShopLoginPage, ShopAddProductPage } from "./ShopRoutes.js";
+import { ShopLoginPage, Addproduct, AllProducts } from "./ShopRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store.js";
@@ -25,6 +25,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ShopProtected from "./shopProtectedRoutes";
 import Layout from "./ShopPages/layout/layout";
 import { getAllProducts } from "./redux/actions/product";
+
 export default function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
@@ -55,7 +56,8 @@ export default function App() {
         {/* Shop routes */}
         <Route element={<ShopProtected />}>
           <Route path="shop" element={<Layout />}>
-            <Route path="add-product" element={<ShopAddProductPage />} />
+            <Route path="add-product" element={<Addproduct />} />
+            <Route path="products" element={<AllProducts />} />
           </Route>
         </Route>
       </Routes>

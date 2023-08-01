@@ -1,3 +1,5 @@
 import ShopLoginPage from "./ShopPages/login.jsx";
-import ShopAddProductPage from './ShopPages/ShopPage.jsx'
-export { ShopLoginPage, ShopAddProductPage };
+import Addproduct from './ShopPages/addproduct.jsx'
+import AllProducts from "./ShopPages/Allproducts.jsx";
+
+export { ShopLoginPage, Addproduct, AllProducts };
