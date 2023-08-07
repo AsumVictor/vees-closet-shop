@@ -13,21 +13,24 @@ import {
 import { InputLabel } from "../../Inputs";
 import { GhanaRegions } from "../../../static/data";
 import { toast } from "react-toastify";
+import axios from "axios";
+import server from "../../../../server";
 
 const Shipping = ({ props }) => {
   const { cart } = useSelector((state) => state.cart);
-  const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [shippingAddress, setShippingAddress, setActiveTap] = props;
+  const [discount, setDiscount] = useState(0);
 
   const subTotalPrice = cart.reduce((accumulator, item) => {
     return accumulator + item.priceWithDiscount * item.qty;
   }, 0);
 
+ 
   // this is shipping cost variable
   const shipping = subTotalPrice * 0.1;
 
-  const totalPrice = (subTotalPrice + shipping).toFixed(2);
+  const totalPrice = ((subTotalPrice + shipping) - discount).toFixed(2);
 
   const submitShippingAddress = async () => {
     let canSubmit = await Object.values(shippingAddress).every(
@@ -39,6 +42,16 @@ const Shipping = ({ props }) => {
     }
     setActiveTap(2);
   };
+
+  useEffect(() => {
+    if (couponCodeData) {
+      couponCodeData.discountType === "percentage"
+        ? setDiscount((subTotalPrice * couponCodeData.discountValue) / 100)
+        : setDiscount(couponCodeData.discountValue);
+    }else{
+      setDiscount(0)
+    }
+  }, [couponCodeData]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,8 +68,8 @@ const Shipping = ({ props }) => {
             totalPrice={totalPrice}
             shipping={shipping}
             subTotalPrice={subTotalPrice}
-            couponCode={couponCode}
-            setCouponCode={setCouponCode}
+            discount={discount}
+            setCouponCode={setCouponCodeData}
           />
         </div>
       </div>
@@ -256,15 +269,48 @@ const CartData = ({
   totalPrice,
   shipping,
   subTotalPrice,
-  couponCode,
+  discount,
   setCouponCode,
   discountPercentenge,
 }) => {
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const applyCoupon = async () => {
+    if (code.trim() === "") {
+      toast.error("Coupon code cannot be empty");
+      return null;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      setCouponCode(null)
+      const { data } = await axios.get(
+        `${server}/coupon/get-coupon-value/${code}?price=${subTotalPrice}`,
+        { withCredentials: true }
+      );
+
+      if (data.success) {
+        setLoading(false);
+        toast.success("Success");
+        setCouponCode(data.couponCode);
+      }
+    } catch (error) {
+      setLoading(false);
+      error.response
+        ? setError(error.response.data.message)
+        : toast.error(error.message);
+    }
+  };
+
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">GH₵ {subTotalPrice.toFixed(2)}</h5>
+        <h5 className="text-[18px] font-[600]">
+          GH₵ {subTotalPrice.toFixed(2)}
+        </h5>
       </div>
       <br />
       <div className="flex justify-between">
@@ -275,8 +321,7 @@ const CartData = ({
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
-          -{" "}
-          {discountPercentenge ? "GH₵" + discountPercentenge.toString() : null}
+          - {discount ? "GH₵ " + discount.toFixed(2) : null}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-end pt-3">GH₵ {totalPrice}</h5>
@@ -284,13 +329,25 @@ const CartData = ({
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          applyCoupon();
         }}
       >
-        <InputLabel label={"Coupoun code"} type={"text"} />
+        {error && (
+          <p className="px-2 py-1 bg-red-50 text-red-600 text-center mb-2 rouned-md">
+            {error}
+          </p>
+        )}
+
+        <InputLabel
+          label={"Coupoun code"}
+          type={"text"}
+          value={code}
+          handleChange={(e) => setCode(e.target.value)}
+        />
         <input
           className={`w-full h-[40px] border border-wine_primary text-center text-wine_primary rounded-[3px] mt-8 cursor-pointer`}
           required
-          value="Apply code"
+          value={loading ? "Checking..." : "Apply coupon"}
           type="submit"
         />
       </form>
