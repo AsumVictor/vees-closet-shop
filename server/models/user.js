@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
       address2: {
         type: String,
       },
-       addressType: {
+       region: {
         type: String,
       },
     },
