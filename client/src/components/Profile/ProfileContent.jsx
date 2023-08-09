@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/styles";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { MdTrackChanges } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import {
@@ -16,12 +16,10 @@ import {
   updateUserInformation,
 } from "../../redux/actions/user";
 import { toast } from "react-toastify";
-import { Country, State } from "country-state-city";
 import axios from "axios";
 import server from "../../../server";
 import { Button, InputLabel } from "../Inputs";
 import { GhanaRegions } from "../../static/data";
-import { set } from "date-fns";
 import { Option, Select } from "@material-tailwind/react";
 
 function ProfileContent({ active }) {
@@ -30,7 +28,6 @@ function ProfileContent({ active }) {
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
