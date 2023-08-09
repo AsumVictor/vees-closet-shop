@@ -37,7 +37,7 @@ router.get(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const couponCodes = await CoupounCode.find().sort({createdAt: -1});
+      const couponCodes = await CoupounCode.find().sort({ createdAt: -1 });
       res.status(201).json({
         success: true,
         couponCodes,
@@ -72,23 +72,49 @@ router.delete(
 
 // get coupon code value by its name
 router.get(
-  "/get-coupon-value/:name",
+  "/get-coupon-value/:code",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      // Check if coupoun exist
-      // Check if check expiring data
+      const price = req.query.price;
+      if (!price) {
+        return next(new ErrorHandler("Price must be included", 400));
+      }
 
-      const couponCode = await CoupounCode.findOne({ name: req.params.name });
+      const couponCode = await CoupounCode.findOne({ code: req.params.code });
 
       if (!couponCode) {
         return next(new ErrorHandler("Invalid coupoun code", 400));
       }
 
-      let currentDate = new Date();
-
       // expires coupoun
-      if (currentDate > couponCode.expirationDate) {
+      if (
+        couponCode.expirationDate &&
+        couponCode.expirationDate.toISOString() < new Date().toISOString()
+      ) {
         return next(new ErrorHandler("Coupoun has expired", 400));
+      }
+
+      // check for min value of coupon
+      if (couponCode.minimumAmount && couponCode.minimumAmount > price) {
+        return next(
+          new ErrorHandler(
+            `Coupon applies only if shipping cost is more than GH₵ ${couponCode.minimumAmount.toFixed(
+              2
+            )}`,
+            400
+          )
+        );
+      }
+
+      if (couponCode.maximumAmount && couponCode.maximumAmount < price) {
+        return next(
+          new ErrorHandler(
+            `Coupon applies only if shipping cost is less than GH₵ ${couponCode.maximumAmount.toFixed(
+              2
+            )}`,
+            400
+          )
+        );
       }
 
       res.status(200).json({

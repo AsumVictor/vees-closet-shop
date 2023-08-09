@@ -3,8 +3,6 @@ import styles from "../../styles/styles";
 import { FaShippingFast } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";
 import {
-  MdArrowForwardIos,
-  MdOutlineArrowBackIosNew,
   MdOutlinePayment,
 } from "react-icons/md";
 

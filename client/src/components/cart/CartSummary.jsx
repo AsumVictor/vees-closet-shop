@@ -30,6 +30,7 @@ function CartSummary({ totalPrice }) {
       <button className="py-1 w-full bg-wine_primary rounded-md text-white font-bold mt-3">
         <Link
           to="/checkout"
+          className="w-full"
           onClick={() => {
             window.scrollTo(0, 0);
           }}

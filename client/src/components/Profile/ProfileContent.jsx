@@ -19,6 +19,10 @@ import { toast } from "react-toastify";
 import { Country, State } from "country-state-city";
 import axios from "axios";
 import server from "../../../server";
+import { Button, InputLabel } from "../Inputs";
+import { GhanaRegions } from "../../static/data";
+import { set } from "date-fns";
+import { Option, Select } from "@material-tailwind/react";
 
 function ProfileContent({ active }) {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -513,50 +517,34 @@ const ChangePassword = () => {
 
 const Address = () => {
   const { user } = useSelector((state) => state.user);
-  const [open, setOpen] = useState(false);
-  const [country, setCountry] = useState("");
+  const [open, setOpen] = useState(true);
+  const [region, setRegion] = useState("");
   const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState();
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
-  const [addressType, setAddressType] = useState("");
+  const [regionIndex, setRegionIndex] = useState(null);
   const dispatch = useDispatch();
-
-  const addressTypeData = [
-    {
-      name: "Default",
-    },
-    {
-      name: "Home",
-    },
-    {
-      name: "Office",
-    },
-  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (addressType === "" || country === "" || city === "") {
+    if (
+      address1.trim() === "" ||
+      region.trim() === "" ||
+      city.trim() === "" ||
+      address2.trim() === ""
+    ) {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
-        updatUserAddress(
-          country,
+        updatUserAddress({
+          region,
           city,
           address1,
           address2,
-          zipCode,
-          addressType
-        )
+        })
       );
       setOpen(false);
-      setCountry("");
-      setCity("");
-      setAddress1("");
-      setAddress2("");
-      setZipCode(null);
-      setAddressType("");
     }
   };
 
@@ -568,8 +556,8 @@ const Address = () => {
   return (
     <>
       {open && (
-        <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center ">
-          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
+        <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center px-2 overflow-y-auto overflow-x-hidden">
+          <div className="w-full h-[80vh] mt-10 550px:w-5/12 bg-white rounded-md scr shadow relative overflow-y-scroll">
             <div className="w-full flex justify-end p-3">
               <RxCross1
                 size={30}
@@ -583,121 +571,68 @@ const Address = () => {
             <div className="w-full">
               <form aria-required onSubmit={handleSubmit} className="w-full">
                 <div className="w-full block p-4">
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Country</label>
-                    <select
-                      name=""
-                      id=""
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
-                    >
-                      <option value="" className="block border pb-2">
-                        choose your country
-                      </option>
-                      {Country &&
-                        Country.getAllCountries().map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
+                  <Select label="Select Region" color="brown" value={region}>
+                    {GhanaRegions.map((region, index) => (
+                      <Option
+                        onClick={() => {
+                          setRegion(region.region);
+                          setRegionIndex(index);
+                        }}
+                      >
+                        {region.region}
+                      </Option>
+                    ))}
+                  </Select>
 
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Choose your City</label>
-                    <select
-                      name=""
-                      id=""
+                  <div className="w-full mt-4">
+                    <Select
+                      label="Select City"
+                      color="brown"
                       value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
+                      disabled={!regionIndex}
                     >
-                      <option value="" className="block border pb-2">
-                        choose your city
-                      </option>
-                      {State &&
-                        State.getStatesOfCountry(country).map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
+                      {regionIndex ? (
+                        GhanaRegions[regionIndex ? regionIndex : 0].cities.map(
+                          (city) => (
+                            <Option
+                              onClick={() => {
+                                setCity(city);
+                              }}
+                            >
+                              {city}
+                            </Option>
+                          )
+                        )
+                      ) : (
+                        <Option></Option>
+                      )}
+                    </Select>
                   </div>
 
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Address 1</label>
-                    <input
-                      type="address"
-                      className={`${styles.input}`}
-                      required
-                      value={address1}
-                      onChange={(e) => setAddress1(e.target.value)}
-                    />
-                  </div>
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Address 2</label>
-                    <input
-                      type="address"
-                      className={`${styles.input}`}
-                      required
-                      value={address2}
-                      onChange={(e) => setAddress2(e.target.value)}
+                  <div className="w-full mt-2">
+                    <InputLabel
+                      label={"Address 1"}
+                      type="text"
+                      name="address1"
+                      handleChange={(e) => setAddress1(e.target.value)}
                     />
                   </div>
 
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Zip Code</label>
-                    <input
-                      type="number"
-                      className={`${styles.input}`}
-                      required
-                      value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
+                  <div className="w-full mt-4">
+                    <InputLabel
+                      label={"Additional address"}
+                      type="text"
+                      name="address2"
+                      handleChange={(e) => setAddress2(e.target.value)}
                     />
                   </div>
 
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Address Type</label>
-                    <select
-                      name=""
-                      id=""
-                      value={addressType}
-                      onChange={(e) => setAddressType(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
-                    >
-                      <option value="" className="block border pb-2">
-                        Choose your Address Type
-                      </option>
-                      {addressTypeData &&
-                        addressTypeData.map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.name}
-                            value={item.name}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className=" w-full pb-2">
-                    <input
-                      type="submit"
-                      className={`${styles.input} mt-5 cursor-pointer`}
-                      required
-                      readOnly
-                    />
-                  </div>
+                  <Button
+                    handleClick={(e) => handleSubmit(e)}
+                    classname={"bg-wine_primary mt-10 self-center w-full"}
+                  >
+                    Add Address
+                  </Button>
                 </div>
               </form>
             </div>
@@ -711,7 +646,7 @@ const Address = () => {
             My Addresses
           </h1>
           <div
-            className={`${styles.button} !rounded-md`}
+            className={`cursor-pointer px-8 py-1 bg-wine_primary text-white rounded-md`}
             onClick={() => setOpen(true)}
           >
             <span className="text-[#fff]">Add New</span>
