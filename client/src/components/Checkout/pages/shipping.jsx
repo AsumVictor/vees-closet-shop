@@ -26,11 +26,10 @@ const Shipping = ({ props }) => {
     return accumulator + item.priceWithDiscount * item.qty;
   }, 0);
 
- 
   // this is shipping cost variable
   const shipping = subTotalPrice * 0.1;
 
-  const totalPrice = ((subTotalPrice + shipping) - discount).toFixed(2);
+  const totalPrice = (subTotalPrice + shipping - discount).toFixed(2);
 
   const submitShippingAddress = async () => {
     let canSubmit = await Object.values(shippingAddress).every(
@@ -48,8 +47,8 @@ const Shipping = ({ props }) => {
       couponCodeData.discountType === "percentage"
         ? setDiscount((subTotalPrice * couponCodeData.discountValue) / 100)
         : setDiscount(couponCodeData.discountValue);
-    }else{
-      setDiscount(0)
+    } else {
+      setDiscount(0);
     }
   }, [couponCodeData]);
 
@@ -117,7 +116,11 @@ const ShippingInfo = ({ props }) => {
           label={"Phone number"}
           type="phone"
           name="phoneNumber"
-          handleChange
+          handleChange={(e) =>
+            setShippingAddress((prev) => {
+              return { ...prev, phoneNumber: e.target.value };
+            })
+          }
           value={shippingAddress && shippingAddress.phoneNumber}
         />
       </div>
@@ -285,7 +288,7 @@ const CartData = ({
     try {
       setLoading(true);
       setError(null);
-      setCouponCode(null)
+      setCouponCode(null);
       const { data } = await axios.get(
         `${server}/coupon/get-coupon-value/${code}?price=${subTotalPrice}`,
         { withCredentials: true }

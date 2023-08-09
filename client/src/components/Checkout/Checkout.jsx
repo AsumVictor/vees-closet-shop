@@ -17,7 +17,7 @@ const Checkout = () => {
     pickstation: null,
   });
 
-  const [activeTap, setActiveTap] = useState(1);
+  const [activeTap, setActiveTap] = useState(2);
   const handleTapChange = (type) => {
     switch (type) {
       case "NEXT":
