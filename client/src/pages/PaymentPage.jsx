@@ -13,7 +13,7 @@ const PaymentPage = ({ activeTap, changeTap }) => {
   return (
     <div className="w-full min-h-screen bg-[#f6f9fc]">
       <Payment />
-      {/* <div className="flex flex-row justify-end gap-4 w-full py-1 px-2 md:w-[16cm]">
+      <div className="flex flex-row justify-end gap-4 w-full py-1 px-2 md:w-[16cm]">
         <button
           type="button"
           className="px-4 py-1 bg-wine_primary rounded-md text-white flex gap-2 items-center font-semibold text-[18px] disabled:bg-blue-gray-50 disabled:opacity-10 disabled:cursor-not-allowed disabled:text-black"
@@ -36,7 +36,7 @@ const PaymentPage = ({ activeTap, changeTap }) => {
             <MdArrowForwardIos />
           </span>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };
