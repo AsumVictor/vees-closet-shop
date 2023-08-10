@@ -42,13 +42,32 @@ function Payment() {
               Mobile number
             </h5>
             <div className="w-full 400px:w-5/12">
-
-            <InputLabel type={"number"} label={"Phone number *"} />
+              <InputLabel type={"number"} label={"Phone number *"} />
             </div>
           </div>
         </div>
         <div className="w-full 800px:mt-0 mt-8">
-          <div className="w-full bg-[#fff] rounded-md p-5 pb-8"></div>
+          <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
+            <h2 className="font-semibold text-[18px]">Order summary</h2>
+            <hr />
+            <div className="flex justify-between mt-1">
+              <h3>Items(1)</h3>
+              <h3>GHC 00</h3>
+            </div>
+            <div className="flex justify-between mt-1">
+              <h3>Delivery fee</h3>
+              <h3>GHC 00</h3>
+            </div>
+            <div className="flex justify-between mt-1">
+              <h3>Discount</h3>
+              <h3> - GHC 00</h3>
+            </div>
+            <hr />
+            <div className="flex justify-between mt-1">
+              <h3 className="font-bold underline">TOTAL</h3>
+              <h3 className="font-bold underline">GHC 00.00</h3>
+            </div>
+          </div>
         </div>
       </div>
       <button
