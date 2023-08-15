@@ -29,13 +29,17 @@ const payment = require("./controllers/payment");
 const shop = require("./controllers/shop");
 const product = require("./controllers/products");
 const coupoun = require("./controllers/coupouns");
+const Variation = require("./controllers/variations");
+const category = require("./controllers/category");
 
 // import router
-app.use("/api/vees/user", user);
-app.use("/api/vees/payment", payment);
-app.use("/api/vees/shop", shop);
-app.use("/api/vees/product", product);
-app.use("/api/vees/coupon", coupoun);
+app.use("/api/v1/user", user);
+app.use("/api/v1/payment", payment);
+app.use("/api/v1/shop", shop);
+app.use("/api/v1/product", product);
+app.use("/api/v1/coupon", coupoun);
+app.use("/api/v1/variation", Variation);
+app.use("/api/v1/category", category);
 
 app.use(ErrorHandler);
 module.exports = app;
