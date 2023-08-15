@@ -4,17 +4,24 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please enter your product name!"],
-      unique: true,
+      required: [true, "Product name is required"],
+      unique: [
+        true,
+        "Product name must be unique. Group similar products with variations",
+      ],
     },
     description: {
       type: String,
-      required: [true, "Please enter your product description!"],
+      required: [true, "Product description is required!"],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: [true, "Please enter your product category!"],
+      required: [true, "Select a category for the product!"],
+    },
+    hasVariations: {
+      type: Boolean,
+      default: false,
     },
     variation: [
       {
@@ -27,22 +34,32 @@ const productSchema = new mongoose.Schema(
             type: String,
           },
         ],
+        type,
       },
     ],
     gender: {
-      type: mongoose.Schema.ObjectId,
-      required: [true, "Please slect gender type for this product!"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "genderOption",
+      required: [
+        true,
+        "Select gender for this product!. This will improve search functionality",
+      ],
     },
     default_price: {
       type: Number,
+      min: 0,
     },
     actual_price: {
       type: Number,
-      required: [true, "Please enter your product price!"],
+      required: [
+        true,
+        "Enter the actual price for this product! Price to be purchase by customers",
+      ],
+      min: 0,
     },
-    product_stock: {
+    qy_in_stock: {
       type: Number,
-      required: [true, "Please enter your product stock!"],
+      required: [true, "Enter the total number of items in stock!"],
     },
     images: [
       {
@@ -59,6 +76,10 @@ const productSchema = new mongoose.Schema(
     sold_out: {
       type: Number,
       default: 0,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
