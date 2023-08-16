@@ -10,14 +10,9 @@ const sendMail = async(options)=>{
             pass: process.env.SMTP_PASS
         }
     })
-    const mailOptions = {
-        from: process.env.SMTP_USER,
-        to: options.email,
-        subject: options.subject,
-        text: options.message
-    }
 
-    await transporter.sendMail(mailOptions)
+
+    await transporter.sendMail(options)
 }
 
 module.exports = sendMail

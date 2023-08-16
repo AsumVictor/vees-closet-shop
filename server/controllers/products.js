@@ -5,7 +5,6 @@ const router = express.Router();
 const Product = require("../models/products");
 const Category = require("../models/category");
 const { Gender } = require("../models/variation");
-// const Order = require("../models/");
 const cloudinary = require("cloudinary");
 const ErrorHandler = require("../helpers/ErrorHandler");
 const calculateSimilarity = require("../helpers/productSimilarity");

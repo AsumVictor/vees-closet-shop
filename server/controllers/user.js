@@ -27,79 +27,37 @@ const decodeToken = (token) => {
   return decodedToken;
 };
 
-router.post("/create-user", async (req, res, next) => {
-  try {
-    const { fullname, email, password } = req.body;
-    const userEmail = await User.findOne({ email });
-    if (userEmail) {
-      return next(new ErrorHandler(`User already exist in the system`, 400));
-    }
-
-    const user = {
-      fullname,
-      email,
-      password,
-      avatar: {
-        public_id: null,
-        url: "https://scai.kibu.ac.ke/wp-content/uploads/2021/10/NoProfile.png",
-      },
-    };
-
-    const activationToken = createActivationToken(user);
-    const URLToken = encodeToken(activationToken);
-    const activationURL = `https://veescloset.onrender.com/activation/${URLToken}`;
-    try {
-      await sendMail({
-        email: email,
-        subject: "Activation your Vees account",
-        message: `Hello ${user.fullname}!, we are glad to welcome you. Please take a minute to activate your account. Click on ${activationURL} `,
-      });
-      res.status(201).json({
-        success: true,
-        message: `Please check your email:-${user.email} to activate your account`,
-      });
-    } catch (err) {
-      return next(new ErrorHandler(`${err.message}`, 500));
-    }
-  } catch (err) {
-    return next(new ErrorHandler(`${err.message}`, 400));
-  }
-});
-
+// Create an account
 router.post(
-  "/activation",
+  "/register",
   CatchAsyncError(async (req, res, next) => {
     try {
-      const { activation_token } = req.body;
-      const decodedToken = decodeToken(activation_token);
-      const newUser = jwt.verify(decodedToken, process.env.ACTIVATION_TOKEN);
-      if (!newUser) {
-        return next(new ErrorHandler("Invalid token ", 400));
+      const duplicate_user = await User.findOne({ email: req.body.email });
+
+      if (duplicate_user) {
+        return next(new ErrorHandler(`User already exist!`, 409));
       }
 
-      const { fullname, email, password, avatar } = newUser;
-
-      // check duplicate
-      let foundUser = await User.findOne({ email });
-      if (foundUser) {
-        return next(new ErrorHandler("User already exist", 409));
+      const newUser = await User.create(req.body);
+      if (newUser) {
+         sendMail({
+          from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
+          to: req.body.email,
+          subject: "Email address verification",
+          text: 'Verify your email',
+          html: null,
+        })
+        sendToken(newUser, 200, res);
       }
-
-      let user = await User.create({
-        fullname,
-        email,
-        password,
-        avatar,
-      });
-      sendToken(user, 200, res);
     } catch (err) {
       return next(new ErrorHandler(`${err.message}`, 400));
     }
   })
 );
 
+// Login
 router.post(
-  "/auth0",
+  "/auth",
   CatchAsyncError(async (req, res, next) => {
     try {
       const { email, password } = req.body;
@@ -127,6 +85,7 @@ router.post(
   })
 );
 
+// Logout
 router.get(
   "/getuser",
   isAuthenticated,
@@ -146,93 +105,6 @@ router.get(
     }
   })
 );
-
-// log out user
-router.get(
-  "/logout",
-  CatchAsyncError(async (req, res, next) => {
-    try {
-      res.cookie("token", null, {
-        expires: new Date(Date.now()),
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-      });
-      res.status(201).json({
-        success: true,
-        message: "Log out successful!",
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
-);
-
-// update user addresses
-router.put(
-  "/update-user-addresses",
-  isAuthenticated,
-  CatchAsyncError(async (req, res, next) => {
-    try {
-      const user = await User.findById(req.user.id);
-
-      const sameTypeAddress = user.addresses.find(
-        (address) => address.addressType === req.body.addressType
-      );
-      if (sameTypeAddress) {
-        return next(
-          new ErrorHandler(`${req.body.addressType} address already exists`)
-        );
-      }
-
-      const existsAddress = user.addresses.find(
-        (address) => address._id === req.body._id
-      );
-
-      if (existsAddress) {
-        Object.assign(existsAddress, req.body);
-      } else {
-        // add the new address to the array
-        user.addresses.push(req.body);
-      }
-
-      await user.save();
-
-      res.status(200).json({
-        success: true,
-        user,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
-);
-
-// delete user address
-router.delete(
-  "/delete-user-address/:id",
-  isAuthenticated,
-  CatchAsyncError(async (req, res, next) => {
-    try {
-      const userId = req.user._id;
-      const addressId = req.params.id;
-
-      await User.updateOne(
-        {
-          _id: userId,
-        },
-        { $pull: { addresses: { _id: addressId } } }
-      );
-
-      const user = await User.findById(userId);
-
-      res.status(200).json({ success: true, user });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
-);
-
 
 // update user info
 router.put(

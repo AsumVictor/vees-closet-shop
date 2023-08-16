@@ -1,60 +1,51 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcryptjs')
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const userSchema = new mongoose.Schema({
-  fullname: {
-    type: String,
-    required: [true, "Please enter your name!"],
-  },
-  email: {
-    type: String,
-    required: [true, "Please enter your email!"],
-  },
-  password: {
-    type: String,
-    required: [true, "Please enter your password"],
-    minLength: [8, "Password should be greater than 8 characters"],
-    select: false,
-  },
-  phoneNumber: {
-    type: Number,
-  },
-  addresses: [
-    {
-      city: {
-        type: String,
-      },
-      address1: {
-        type: String,
-      },
-      address2: {
-        type: String,
-      },
-       region: {
-        type: String,
-      },
-    },
-  ],
-  role: {
-    type: String,
-    default: "user",
-  },
-  avatar: {
-    public_id: {
+const userSchema = new mongoose.Schema(
+  {
+    first_name: {
       type: String,
+      required: [true, "first name is required to filled"],
     },
-    url: {
+    last_name: {
       type: String,
+      required: [true, "last name is required to filled"],
     },
+    email: {
+      type: String,
+      required: [true, "email address is required to filled"],
+    },
+    phone_number: {
+      type: String,
+      required: false,
+    },
+    password: {
+      type: String,
+      required: [true, "Please enter your password"],
+      minLength: [8, "Password should be greater than 8 characters"],
+      select: false,
+    },
+    addresses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
+    role: {
+      type: String,
+      default: "user",
+    },
+    isEmail_verified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordTime: Date,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-  resetPasswordToken: String,
-  resetPasswordTime: Date,
-});
+  {
+    timestamps: true,
+  }
+);
 
 //  Hash password
 userSchema.pre("save", async function (next) {
@@ -77,4 +68,4 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User-v2", userSchema);
