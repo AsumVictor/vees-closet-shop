@@ -252,60 +252,31 @@ router.get(
   "/products-by-category",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const category_name = req.query.category;
-      if (!category_name) {
-        return next(new ErrorHandler("Specify the category name", 400));
-      }
-
-      let category = await Category.findOne({ name: category_name });
-
-      if (!category) {
-        return next(
-          new ErrorHandler(`Category with name ${category_name} not found`, 400)
-        );
-      }
-      const products = await Product.find({ category: category._id }).sort({
-        createdAt: -1,
-      });
-
-      res.status(200).json({
-        success: true,
-        products,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error, 400));
-    }
-  })
-);
-
-// Product by category
-router.get(
-  "/products-by-category",
-  catchAsyncErrors(async (req, res, next) => {
-    try {
       let products;
       const category_name = req.query.category;
       if (!category_name) {
         return next(new ErrorHandler("Specify the category name", 400));
       }
-console.log(category_name)
       let category = await Category.findOne({ name: category_name });
       let gender = await Gender.findOne({ name: category_name });
-console.log(category, gender)
+
       if (!category && !gender) {
         return next(
-          new ErrorHandler(` Category with name ${category_name} not found. Specify 'men', 'women', 'dresses' , 'shirt' `, 400)
+          new ErrorHandler(
+            ` Category with name ${category_name} not found. Specify 'men', 'women', 'dresses' , 'shirt' `,
+            400
+          )
         );
       }
 
-      if (category && !gender) {
+      if (category) {
         products = await Product.find({ category: category._id }).sort({
           createdAt: -1,
         });
       }
 
-      if (gender && !category) {
-        products = await Product.find({ gender: category._id }).sort({
+      if (gender) {
+        products = await Product.find({ gender: gender._id }).sort({
           createdAt: -1,
         });
       }
