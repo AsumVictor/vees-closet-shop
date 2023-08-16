@@ -25,16 +25,15 @@ const productSchema = new mongoose.Schema(
     },
     variation: [
       {
-        name: {
+        variation: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Variation",
         },
-        values: [
+        selected_values: [
           {
             type: String,
           },
         ],
-        type,
       },
     ],
     gender: {
@@ -45,7 +44,7 @@ const productSchema = new mongoose.Schema(
         "Select gender for this product!. This will improve search functionality",
       ],
     },
-    default_price: {
+    base_price: {
       type: Number,
       min: 0,
     },
@@ -57,7 +56,7 @@ const productSchema = new mongoose.Schema(
       ],
       min: 0,
     },
-    qy_in_stock: {
+    qty_in_stock: {
       type: Number,
       required: [true, "Enter the total number of items in stock!"],
     },
@@ -90,4 +89,4 @@ productSchema.index(
   { unique: true, collation: { locale: "en", strength: 2 } }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("product-v2", productSchema);

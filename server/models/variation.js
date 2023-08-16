@@ -12,7 +12,7 @@ const genderOptions = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    enum: ["male", "female", "unisex"],
+    enum: ["men", "women", "unisex"],
   },
 });
 
