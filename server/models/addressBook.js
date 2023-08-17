@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const addressSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User-v2",
+  },
   region: {
     type: String,
     required: [true, "region is required to filled"],
@@ -20,7 +24,7 @@ const addressSchema = new mongoose.Schema({
   isDefault: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 module.exports = mongoose.model("Address-v1", addressSchema);

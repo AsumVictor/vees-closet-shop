@@ -5,7 +5,7 @@ const User = require("../models/user");
 const Shop = require("../models/shop");
 
 exports.isAuthenticated = CatchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies;
+  const  token  = req.cookies.x_user_auth_v1;
   if (!token) {
     return next(new ErrorHandler("Please you must login first", 400));
   }

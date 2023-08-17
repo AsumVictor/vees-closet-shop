@@ -72,10 +72,6 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
-    sold_out: {
-      type: Number,
-      default: 0,
-    },
     isFeatured: {
       type: Boolean,
       default: false,

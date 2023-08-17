@@ -8,7 +8,7 @@ const sendToken = (user, statusCode, res) => {
     sameSite: "none",
   };
 
-  res.status(statusCode).cookie("x-eY5s", token, options).json({
+  res.status(statusCode).cookie("x_user_auth_v1", token, options).json({
     success: true,
     token,
   });

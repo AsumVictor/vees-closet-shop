@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const session = require('express-session');
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
@@ -22,6 +22,11 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "./config/.env",
   });
 }
+app.use(session({
+  secret: process.env.SESSION_SECRET_KEY,
+  resave: false,
+  saveUninitialized: true
+}));
 
 // import controllers
 const user = require("./controllers/user");
@@ -31,6 +36,7 @@ const product = require("./controllers/products");
 const coupoun = require("./controllers/coupouns");
 const Variation = require("./controllers/variations");
 const category = require("./controllers/category");
+const cart = require("./controllers/shopppingCart");
 
 // import router
 app.use("/api/v1/user", user);
@@ -40,6 +46,7 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/coupon", coupoun);
 app.use("/api/v1/variation", Variation);
 app.use("/api/v1/category", category);
+app.use("/api/v1/cart", cart);
 
 app.use(ErrorHandler);
 module.exports = app;
