@@ -30,23 +30,23 @@ app.use(session({
 
 // import controllers
 const user = require("./controllers/user");
-const payment = require("./controllers/payment");
 const shop = require("./controllers/shop");
 const product = require("./controllers/products");
 const coupoun = require("./controllers/coupouns");
 const Variation = require("./controllers/variations");
 const category = require("./controllers/category");
 const cart = require("./controllers/shopppingCart");
+const order = require("./controllers/orders");
 
 // import router
 app.use("/api/v1/user", user);
-app.use("/api/v1/payment", payment);
 app.use("/api/v1/shop", shop);
 app.use("/api/v1/product", product);
 app.use("/api/v1/coupon", coupoun);
 app.use("/api/v1/variation", Variation);
 app.use("/api/v1/category", category);
 app.use("/api/v1/cart", cart);
+app.use("/api/v1/order", order);
 
 app.use(ErrorHandler);
 module.exports = app;

@@ -1,6 +1,3 @@
-// create address
-// Edit address
-// Delete address
 const express = require("express");
 const User = require("../models/user");
 const router = express.Router();
@@ -111,7 +108,7 @@ router.put(
 
       user.name = name;
       user.email = email;
-      user.phoneNumber = phoneNumber;
+      user.phone_number = phoneNumber;
 
       await user.save();
 

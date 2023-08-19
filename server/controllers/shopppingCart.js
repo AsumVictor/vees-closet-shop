@@ -1,8 +1,6 @@
 const express = require("express");
 const catchAsyncErrors = require("../middleware/CatchAsyncErrors");
 const ErrorHandler = require("../helpers/ErrorHandler");
-const { isSeller } = require("../middleware/auth");
-const CoupounCode = require("../models/coupounCode.js");
 const Product = require("../models/products");
 const deepEqual = require("../helpers/deepObjectCompare");
 const router = express.Router();
@@ -71,27 +69,40 @@ router.get(
     try {
       const cart = req.session.cart || [];
       let cartItems = await Promise.all(
+
         cart.map(async (item) => {
           let productItem = await Product.findById(item._id);
+
           if (productItem) {
             let { variation } = item;
             let basePrice = productItem.base_price && productItem.base_price;
+
+            let total_cost = item.qty * productItem.actual_price;
+
             return {
               _id: productItem._id,
               name: productItem.name,
               base_price: basePrice,
               actual_price: productItem.actual_price,
               images: productItem.images,
-              variation,
+              variation_choice: variation,
               qty: item.qty,
+              cost: Number(total_cost.toFixed(2)),
             };
+
           }
+
         })
       );
 
+      const totalCost = cartItems.reduce((sum, product) => sum + product.cost, 0);
+
       res.status(201).json({
         success: true,
-        cart: cartItems,
+        cart: {
+          productsItems: cartItems,
+          total_cost: totalCost
+        },
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
