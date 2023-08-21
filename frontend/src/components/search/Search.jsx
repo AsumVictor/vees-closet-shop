@@ -33,9 +33,7 @@ export const Search = ({ handleSearch }) => {
           Search
         </button>
       </div>
-      <div className="w-full flex justify-center items-center mt-1 min-h-[2cm] bg-white border">
-      <div className="dots"></div>
-      </div>
+      <div className="w-full flex justify-center items-center mt-1 min-h-[2cm] bg-white border"></div>
     </div>
   );
 };
