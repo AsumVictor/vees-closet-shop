@@ -1,0 +1,74 @@
+:root {
+  --primary: "#F18C8E";
+  --primary-400: "#F0B7A4";
+  --primary-200: "#F1D1B5";
+  --secondary-500: "#305F72";
+}
+
+.nav-link {
+  text-transform: uppercase;
+  font-family: Jost, sans-serif;
+  position: relative;
+  padding: 2px 5px 2px 5px;
+  display: flex;
+  justify-content: center;
+  color: black;
+}
+
+.nav-link::after {
+  content: "";
+  background-color: black;
+  width: 0%;
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 2px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #f18c8e;
+  transition: 0.2s;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  background-color: #f18c8e;
+  width: 100%;
+  transition: 0.2s;
+}
+
+.dots {
+  width: 9.6px;
+  height: 9.6px;
+  border-radius: 50%;
+  clip-path: inset(-36px);
+  color: rgba(0, 0, 0, 0.47);
+  box-shadow: -48px 12px,-48px 12px,-48px 12px;
+  transform: translateY(-12px);
+  animation: dots-ejq2atsm 1.4s infinite linear;
+}
+
+@keyframes dots-ejq2atsm {
+  16.67% {
+     box-shadow: -48px 12px,-48px 12px,15.2px 12px;
+  }
+
+  33.33% {
+     box-shadow: -48px 12px,  0px 12px,15.2px 12px;
+  }
+
+  40%, 60% {
+     box-shadow: -15.2px 12px,  0px 12px,15.2px 12px;
+  }
+
+  66.67% {
+     box-shadow: -15.2px 12px,  0px 12px,48px 12px;
+  }
+
+  83.33% {
+     box-shadow: -15.2px 12px, 48px 12px,48px 12px;
+  }
+
+  100% {
+     box-shadow: 48px 12px, 48px 12px,48px 12px;
+  }
+}
