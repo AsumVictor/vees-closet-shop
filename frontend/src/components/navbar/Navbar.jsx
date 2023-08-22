@@ -15,7 +15,7 @@ function Navbar() {
   const [IsNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <header className="w-full h-[1.6cm] sticky top-0 border flex flex-row items-center justify-between">
+    <header className="w-full h-[1.6cm] bg-white fixed top-0 border flex flex-row items-center justify-between z-[99]">
       <button
         type="button"
         onClick={() => setIsNavOpen((prev) => !prev)}

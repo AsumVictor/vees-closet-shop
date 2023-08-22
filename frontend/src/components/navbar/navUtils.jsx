@@ -5,15 +5,17 @@ import { HiOutlineChevronDown, HiOutlineChevronUp } from "react-icons/hi";
 export function NavCategory() {
   const [isOpen, setIsOpen] = useState(false);
 
+  document.addEventListener("click", (e) => {
+    if (isOpen && !e.target.classList.contains("cat-link")) {
+      setIsOpen(false);
+    }
+  });
+
   return (
-    <div
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-      className="w-full flex-col 750px:w-auto relative flex 750px:flex-row items-center justify-center"
-    >
+    <div className="w-full flex-col 750px:w-auto relative flex 750px:flex-row items-center justify-center">
       <NavLink
         to="/products"
-        className={"nav-link flex flex-row items-center"}
+        className={`cat-link flex flex-row items-center`}
         onClick={(e) => {
           e.preventDefault();
           setIsOpen((prev) => !prev);

@@ -1,0 +1,14 @@
+.hero-home {
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.781),
+      rgba(0, 0, 0, 0.726),
+      rgba(0, 0, 0, 0.658),
+      rgb(0, 0, 0)
+    ),
+    url("../assets/images/hero-background-4.jpg");
+  background-size: contain;
+  background-size: 50%;
+  background-blend-mode: multiply;
+}
+
+

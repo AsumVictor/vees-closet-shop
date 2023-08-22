@@ -50,6 +50,16 @@
   animation: dots-ejq2atsm 1.4s infinite linear;
 }
 
+.cat-link {
+  text-transform: uppercase;
+  font-family: Jost, sans-serif;
+  position: relative;
+  padding: 2px 5px 2px 5px;
+  display: flex;
+  justify-content: center;
+  color: black;
+}
+
 @keyframes dots-ejq2atsm {
   16.67% {
     box-shadow: -48px 12px, -48px 12px, 15.2px 12px;

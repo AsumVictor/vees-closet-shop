@@ -1,2 +1,2 @@
-import Navbar from "./components/navbar/Navbar";
-export { Navbar };
+import HomePage from "./pages/homepage";
+export { HomePage };
