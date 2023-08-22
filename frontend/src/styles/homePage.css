@@ -5,10 +5,30 @@
       rgba(0, 0, 0, 0.658),
       rgb(0, 0, 0)
     ),
-    url("../assets/images/hero-background-4.jpg");
+    url("../assets/images/hero-background-5.jpg");
   background-size: contain;
   background-size: 50%;
   background-blend-mode: multiply;
 }
 
+.gender-category-card.men {
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.768),
+      rgba(0, 0, 0, 0.642),
+      rgba(0, 0, 0, 0.673),
+      rgba(0, 0, 0, 0.752)
+    ),
+    url("../assets/images/hero-background-6.jpg");
+  background-size: contain;
+}
 
+.gender-category-card.women {
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.768),
+      rgba(0, 0, 0, 0.642),
+      rgba(0, 0, 0, 0.673),
+      rgba(0, 0, 0, 0.752)
+    ),
+    url("../assets/images/hero-background-2.jpg");
+  background-size: contain;
+}

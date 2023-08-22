@@ -13,6 +13,7 @@ export default {
       screens: {
         "400px": "400px",
         "500px": "500px",
+        "550px": "550px",
         "600px": "600px",
         "650px": "650px",
         "700px": "700px",
@@ -25,6 +26,7 @@ export default {
         "1100px": "1100px",
         "1200px": "1200px",
         "1300px": "1300px",
+        "1400px": "1400px",
       },
     },
   },
