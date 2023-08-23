@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="py-10 bg-deep-primary grid grid-cols-4 gap-2 px-2 900px:px-5">
+    <footer className="py-10 bg-deep-primary grid grid-cols-1 500px:grid-cols-2 800px:grid-cols-4 gap-2 gap-y-10 px-2 800px:px-5">
       <div className="py-2 flex flex-col items-center">
         <Link
           to={"/"}
@@ -12,7 +12,7 @@ function Footer() {
         >
           Vees Closet
         </Link>
-        <p className="mt-8 text-white">
+        <p className="mt-8 text-white text-center">
           At Vees Closet, we empower self-expression through style. Our diverse
           collection of high-quality, trendsetting apparel embraces
           individuality. With exceptional service and inclusivity, we create an
