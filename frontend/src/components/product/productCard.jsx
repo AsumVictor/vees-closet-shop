@@ -8,7 +8,7 @@ function ProductCard() {
 
   return (
     <div className="product-card flex flex-col" onClick={() => {
-        navigate('/products')
+        navigate('/products/:name')
     }}>
       <img
         src={Img}

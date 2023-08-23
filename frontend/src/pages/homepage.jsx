@@ -7,6 +7,7 @@ import { FaRegCreditCard } from "react-icons/fa";
 import CategorySection from "../components/homeSections/CategorySection";
 import GenderSection from "../components/homeSections/GenderSection";
 import ProductCard from "../components/product/productCard";
+import TestiminialSection from "../components/homeSections/testiminialSection";
 
 function Homepage() {
   return (
@@ -65,6 +66,7 @@ function Homepage() {
           <ProductCard /> 
         </div>
       </section>
+      <TestiminialSection />
     </div>
   );
 }

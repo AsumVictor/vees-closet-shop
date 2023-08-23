@@ -8,6 +8,8 @@ function App() {
         <Route element={<PageLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<HomePage />} />
+          <Route path="/products" element={<HomePage />} />
+          <Route path="/products/:name" element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
