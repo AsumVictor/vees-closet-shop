@@ -5,6 +5,8 @@ import {
   ShopMenPage,
   ShopWomenPage,
   ShopCategoryPage,
+  ProductSearchPage,
+  ProductDetailsPage
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 function App() {
@@ -17,8 +19,8 @@ function App() {
           <Route path="/men" element={<ShopMenPage />} />
           <Route path="/women" element={<ShopWomenPage />} />
           <Route path="/category/:name" element={<ShopCategoryPage />} />
-          <Route path="/products" element={<HomePage />} />
-          <Route path="/products/:name" element={<HomePage />} />
+          <Route path="/product" element={<ProductSearchPage />} />
+          <Route path="/product/:name" element={<ProductDetailsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

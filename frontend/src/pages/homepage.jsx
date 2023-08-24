@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HeroSection from "../components/homeSections/heroSection";
 import "../styles/homePage.css";
 import { PiShirtFoldedDuotone } from "react-icons/pi";
@@ -12,6 +12,9 @@ import { IoIosHelpBuoy } from "react-icons/io";
 import { HiOutlineShieldCheck } from "react-icons/hi";
 
 function Homepage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <div className="w-full py-1">
       <HeroSection />

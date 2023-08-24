@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/footer";
 
 function PageLayout() {
   return (
-    <div className="overflow-x-hidden overflow-y-auto h-screen w-ful flex flex-col ">
+    <div className="overflow-x-hidden overflow-y-auto  w-ful flex flex-col ">
       <Navbar />
-      <Outlet />
+      <Outlet/>
       <Footer />
     </div>
   );

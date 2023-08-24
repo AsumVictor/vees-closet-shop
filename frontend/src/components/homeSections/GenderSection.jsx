@@ -11,7 +11,7 @@ function GenderSection() {
         >
           <h3 className="text-3xl font-bold text-white uppercase">WOMEN</h3>
           <Link
-            to={"/shop/women"}
+            to={"/women"}
             className="px-4 py-1 bg-white text-xl font-semibold capitalize mt-10"
           >
             Shop now
@@ -26,7 +26,7 @@ function GenderSection() {
         >
           <h3 className="text-3xl font-bold text-white uppercase">MEN</h3>
           <Link
-            to={"/shop/men"}
+            to={"/men"}
             className="px-4 py-1 bg-white text-xl font-semibold capitalize mt-10"
           >
             Shop now

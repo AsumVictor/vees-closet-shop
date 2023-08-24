@@ -1,27 +1,37 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import ProductCard from "../components/product/productCard";
 import ReactPaginate from "react-paginate";
+import ProductCard from "../components/product/productCard";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
-function ShopPage() {
+function ProductSearchPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const searchQuery = searchParams.get("q");
+  useEffect(() => {
+    if (!searchQuery) {
+      navigate("/shop");
+    }
+    window.scrollTo(0, 0);
+  });
+
   const hanglePageChange = (data) => {
     console.log(data.seleted);
   };
 
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  })
   return (
     <div className="py-20 w-full">
       <h2 className="flex flex-row gap-2 px-2 500px:px-10">
         <Link to={"/"} className="underline">
           Home
         </Link>
-        /<span>Shop</span>
+        /
+        <Link to={"/shop"} className="underline">
+          Shop
+        </Link>
+        /<span>Products</span>/<span>{searchQuery}</span>
       </h2>
-      <h2 className="text-4xl mt-5 px-3 500px:px-10">Shop</h2>
+      <h2 className="text-4xl mt-5 px-3 500px:px-10">Search: {searchQuery}</h2>
       <div className="mt-10 w-full px-2  py-2 flex flex-row justify-between 700px:px-10">
         <p>Showing 1–12 of 90 results</p>
         <select
@@ -70,4 +80,4 @@ function ShopPage() {
   );
 }
 
-export default ShopPage;
+export default ProductSearchPage;

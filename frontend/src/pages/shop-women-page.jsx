@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import ReactPaginate from 'react-paginate';
 import ProductCard from '../components/product/productCard';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,10 @@ function ShopWomenPage() {
     const hanglePageChange = (data) => {
         console.log(data.seleted);
       };
-    
+
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      })
       return (
         <div className="py-20 w-full">
           <h2 className="flex flex-row gap-2 px-2 500px:px-10">
