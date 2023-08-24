@@ -14,7 +14,7 @@ export function NavCategory() {
   return (
     <div className="w-full flex-col 750px:w-auto relative flex 750px:flex-row items-center justify-center">
       <NavLink
-        to="/products"
+        to="/category"
         className={`cat-link flex flex-row items-center`}
         onClick={(e) => {
           e.preventDefault();
@@ -31,7 +31,7 @@ export function NavCategory() {
       {isOpen && (
         <ul className="mt-3 750px:mt-0 750px:absolute -left-[2rem] flex flex-col px-2 top-[1.8rem] w-[4cm] bg-white border">
           <Link
-            to={"/products?category=dresses"}
+            to={"/category/dresses"}
             className=" px-2 w-full nav-link capitalize"
           >
             Dresses

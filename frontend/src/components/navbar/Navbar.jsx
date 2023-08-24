@@ -43,28 +43,48 @@ function Navbar() {
         flex-col flex 750px:flex-row gap-2 750px:w-auto 750px:shadow-none"
         >
           <li className="flex flex-col">
-            <NavLink to="/" className={"nav-link  self-center px-3"}>
+            <NavLink
+              to="/"
+              className={"nav-link  self-center px-3"}
+              onClick={() => setIsNavOpen(false)}
+            >
               Home
             </NavLink>
           </li>
           <li className="flex flex-col">
-            <NavLink to="/shop" className={"nav-link  self-center  px-3"}>
+            <NavLink
+              onClick={() => setIsNavOpen(false)}
+              to="/shop"
+              className={"nav-link  self-center  px-3"}
+            >
               Shop
             </NavLink>
           </li>
           <li className="flex flex-col">
-            <NavLink to="/shop/men" className={"nav-link  self-center  px-3"}>
+            <NavLink
+              onClick={() => setIsNavOpen(false)}
+              to="/men"
+              className={"nav-link  self-center  px-3"}
+            >
               men
             </NavLink>
           </li>
           <li className="flex flex-col">
-            <NavLink to="/shop/women" className={"nav-link  self-center"}>
+            <NavLink
+              onClick={() => setIsNavOpen(false)}
+              to="/women"
+              className={"nav-link  self-center"}
+            >
               women
             </NavLink>
           </li>
           <NavCategory />
           <li className="flex flex-col">
-            <NavLink to="/about" className={"nav-link  self-center  px-3"}>
+            <NavLink
+              onClick={() => setIsNavOpen(false)}
+              to="/about"
+              className={"nav-link  self-center  px-3"}
+            >
               about us
             </NavLink>
           </li>
