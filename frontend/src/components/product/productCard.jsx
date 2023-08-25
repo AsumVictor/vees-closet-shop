@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import Img from "../../assets/images/hero-background-3.jpg";
-import '../../styles/productCard.css'
+import "../../styles/productCard.css";
 
 function ProductCard() {
-
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <div className="product-card flex flex-col" onClick={() => {
-        navigate('/product/:name')
-    }}>
+    <div
+      className="product-card flex flex-col cursor-pointer"
+      onClick={() => {
+        navigate("/product/:name");
+      }}
+    >
       <img
         src={Img}
         className="w-full 400px:h-[5cm] 1200px:h-[8cm] 1400px:w-[9cm]"
