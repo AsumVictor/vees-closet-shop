@@ -21,10 +21,10 @@ function ProductCard() {
       </h2>
       <h2 className="mt-1 flex flex-row px-2 gap-1">
         <span className="text-[14px] font-semibold text-primary-600 whitespace-nowrap">
-          GHC 200.00
+          ₵ 200.00
         </span>
         <span className="text-[10px]">
-          <del>GHC 300.00</del>
+          <del>₵ 300.00</del>
         </span>
       </h2>
     </div>

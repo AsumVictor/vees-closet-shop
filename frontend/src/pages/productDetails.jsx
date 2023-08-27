@@ -31,8 +31,8 @@ function ProductDetails() {
         <div className="py-2 flex flex-col px-5 md:px-2">
           <h1 className="text-2xl capitalize">Product Name</h1>
           <p className="mt-3 font-semibold flex flex-row gap-2 text-primary-600  text-[20px]">
-            <span className="price"> GHC 300.00</span>
-            <del className="price text-[12px]"> GHC 300.00</del>
+            <span className="price"> ₵ 300.00</span>
+            <del className="price text-[12px]"> ₵ 300.00</del>
           </p>
           <p className="mt-3">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut,
@@ -108,7 +108,7 @@ function ProductDetails() {
           </div>
           <button
             type="button"
-            className="w-full uppercase py-1 mt-5 text-white bg-black font-medium"
+            className="w-full uppercase py-2 mt-5 text-white bg-black font-medium"
           >
             add to cart
           </button>

@@ -6,7 +6,8 @@ import {
   ShopWomenPage,
   ShopCategoryPage,
   ProductSearchPage,
-  ProductDetailsPage
+  ProductDetailsPage,
+  CartPage
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 function App() {
@@ -21,6 +22,8 @@ function App() {
           <Route path="/category/:name" element={<ShopCategoryPage />} />
           <Route path="/product" element={<ProductSearchPage />} />
           <Route path="/product/:name" element={<ProductDetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

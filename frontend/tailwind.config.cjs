@@ -8,6 +8,7 @@ export default {
         "primary-400": "#F0B7A4",
         "primary-200": "#F1D1B5",
         "secondary-500": "#305F72",
+        "primary-800": "#884e3b",
         "deep-primary": "#351E16",
       },
       screens: {

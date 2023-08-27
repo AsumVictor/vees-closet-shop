@@ -4,7 +4,8 @@ import ShopMenPage from "./pages/shop-men-page";
 import ShopWomenPage from "./pages/shop-women-page";
 import ShopCategoryPage from "./pages/ShopCategoryPage";
 import ProductSearchPage from './pages/ProductSearchPage'
-import ProductDetailsPage from "./pages/productDetails.jsx";
+import ProductDetailsPage from "./pages/productDetails";
+import CartPage from "./pages/CartPage.jsx";
 
 export {
   HomePage,
@@ -13,5 +14,6 @@ export {
   ShopWomenPage,
   ShopCategoryPage,
   ProductSearchPage,
-  ProductDetailsPage
+  ProductDetailsPage,
+  CartPage
 };

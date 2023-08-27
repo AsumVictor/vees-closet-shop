@@ -7,6 +7,7 @@ import UserAccountIcon from "../account/userAccountIcon";
 import { SearchIcon, Search } from "../search/Search";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { TfiClose } from "react-icons/tfi";
+import CartShortSummary from "../cart/cartShortSummary";
 
 function Navbar() {
   // Search component
@@ -90,7 +91,7 @@ function Navbar() {
           </li>
         </ul>
       </nav>
-      <div className="flex flex-row px-2 gap-x-3">
+      <div className="relative flex flex-row px-2 gap-x-3">
         <SearchIcon handleSearch={() => setIsSearch(true)} />
         <CartIcon />
         <UserAccountIcon />
