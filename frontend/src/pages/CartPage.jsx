@@ -37,7 +37,9 @@ function CartPage() {
 
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
         <ul>
-            <li className=" grid grid-cols-10"></li>
+            <li className=" grid grid-cols-10">
+                
+            </li>
         </ul>
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
         <button className=" uppercase text-center w-full mt-10 py-2 bg-primary-800 text-white font-medium">

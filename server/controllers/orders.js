@@ -51,10 +51,50 @@ router.post(
   })
 );
 
-// update order status
+// update order status -- user
 router.post(
-  "/update-status",
+  "/update-status-user",
   isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const { _id, status } = req.body;
+      if (!status || !_id) {
+        return next(
+          new ErrorHandler(
+            "Error: Provide all neccessary information to update order status",
+            400
+          )
+        );
+      }
+
+      const product = await Order.findById(_id);
+      if (!product) {
+        return next(new ErrorHandler("Invalid response ", 404));
+      }
+
+      product.status = status;
+      let { _id: updated_id } = await product.save();
+
+      if (!updated_id) {
+        return next(
+          new ErrorHandler("Order status could not saved! Try again", 404)
+        );
+      }
+
+      res.status(201).json({
+        success: true,
+        message: `Order status has been updated to ${status}`,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
+// update order status -- shop owner
+router.post(
+  "/update-status-shop",
+  isSeller,
   CatchAsyncError(async (req, res, next) => {
     try {
       const { _id, status } = req.body;
@@ -154,7 +194,7 @@ router.get(
   isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const orders = await Order.find({ user: req.user.id })
+      const orders = await Order.find({ user: req.user.id });
       res.status(200).json({
         success: true,
         orders,
@@ -164,8 +204,23 @@ router.get(
     }
   })
 );
-// get order with specific status
+// get order with specific status -- shop owner
+router.get(
+  "/get-orders-status",
+  isSeller,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const orders = await Order.find({status: req.body.status});
 
+      res.status(200).json({
+        success: true,
+        orders,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
 // get order between with status between date
 
 // Mock payment

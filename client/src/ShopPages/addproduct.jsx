@@ -186,14 +186,14 @@ function ShopAddProductPage() {
             </Option>
           </Select>
           <InputLabel
-            label={"Original price ( GHC )"}
+            label={"Original price ( ₵ )"}
             handleChange={handleChange}
             type={"number"}
             name={"originalPrice"}
             value={productInfo.originalPrice}
           />
           <InputLabel
-            label={"Price with discount ( GHC ) *"}
+            label={"Price with discount ( ₵ ) *"}
             handleChange={handleChange}
             type={"number"}
             name={"priceWithDiscount"}

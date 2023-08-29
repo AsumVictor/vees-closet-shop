@@ -130,7 +130,7 @@ function CoupounModal({ actions }) {
 
           <div className="w-full mt-5">
             <InputLabel
-              label={"Coupoun Value (Default GHC) *"}
+              label={"Coupoun Value (Default ₵) *"}
               handleChange={handleChange}
               type={"number"}
               name={"discountValue"}

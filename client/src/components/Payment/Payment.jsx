@@ -52,20 +52,20 @@ function Payment() {
             <hr />
             <div className="flex justify-between mt-1">
               <h3>Items(1)</h3>
-              <h3>GHC 00</h3>
+              <h3>₵ 00</h3>
             </div>
             <div className="flex justify-between mt-1">
               <h3>Delivery fee</h3>
-              <h3>GHC 00</h3>
+              <h3>₵ 00</h3>
             </div>
             <div className="flex justify-between mt-1">
               <h3>Discount</h3>
-              <h3> - GHC 00</h3>
+              <h3> - ₵ 00</h3>
             </div>
             <hr />
             <div className="flex justify-between mt-1">
               <h3 className="font-bold underline">TOTAL</h3>
-              <h3 className="font-bold underline">GHC 00.00</h3>
+              <h3 className="font-bold underline">₵ 00.00</h3>
             </div>
           </div>
         </div>
