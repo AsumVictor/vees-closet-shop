@@ -3,16 +3,33 @@
 @tailwind utilities;
 
 :root {
-    --primary: "#F18C8E";
-    --primary-400: "#F0B7A4";
-    --primary-200: "#F1D1B5";
-    --secondary-500: "#305F72";
+  --primary: "#F18C8E";
+  --primary-400: "#F0B7A4";
+  --primary-200: "#F1D1B5";
+  --secondary-500: "#305F72";
 }
 
 * {
-    font-family: Jost, sans-serif;
+  font-family: Jost, sans-serif;
 }
 
-body{
-    overflow-x: hidden;
+body {
+  overflow-x: hidden;
+}
+
+.form-group {
+  border: 2px solid #884e3b;
+  transition: 0.1s;
+}
+
+.form-group.active {
+  border: 2px solid #351e16;
+  transition: 0.1s;
+}
+
+.form-group.active .label {
+  transition: 0.1s;
+  transform: translateY(-25px);
+  font-weight: bold;
+  color: #351e16;
 }

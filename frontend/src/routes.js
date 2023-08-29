@@ -5,7 +5,8 @@ import ShopWomenPage from "./pages/shop-women-page";
 import ShopCategoryPage from "./pages/ShopCategoryPage";
 import ProductSearchPage from './pages/ProductSearchPage'
 import ProductDetailsPage from "./pages/productDetails";
-import CartPage from "./pages/CartPage.jsx";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from './pages/checkoutPage'
 
 export {
   HomePage,
@@ -15,5 +16,6 @@ export {
   ShopCategoryPage,
   ProductSearchPage,
   ProductDetailsPage,
-  CartPage
+  CartPage,
+  CheckoutPage
 };

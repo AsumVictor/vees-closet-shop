@@ -7,7 +7,8 @@ import {
   ShopCategoryPage,
   ProductSearchPage,
   ProductDetailsPage,
-  CartPage
+  CartPage,
+  CheckoutPage
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 function App() {
@@ -23,7 +24,7 @@ function App() {
           <Route path="/product" element={<ProductSearchPage />} />
           <Route path="/product/:name" element={<ProductDetailsPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
         </Route>
       </Routes>
