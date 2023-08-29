@@ -33,3 +33,23 @@ body {
   font-weight: bold;
   color: #351e16;
 }
+
+.payment {
+  visibility: hidden;
+}
+
+.checkbox {
+  border: 2px solid #884e3b5b;
+}
+
+.check {
+  color: rgba(117, 117, 117, 0.24);
+}
+
+.payment-check input:checked ~ .checkbox {
+  border: 3px solid #884e3b;
+}
+
+.payment-check input:checked ~ .checkbox .check {
+  color: #884e3b;
+}

@@ -8,7 +8,7 @@ const CatchAsyncError = require("../middleware/CatchAsyncErrors");
 const { isAuthenticated } = require("../middleware/auth");
 const { OrderItem, Order } = require("../models/orders");
 
-// create order
+// create order --- already user
 router.post(
   "/place-order",
   isAuthenticated,
