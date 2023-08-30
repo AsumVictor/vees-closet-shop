@@ -156,6 +156,10 @@ function CheckoutPage() {
           <li className=" grid grid-cols-10"></li>
         </ul>
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
+        <div className="w-full py-1 grid grid-cols-12 mt-5">
+          <LabelInput InputParentExtendClass=' col-span-9' label={'Do you coupon ?'}/>
+          <button type="button" className="py-1 px-2 bg-primary-800 col-span-3 text-white">Apply</button>
+        </div>
         <button className=" uppercase text-center w-full mt-10 py-2 bg-primary-800 text-white font-medium">
           proceed to checkout
         </button>
