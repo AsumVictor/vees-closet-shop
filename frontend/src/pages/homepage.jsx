@@ -10,11 +10,12 @@ import TestiminialSection from "../components/homeSections/testiminialSection";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoIosHelpBuoy } from "react-icons/io";
 import { HiOutlineShieldCheck } from "react-icons/hi";
+import NewProducts from "../components/homeSections/newProductsSection.jsx";
 
 function Homepage() {
   useEffect(() => {
     window.scrollTo(0, 0);
-  })
+  });
   return (
     <div className="w-full py-1">
       <HeroSection />
@@ -52,26 +53,8 @@ function Homepage() {
         </div>
       </section>
       <GenderSection />
-      <section className="w-full py-20 bg-white">
-        <h2 className="mb-10 text-center text-2xl text-black font-semibold uppercase">
-          SHop the latest
-        </h2>
-        <div className="grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-10 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </div>
-      </section>
 
+      <NewProducts />
       <TestiminialSection />
       <section className="w-full py-20 grid grid-cols-1 450px:grid-cols-2 750px:grid-cols-4 px-10 gap-y-10">
         <div className="py-1 flex flex-col items-center">

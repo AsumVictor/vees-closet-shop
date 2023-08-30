@@ -11,7 +11,18 @@ import {
   CheckoutPage
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getCart } from "./redux/actions/cart";
+import { getNewProducts } from "./redux/actions/newProducts";
+
+
 function App() {
+const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCart())
+    dispatch(getNewProducts())
+  }, []);
   return (
     <BrowserRouter>
       <Routes>

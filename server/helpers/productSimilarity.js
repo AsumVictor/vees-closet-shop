@@ -12,9 +12,9 @@ function calculateSimilarity(productA, productB) {
     1 / (1 + Math.abs(productA.actual_price - productB.actual_price));
 
   const similarity =
-    categorySimilarity * 0.8 +
-    genderSimilarity * 0.6 +
-    descriptionSimilarity * 0.2 +
+    categorySimilarity * 1 +
+    genderSimilarity * 1 +
+    descriptionSimilarity * 0.7 +
     priceSimilarity * 0.4;
 
   return similarity;

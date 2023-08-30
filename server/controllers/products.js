@@ -14,11 +14,36 @@ router.get(
   "/get-all-products",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const products = await Product.find().sort({ createdAt: -1 });
+      const page = Number(req.query.page) || 1;
+      const limit = 12
+      const sortType = req.query.sort;
+      let sortOptions = {};
+
+      if (sortType === "popularity") {
+        sortOptions = { qty_in_stock: -1 }
+      } else if (sortType === "price_asc") {
+        sortOptions = { actual_price: 1 }
+      } else if (sortType === "price_desc") {
+        sortOptions = { actual_price: -1 }
+      } else {
+        sortOptions = { createdAt: -1 }
+      }
+
+      const totalCount = await Product.countDocuments({});
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const products = await Product.find(
+        {},
+        "name images actual_price base_price"
+      )
+        .sort(sortOptions)
+        .skip((page - 1) * limit)
+        .limit(limit);
 
       res.status(200).json({
         success: true,
         products,
+        totalPages
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
@@ -87,7 +112,12 @@ router.get(
         );
       }
 
-      const product = await Product.findOne({ name: req.params.name });
+      const product = await Product.findOne({ name: req.params.name }).populate(
+        {
+          path: "variations.variation",
+          select: "name",
+        }
+      );
       if (!product) {
         return next(
           new ErrorHandler(
@@ -170,7 +200,7 @@ router.get(
   "/related-products",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      if (!req.query.id) {
+      if (!req.query.name) {
         return next(
           new ErrorHandler(
             "Error occured fetch products. Specify a products to get its realted ones",
@@ -179,7 +209,7 @@ router.get(
         );
       }
 
-      const product = await Product.findById(req.query.id);
+      const product = await Product.findOne({ name: req.query.name });
 
       const userInteractions = await Product.find({
         _id: { $ne: req.query.id },
@@ -195,13 +225,20 @@ router.get(
         .sort((a, b) => b.similarity - a.similarity)
         .slice(0, 5);
 
-      const relatedProductObjects = relatedProducts.map(
-        (entry) => entry.product
-      );
+      const relatedProductObjects = relatedProducts.map((entry) => {
+        return {
+          name: entry.product.name,
+          actual_price: entry.product.actual_price,
+          images: entry.product.images,
+          base_price: entry.product.base_price
+            ? entry.product.base_price
+            : null,
+        };
+      });
 
       return res.status(200).json({
         success: true,
-        relatedProductObjects,
+        products: relatedProductObjects,
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));

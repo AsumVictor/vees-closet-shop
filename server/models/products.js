@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    variation: [
+    variations: [
       {
         variation: {
           type: mongoose.Schema.Types.ObjectId,

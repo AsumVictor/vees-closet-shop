@@ -4,14 +4,8 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 
-function imageViewer() {
+function imageViewer({images}) {
   const [activeImage, setActiveImage] = useState(1);
-  const images = [
-    "https://assets.manufactum.de/p/204/204351/204351_01.jpg/mens-shirt-tencel.jpg",
-    "https://m.media-amazon.com/images/I/91vyFFZvv+L._AC_UY580_.jpg",
-    "https://m.media-amazon.com/images/I/71Hfqa8KgSL._AC_UF350,350_QL50_.jpg",
-    "https://m.media-amazon.com/images/I/31HPN3gSrDL._SY500__AC_UF420%2C420_FMjpg_.jpg",
-  ];
 
   const handleNextImage = () => {
     if (activeImage / images.length === 1) {
@@ -34,9 +28,9 @@ function imageViewer() {
       <div className="py-2 col-span-full 500px:col-span-2 flex flex-row 500px:flex-col gap-y-3 order-2 500px:order-1 flex-wrap justify-center gap-x-2">
         {images.map((image, index) => (
           <img
-            key={image}
+            key={image.url}
             onClick={() => setActiveImage(index + 1)}
-            src={image}
+            src={image.url}
             alt={`img-${index + 1}`}
             className={`w-[3cm] 500px:w-11/12 self-center ${
               activeImage === index + 1 && "opacity-25"
@@ -46,7 +40,7 @@ function imageViewer() {
       </div>
       <div className="py-2 col-span-full 500px:col-span-8 px-2 order-1 500px:order-2 flex relative justify-center items-center">
         <img
-          src={images[activeImage - 1]}
+          src={images[activeImage - 1].url}
           alt="img-active"
           className="w-full"
         />
