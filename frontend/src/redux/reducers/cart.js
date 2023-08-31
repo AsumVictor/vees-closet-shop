@@ -36,7 +36,7 @@ export const cartReducer = createReducer(initialState, {
         cart: [...state.cart, item],
       };
     }
-  },
+  }, 
   removeFromCart: (state, action) => {
     return {
       ...state,

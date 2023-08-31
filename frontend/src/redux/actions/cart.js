@@ -13,7 +13,7 @@ export const getCart = () => async (dispatch, getState) => {
       dispatch({
         type: "getCart",
         payload: res.data.data,
-      });
+      }); 
     } else {
       dispatch({
         type: "Error",

@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const session = require('express-session');
+const session = require("express-session");
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
@@ -25,11 +25,18 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "./config/.env",
   });
 }
-app.use(session({
-  secret: process.env.SESSION_SECRET_KEY,
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    },
+  })
+);
 
 // import controllers
 const user = require("./controllers/user");

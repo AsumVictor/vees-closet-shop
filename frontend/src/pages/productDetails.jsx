@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import ImageViewer from "../components/product/imageViewer";
 import ProductCard from "../components/product/productCard";
 import axios from "axios";
 import server from "../server";
+import checkVariantEmpty from "../helpers/checkVariantEmpty";
+import { getCart } from "../redux/actions/cart";
+import { useDispatch } from "react-redux";
 
 function ProductDetails() {
   const params = useParams();
-  const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
   const [relatedProduct, setRelatedProduct] = useState([]);
   const [error, setError] = useState(false);
+  const [submissionError, setSubmissionError] = useState(null);
+  const [addedToCard, setAddedToCard] = useState(false);
+  const [cartData, setCartData] = useState({
+    _id: null,
+    qty: 1,
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,6 +33,27 @@ function ProductDetails() {
         if (res.data.success) {
           setProduct(res.data.product);
           setLoading(false);
+          setCartData((prev) => {
+            if (!res.data.product.hasVariations) {
+              return {
+                ...prev,
+                _id: res.data.product._id,
+              };
+            }
+            let variants = {};
+            for (const v of res.data.product.variations) {
+              let name = v.variation.name;
+              variants = {
+                ...variants,
+                [name]: "",
+              };
+            }
+            return {
+              ...prev,
+              _id: res.data.product._id,
+              variation: variants,
+            };
+          });
         } else {
           setError(true);
           setLoading(false);
@@ -42,6 +73,7 @@ function ProductDetails() {
         }
       } catch (error) {}
     };
+    setSubmissionError(null)
     getRealtedProduct();
     getProduct();
   }, [params.name]);
@@ -53,9 +85,52 @@ function ProductDetails() {
       </div>
     );
   }
-  console.log(product);
+
+  const addToCart = async () => {
+    setSubmissionError(null);
+    try {
+      if (cartData.qty < 1) {
+        return;
+      }
+      if (product.hasVariations) {
+        let res = checkVariantEmpty(cartData.variation);
+        if (res.isEmptyKeys) {
+          setSubmissionError(
+            `Select a variant(s) for the product. ${res.keys.map(
+              (key) => `{${key}}`
+            )}`
+          );
+          return;
+        }
+      }
+
+      let res = await axios.post(`${server}cart/add-to-cart`, cartData);
+      if (res.data.success) {
+        dispatch(getCart());
+        setAddedToCard(true);
+        setTimeout(() => {
+          setAddedToCard(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="w-full py-20">
+    <div className="w-full py-20 relative">
+      {addedToCard && (
+        <div onClick={()=>navigate('/cart')} className="mt-16 py-2 grid grid-cols-12 bg-white border-emerald-700 border fixed z-50 left-0 w-full top-0 px-3">
+          <p className=" col-span-8 py-1 750px:text-right 750px:px-20">
+            Added "{product.name.slice(0, 15) + "..."}" to cart
+          </p>
+          <div className=" col-span-4 ">
+            <button className="py-1 bg-deep-primary text-white uppercase px-3">
+              View cart
+            </button>
+          </div>
+        </div>
+      )}
       <h2 className="flex flex-row gap-2 px-2 500px:px-10">
         <Link to={"/"} className="underline">
           Home
@@ -86,20 +161,33 @@ function ProductDetails() {
           {product.hasVariations && (
             <div className="w-full py-1 mt-5 flex flex-col gap-3">
               {product.variations.map((variant) => (
-                <div className="">
+                <div className="" key={variant._id}>
                   <label
                     className=" capitalize"
                     htmlFor={variant.variation._id}
                   >
-                    {variant.variation.name}:{" "}
+                    {variant.variation.name}:
                   </label>
                   <select
-                    name={variant.variation._id}
+                    name={variant.variation.name}
                     id={variant.variation._id}
+                    onChange={(e) => {
+                      setCartData((prev) => {
+                        let name = variant.variation.name;
+                        return {
+                          ...prev,
+                          variation: {
+                            ...prev.variation,
+                            [name]: e.target.value,
+                          },
+                        };
+                      });
+                      setSubmissionError(null);
+                    }}
                     className="capitalize px-2 outline-none py-1 bg-white border border-black"
                   >
                     <option value="" className="capitalize">
-                      Select {variant.variation.name}{" "}
+                      Select {variant.variation.name}
                     </option>
                     {variant.selected_values.map((value) => (
                       <option value={value}>{value}</option>
@@ -109,13 +197,21 @@ function ProductDetails() {
               ))}
             </div>
           )}
+          {submissionError && (
+            <h2 className="text-red-500 mt-2 font-medium">{submissionError}</h2>
+          )}
           <div className="flex flex-row mt-5">
             <button
               type="button"
               className="px-2 py-1 border-2 border-black "
               onClick={() => {
-                if (qty > 1) {
-                  setQty((prev) => prev - 1);
+                if (cartData.qty > 1) {
+                  setCartData((prev) => {
+                    return {
+                      ...prev,
+                      qty: prev.qty - 1,
+                    };
+                  });
                 }
                 return;
               }}
@@ -126,22 +222,38 @@ function ProductDetails() {
               type="number"
               name="qty"
               id="qty"
-              value={qty}
-              onChange={(e) => setQty(e.target.value)}
+              value={cartData.qty}
+              onChange={(e) =>
+                setCartData((prev) => {
+                  let qty = parseInt(e.target.value);
+                  return {
+                    ...prev,
+                    qty: qty,
+                  };
+                })
+              }
               min={1}
               className="border-2 border-black text-center px-2 py-1 outline-none invalid:border-red-600 w-[2cm]"
             />
-
             <button
               type="button"
               className="px-2 py-1 border-2 border-black "
-              onClick={() => setQty((prev) => prev + 1)}
+              onClick={() =>
+                setCartData((prev) => {
+                  return {
+                    ...prev,
+                    qty: prev.qty + 1,
+                  };
+                })
+              }
             >
               <HiPlus />
             </button>
           </div>
+
           <button
             type="button"
+            onClick={() => addToCart()}
             className="w-full uppercase py-2 mt-5 text-white bg-black font-medium"
           >
             add to cart
