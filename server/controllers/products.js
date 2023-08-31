@@ -15,18 +15,18 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const page = Number(req.query.page) || 1;
-      const limit = 12
+      const limit = 12;
       const sortType = req.query.sort;
       let sortOptions = {};
 
       if (sortType === "popularity") {
-        sortOptions = { qty_in_stock: -1 }
+        sortOptions = { qty_in_stock: -1 };
       } else if (sortType === "price_asc") {
-        sortOptions = { actual_price: 1 }
+        sortOptions = { actual_price: 1 };
       } else if (sortType === "price_desc") {
-        sortOptions = { actual_price: -1 }
+        sortOptions = { actual_price: -1 };
       } else {
-        sortOptions = { createdAt: -1 }
+        sortOptions = { createdAt: -1 };
       }
 
       const totalCount = await Product.countDocuments({});
@@ -43,7 +43,7 @@ router.get(
       res.status(200).json({
         success: true,
         products,
-        totalPages
+        totalPages,
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
@@ -141,22 +141,46 @@ router.get(
   "/search",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const searchTerm = req.query.term;
+      const searchTerm = req.query.q;
 
       if (!searchTerm) {
         return next(new ErrorHandler("Specifiy a product to search", 400));
       }
+      const page = Number(req.query.page) || 1;
+      const limit = 12;
+      const sortType = req.query.sort;
+      let sortOptions = {};
 
-      const products = await Product.find({
-        $or: [
-          { name: { $regex: searchTerm, $options: "i" } },
-          { description: { $regex: searchTerm, $options: "i" } },
-        ],
-      });
+      if (sortType === "popularity") {
+        sortOptions = { qty_in_stock: -1 };
+      } else if (sortType === "price_asc") {
+        sortOptions = { actual_price: 1 };
+      } else if (sortType === "price_desc") {
+        sortOptions = { actual_price: -1 };
+      } else {
+        sortOptions = { createdAt: -1 };
+      }
+
+      const totalCount = await Product.countDocuments({});
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const products = await Product.find(
+        {
+          $or: [
+            { name: { $regex: searchTerm, $options: "i" } },
+            { description: { $regex: searchTerm, $options: "i" } },
+          ],
+        },
+        "name images actual_price base_price"
+      )
+        .sort(sortOptions)
+        .skip((page - 1) * limit)
+        .limit(limit);
 
       res.status(200).json({
         success: true,
         products,
+        totalPages,
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
@@ -169,15 +193,16 @@ router.get(
   "/search-suggestion",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const searchTerm = req.query.term;
+      const searchTerm = req.query.q;
 
       if (searchTerm.length >= 3) {
-        const suggestions = await Product.find({
+        const suggestions = await Product.find(
+          {
           $or: [
             { name: { $regex: searchTerm, $options: "i" } },
             { description: { $regex: searchTerm, $options: "i" } },
           ],
-        }).limit(5);
+        }, 'name images').limit(5);
 
         return res.status(200).json({
           success: true,
@@ -305,21 +330,48 @@ router.get(
         );
       }
 
+      const page = Number(req.query.page) || 1;
+      const limit = 12;
+      const sortType = req.query.sort;
+      let sortOptions = {};
+
+      if (sortType === "popularity") {
+        sortOptions = { qty_in_stock: -1 };
+      } else if (sortType === "price_asc") {
+        sortOptions = { actual_price: 1 };
+      } else if (sortType === "price_desc") {
+        sortOptions = { actual_price: -1 };
+      } else {
+        sortOptions = { createdAt: -1 };
+      }
+
+      const totalCount = await Product.countDocuments({});
+      const totalPages = Math.ceil(totalCount / limit);
+
       if (category) {
-        products = await Product.find({ category: category._id }).sort({
-          createdAt: -1,
-        });
+        products = await Product.find(
+          { category: category._id },
+          "name images actual_price base_price"
+        )
+          .sort(sortOptions)
+          .skip((page - 1) * limit)
+          .limit(limit);
       }
 
       if (gender) {
-        products = await Product.find({ gender: gender._id }).sort({
-          createdAt: -1,
-        });
+        products = await Product.find(
+          { gender: gender._id },
+          "name images actual_price base_price"
+        )
+          .sort(sortOptions)
+          .skip((page - 1) * limit)
+          .limit(limit);
       }
 
       res.status(200).json({
         success: true,
         products,
+        totalPages,
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));

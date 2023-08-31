@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/product/productCard";
-import ReactPaginate from "react-paginate";
-import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import axios from "axios";
 import server from "../server";
 
@@ -118,7 +116,7 @@ function ShopPage() {
       </div>
 
       <section className="w-full py-20 bg-white">
-        <div className="grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-10 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
+        <div className="grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-20 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
           {products.map((product) => (
             <ProductCard product={product} />
           ))}
