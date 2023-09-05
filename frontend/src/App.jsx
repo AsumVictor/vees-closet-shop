@@ -8,7 +8,9 @@ import {
   ProductSearchPage,
   ProductDetailsPage,
   CartPage,
-  CheckoutPage
+  CheckoutPage,
+  LoginPage,
+  SignupPage
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch } from "react-redux";
@@ -38,6 +40,8 @@ const dispatch = useDispatch();
           <Route path="/checkout" element={<CheckoutPage />} />
 
         </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );

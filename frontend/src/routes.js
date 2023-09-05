@@ -7,6 +7,8 @@ import ProductSearchPage from './pages/ProductSearchPage'
 import ProductDetailsPage from "./pages/productDetails";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from './pages/checkoutPage'
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage.jsx";
 
 export {
   HomePage,
@@ -17,5 +19,7 @@ export {
   ProductSearchPage,
   ProductDetailsPage,
   CartPage,
-  CheckoutPage
+  CheckoutPage,
+  LoginPage,
+  SignupPage
 };

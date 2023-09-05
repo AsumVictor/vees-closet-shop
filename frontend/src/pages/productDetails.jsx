@@ -104,7 +104,10 @@ function ProductDetails() {
         }
       }
 
-      let res = await axios.post(`${server}cart/add-to-cart`, cartData);
+    let res = await axios.post(`${server}cart/add-to-cart`, cartData, 
+    {
+      withCredentials: true,
+    });
       if (res.data.success) {
         dispatch(getCart());
         setAddedToCard(true);

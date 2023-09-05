@@ -25,16 +25,15 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "./config/.env",
   });
 }
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-    cookie: {
-      sameSite: "none",
-      secure: true,
-      httpOnly: true,
-    },
+     cookie: {
+       secure: false, 
+     },
   })
 );
 

@@ -5,6 +5,7 @@ export function LabelInput({
   label,
   type,
   isRequired,
+  value,
   ...rest
 }) {
   //focus inputs
@@ -24,6 +25,7 @@ export function LabelInput({
     >
       <input
         {...rest}
+        value={value}
         type={type}
         required={isRequired}
         onFocus={FocusOnInput}
