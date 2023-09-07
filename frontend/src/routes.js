@@ -3,14 +3,24 @@ import ShopPage from "./pages/shop-page";
 import ShopMenPage from "./pages/shop-men-page";
 import ShopWomenPage from "./pages/shop-women-page";
 import ShopCategoryPage from "./pages/ShopCategoryPage";
-import ProductSearchPage from './pages/ProductSearchPage'
+import ProductSearchPage from "./pages/ProductSearchPage";
 import ProductDetailsPage from "./pages/productDetails";
 import CartPage from "./pages/CartPage";
-import CheckoutPage from './pages/checkoutPage'
+import CheckoutPage from "./pages/checkoutPage";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage.jsx";
+import SignupPage from "./pages/SignupPage";
+import AccountPage from "./pages/AccountPage";
+import AccountSettings from "./components/account/pages/AccountSettings";
+import Address from "./components/account/pages/Address";
+import History from "./components/account/pages/History";
+import Orders from "./components/account/pages/Orders";
+import SaveItems from "./components/account/pages/SaveItems";
 
 export {
+  Address,
+  History,
+  SaveItems,
+  Orders,
   HomePage,
   ShopPage,
   ShopMenPage,
@@ -21,5 +31,7 @@ export {
   CartPage,
   CheckoutPage,
   LoginPage,
-  SignupPage
+  SignupPage,
+  AccountPage,
+  AccountSettings,
 };

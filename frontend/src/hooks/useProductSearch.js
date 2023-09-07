@@ -30,6 +30,7 @@ function useProductSearch(query) {
     fetchSuggestions();
     return () => cancel();
   }, [query]);
+  
   return { error, isLoading, suggestions };
 }
 

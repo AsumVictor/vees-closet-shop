@@ -17,4 +17,3 @@ function checkVariantEmpty(variation) {
 }
 
 export default checkVariantEmpty;
-console.log(checkVariantEmpty({x: '', y: ""}));

@@ -31,7 +31,6 @@ router.post(
         qty,
       };
       variation && (item.variation = variation);
-      console.log(req.session)
       const foundItem = req.session.cart.find((item) => {
         if (item._id === _id) {
           if (variation) {
@@ -53,7 +52,6 @@ router.post(
       if (!foundItem) {
         req.session.cart.push(item);
       }
-      console.log(req.session)
       res.status(201).json({
         success: true,
         message: "Item added to cart successfuly",
@@ -68,7 +66,6 @@ router.get(
   "/get-cart",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log(req.session)
       const cart = req.session.cart || [];
       let cartItems = await Promise.all(
 
@@ -80,7 +77,6 @@ router.get(
             let basePrice = productItem.base_price && productItem.base_price;
 
             let total_cost = item.qty * productItem.actual_price;
-            console.log(req.session)
             return {
               _id: productItem._id,
               name: productItem.name,
