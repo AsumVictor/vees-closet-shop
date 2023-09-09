@@ -41,6 +41,10 @@ const OrderSchema = mongoose.Schema(
         "cancelled",
       ],
     },
+    tracking_no: {
+      type: String,
+      required: true
+    },
     total_price: {
       type: Number,
       default: 0,
@@ -80,6 +84,13 @@ const orderItemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
+// userSchema.pre("save", async function (next) {
+  
+
+//   this.password = await bcrypt.hash(this.password, 10);
+// });
 
 const OrderItem = mongoose.model("Order-Item", orderItemSchema);
 const Order = mongoose.model("Order", OrderSchema);

@@ -14,8 +14,7 @@ import {
   AccountPage,
   AccountSettings,
   Address,
-  History,
-  SaveItems,
+  Security,
   Orders,
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
@@ -50,8 +49,7 @@ function App() {
             <Route path="settings" element={<AccountSettings />} />
             <Route path="orders" element={<Orders />} />
             <Route path="addresses" element={<Address />} />
-            <Route path="history" element={<History />} />
-            <Route path="save-to-later" element={<SaveItems />} />
+            <Route path="security" element={<Security />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />

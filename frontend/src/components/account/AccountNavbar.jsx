@@ -2,8 +2,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaRegAddressBook } from "react-icons/fa";
 import { LuPackage2 } from "react-icons/lu";
-import { GrHistory } from "react-icons/gr";
-import { AiOutlineHeart } from "react-icons/ai";
+import { RiLockPasswordLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 
 function AccountNavbar() {
@@ -25,14 +24,9 @@ function AccountNavbar() {
       text: "My Orders",
     },
     {
-      href: "./save-to-later",
-      icon: <AiOutlineHeart />,
-      text: "Saved Items",
-    },
-    {
-      href: "./history",
-      icon: <GrHistory />,
-      text: "Recently Viewed",
+      href: "./security",
+      icon: <RiLockPasswordLine />,
+      text: "Change Password",
     },
   ];
 

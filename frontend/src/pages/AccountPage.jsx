@@ -1,11 +1,16 @@
 import { Outlet, useLocation } from "react-router-dom";
 import AccountNavbar from "../components/account/AccountNavbar";
+import { useEffect } from "react";
 
 function AccountPage() {
   const location = useLocation();
   const { pathname } = location;
   let page = pathname.split("/")[2];
-  
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
   return (
     <div className="mt-[4rem] 650px:mt-[6rem]  w-full mb-10">
       {!page && (

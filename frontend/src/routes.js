@@ -12,14 +12,12 @@ import SignupPage from "./pages/SignupPage";
 import AccountPage from "./pages/AccountPage";
 import AccountSettings from "./components/account/pages/AccountSettings";
 import Address from "./components/account/pages/Address";
-import History from "./components/account/pages/History";
+import Security from "./components/account/pages/Security";
 import Orders from "./components/account/pages/Orders";
-import SaveItems from "./components/account/pages/SaveItems";
 
 export {
   Address,
-  History,
-  SaveItems,
+  Security,
   Orders,
   HomePage,
   ShopPage,
