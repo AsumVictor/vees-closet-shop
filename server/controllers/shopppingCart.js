@@ -68,7 +68,6 @@ router.get(
     try {
       const cart = req.session.cart || [];
       let cartItems = await Promise.all(
-
         cart.map(async (item) => {
           let productItem = await Product.findById(item._id);
 
@@ -87,19 +86,20 @@ router.get(
               qty: item.qty,
               cost: Number(total_cost.toFixed(2)),
             };
-
           }
-
         })
       );
 
-      const totalCost = cartItems.reduce((sum, product) => sum + product.cost, 0);
+      const totalCost = cartItems.reduce(
+        (sum, product) => sum + product.cost,
+        0
+      );
 
       res.status(201).json({
         success: true,
         cart: {
           productsItems: cartItems,
-          total_cost: totalCost
+          total_cost: totalCost.toFixed(2),
         },
       });
     } catch (error) {

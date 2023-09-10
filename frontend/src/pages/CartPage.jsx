@@ -9,7 +9,7 @@ function CartPage() {
   });
 
   const navigate = useNavigate();
-  const { items, totalCost, isError, isGettingCart } = useSelector(
+  const { items, totalCost, isError, isGettingCart, removing } = useSelector(
     (state) => state.cart
   );
 
@@ -54,9 +54,9 @@ function CartPage() {
               <hr className=" col-span-full h-[0.04cm] bg-slate-200" />
             </div>
             <div className="w-full flex flex-col">
-              <CartItem />
-              <CartItem />
-              <CartItem />
+              {items.map((item) => (
+                <CartItem key={item._id} item={item} />
+              ))}
             </div>
           </div>
 
@@ -64,7 +64,7 @@ function CartPage() {
             <h1 className=" text-2xl capitalize">cart total</h1>
             <h3 className="flex justify-between mt-10 py-2 uppercase font-semibold">
               <span>Subtotal</span>
-              <span>₵ 200.00</span>
+              <span>{`₵ ${totalCost}`}</span>
             </h3>
 
             <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
@@ -80,6 +80,12 @@ function CartPage() {
             </button>
           </div>
         </>
+      )}
+
+      {removing && (
+        <div className=" h-screen w-full top-0 left-0 bg-[#ffffff56] z-[10] fixed flex justify-center items-center font-bold">
+          <span className="py-2 px-3 bg-white">Removing...</span>
+        </div>
       )}
     </div>
   );
