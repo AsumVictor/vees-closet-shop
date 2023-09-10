@@ -18,45 +18,73 @@ import {
   Orders,
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getCart } from "./redux/actions/cart";
 import { getNewProducts } from "./redux/actions/newProducts";
+import { loadUser } from "./redux/actions/user";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./components/auth/ProtectedRoutes";
 
 function App() {
+  const { loading } = useSelector((state) => state.client);
+  console.log(loading);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCart());
     dispatch(getNewProducts());
+    dispatch(loadUser());
   }, []);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<PageLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/men" element={<ShopMenPage />} />
-          <Route path="/women" element={<ShopWomenPage />} />
-          <Route path="/category/:name" element={<ShopCategoryPage />} />
-          <Route path="/product" element={<ProductSearchPage />} />
-          <Route path="/product/:name" element={<ProductDetailsPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          {/* User account */}
-          <Route path="/my-account" element={<AccountPage />}>
-            <Route index element={<h1>HELO</h1>} />
+    <>
+      {loading ? (
+        <p>LOADING...</p>
+      ) : (
+        <BrowserRouter>
+          <Routes>
+            <Route element={<PageLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/men" element={<ShopMenPage />} />
+              <Route path="/women" element={<ShopWomenPage />} />
+              <Route path="/category/:name" element={<ShopCategoryPage />} />
+              <Route path="/product" element={<ProductSearchPage />} />
+              <Route path="/product/:name" element={<ProductDetailsPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              {/* User account */}
+              <Route element={<ProtectedRoute />}>
 
-            <Route path="settings" element={<AccountSettings />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="addresses" element={<Address />} />
-            <Route path="security" element={<Security />} />
-          </Route>
+              <Route path="/my-account" element={<AccountPage />}>
+                <Route index element={<h1>HELO</h1>} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+                <Route path="settings" element={<AccountSettings />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="addresses" element={<Address />} />
+                <Route path="security" element={<Security />} />
+              </Route>
+              </Route>
+
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
+    </>
   );
 }
 

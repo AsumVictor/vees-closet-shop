@@ -8,11 +8,13 @@ export const getCart = () => async (dispatch, getState) => {
     dispatch({
       type: "getCartRequest",
     });
-    let res = await axios(`${server}cart/get-cart`);
+    let res = await axios(`${server}cart/get-cart`, {
+      withCredentials: true,
+    });
     if (res.data.success) {
       dispatch({
         type: "getCart",
-        payload: res.data.data,
+        payload: res.data,
       }); 
     } else {
       dispatch({

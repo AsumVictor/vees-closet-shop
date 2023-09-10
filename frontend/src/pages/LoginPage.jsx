@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import server from "../server";
 import { LabelInput } from "../components/inputs/labelInput";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function LoginPage() {
+  const { isAuthenticated } = useSelector((state) => state.client);
   const { state } = useLocation();
   const path = state?.pathname ? state.pathname : "/";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const canSubmit = email.trim() !== "" && password.trim() !== "";
@@ -16,6 +19,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     const userIformation = {
       email,
       password,
@@ -30,18 +34,19 @@ function LoginPage() {
         window.location.reload(true);
       })
       .catch((err) => {
-        console.log(err)
         setLoading(false);
-        let errMessage = err.response ? err.response.data.message : err.message;
-        console.log(errMessage)
+        let errMessage = err.response?.data
+          ? err.response.data.message
+          : err.message;
+        setError(errMessage);
       });
   };
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate(path);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(path);
+    }
+  }, []);
 
   return (
     <div className="w-full  overflow-y-auto h-screen py-20 flex flex-col justify-center items-center px-3">
@@ -54,21 +59,32 @@ function LoginPage() {
         className=" mt-10 py-1 w-full 400px:w-[10cm]"
         onSubmit={(e) => handleSubmit(e)}
       >
+        {error && (
+          <p className="text-red-800 text-center bg-red-100 py-1  mb-3">
+            {error}
+          </p>
+        )}
         <div className="w-full flex flex-col gap-4">
           <LabelInput
             label={"email"}
-            type={'email'}
+            type={"email"}
             isRequired={true}
             value={email}
-            handleChange={(e) => setEmail(e.target.value)}
+            handleChange={(e) => {
+              setEmail(e.target.value);
+              setError(null);
+            }}
           />
           <div className="flex flex-col w-full">
             <LabelInput
-            type={'password'}
+              type={"password"}
               label={"password"}
               isRequired={true}
               value={password}
-              handleChange={(e) => setPassword(e.target.value)}
+              handleChange={(e) => {
+                setPassword(e.target.value);
+                setError(null);
+              }}
             />
             <Link to={"/forgot-password"} className=" text-blue-700 underline">
               Forgot password

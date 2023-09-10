@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import server from "../server";
 import { LabelInput } from "../components/inputs/labelInput";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function SignupPage() {
+  const { isAuthenticated } = useSelector((state) => state.client);
   const { state } = useLocation();
   const path = state?.pathname ? state.pathname : "/";
   const navigate = useNavigate();
@@ -14,14 +16,24 @@ function SignupPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  const canSubmit = email.trim() !== "" && password.trim() !== "";
+  const canSubmit =
+    email.trim() !== "" &&
+    password.trim() !== "" &&
+    firstName.trim() !== "" &&
+    lastName.trim() !== "" &&
+    confirmPass.trim() === password.trim();
+
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null)
     const userIformation = {
       email,
       password,
+      first_name: firstName,
+      last_name: lastName,
     };
 
     axios
@@ -29,22 +41,26 @@ function SignupPage() {
       .then((res) => {
         setEmail("");
         setPassword("");
+        setConfirmPass("");
+        setFirstName("");
+        setLastName("");
         navigate(path, { replace: true });
         window.location.reload(true);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
-        let errMessage = err.response ? err.response.data.message : err.message;
-        console.log(errMessage);
+        let errMessage = err.response?.data
+          ? err.response.data.message
+          : err.message;
+        setError(errMessage);
       });
   };
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate(path);
-  //   }
-  // }, []);
+ useEffect(() => {
+   if (isAuthenticated) {
+     navigate(path);
+   }
+ }, []);
 
   return (
     <div className="w-full  overflow-y-auto h-screen py-20 flex flex-col justify-center items-center px-3">
@@ -57,6 +73,11 @@ function SignupPage() {
         className=" mt-10 py-1 w-full 400px:w-[10cm]"
         onSubmit={(e) => handleSubmit(e)}
       >
+        {error && (
+          <p className="text-red-800 text-center bg-red-100 py-1  mb-3">
+            {error}
+          </p>
+        )}
         <div className="w-full flex flex-col gap-4">
           <LabelInput
             type={"firstName"}
@@ -96,9 +117,10 @@ function SignupPage() {
 
           <button
             type="submit"
-            className="py-2 bg-primary-800 text-white font-semibold"
+            disabled={!canSubmit}
+            className="py-2 bg-primary-800 text-white font-semibold disabled:opacity-20"
           >
-            Login
+            Create Account
           </button>
         </div>
         <p className="mt-2">

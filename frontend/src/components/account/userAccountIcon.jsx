@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FiTrendingUp, FiUser } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 function UserAccountIcon() {
+  const { isAuthenticated } = useSelector((state) => state.client);
   const navigate = useNavigate();
-  let user = true;
   const handleClick = () => {
-    if (user) {
+    if (isAuthenticated) {
       return navigate("/my-account");
     }
     navigate("/login");

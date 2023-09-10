@@ -8,7 +8,8 @@ const CatchAsyncError = require("../middleware/CatchAsyncErrors");
 const sendToken = require("../helpers/jwtToken");
 const { isAuthenticated } = require("../middleware/auth");
 const AddressBook = require("../models/addressBook");
-
+const isStrongPassword = require("../helpers/isStrongPassword");
+const user = require("../models/user");
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_TOKEN, {
     expiresIn: "5m",
@@ -37,6 +38,15 @@ router.post(
 
       if (duplicate_user) {
         return next(new ErrorHandler(`User already exist!`, 409));
+      }
+
+      if (!isStrongPassword(req.body.password)) {
+        return next(
+          new ErrorHandler(
+            `Provide a strong password. contains min Length : 8, Uppercase, Lowecase & symbol `,
+            400
+          )
+        );
       }
 
       const newUser = await User.create(req.body);
@@ -222,7 +232,7 @@ router.patch(
       address.address1 = req.body.address1;
       address.additional_address = req.body.additional_address;
 
-     let updated_address = await address.save();
+      let updated_address = await address.save();
 
       res.status(201).json({
         success: true,
@@ -250,11 +260,21 @@ router.put(
         return next(new ErrorHandler("Old password is incorrect!", 400));
       }
 
-      if (req.body.newPassword !== req.body.confirmPassword) {
+      if (!isStrongPassword(req.body.newPassword)) {
         return next(
-          new ErrorHandler("Password doesn't matched with each other!", 400)
+          new ErrorHandler(
+            `Provide a strong password. contains min Length : 8, Uppercase, Lowecase & symbol `,
+            400
+          )
         );
       }
+
+      if (req.body.newPassword.trim() !== req.body.confirmPassword.trim()) {
+        return next(
+          new ErrorHandler("New password doesn't matched with each other!", 400)
+        );
+      }
+
       user.password = req.body.newPassword;
 
       await user.save();
@@ -262,6 +282,58 @@ router.put(
       res.status(200).json({
         success: true,
         message: "Password updated successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// update user info
+router.put(
+  "/update-info",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      if (req.body.firstName.trim() === "" || req.body.lastName.trim() === "") {
+        return next(new ErrorHandler("All fields are required", 400));
+      }
+      const user = await User.findById(req.user.id);
+
+      user.first_name = req.body.firstName;
+      user.last_name = req.body.lastName;
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Changes saved successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// Email verify request
+router.put(
+  "/email-verify-req",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      await sendMail({
+        from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
+        to: user.email,
+        subject: "Email address verification",
+        text: "Verify your email",
+        html: null,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: `Please check your email-${user.email} for verification link`,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

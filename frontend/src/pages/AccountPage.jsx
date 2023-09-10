@@ -1,8 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import AccountNavbar from "../components/account/AccountNavbar";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function AccountPage() {
+  const { user } = useSelector((state) => state.client);
+  console.log(user);
   const location = useLocation();
   const { pathname } = location;
   let page = pathname.split("/")[2];
@@ -15,8 +18,8 @@ function AccountPage() {
     <div className="mt-[4rem] 650px:mt-[6rem]  w-full mb-10">
       {!page && (
         <div className=" bg-deep-primary py-1 w-full text-white px-5 650px:hidden">
-          <h3 className="text-xl">Welcome, Asum</h3>
-          <p>iamasum369@gmail.com</p>
+          <h3 className="text-xl">{`Welcome, ${user.first_name}`}</h3>
+          <p>{user.email}</p>
         </div>
       )}
 

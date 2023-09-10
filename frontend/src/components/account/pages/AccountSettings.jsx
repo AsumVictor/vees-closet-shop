@@ -1,9 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import { HiBadgeCheck } from "react-icons/hi";
+import { toast } from "react-toastify";
+import server from "../../../server";
+import axios from "axios";
 
 function AccountSettings() {
+  const { user } = useSelector((state) => state.client);
+  const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState(user.first_name);
+  const [lastName, setLastName] = useState(user.last_name);
+  const [editable, setEditable] = useState(false);
+  const [error, setError] = useState(null);
+  const [verifying, setVerifying] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    const userIformation = {
+      firstName,
+      lastName,
+    };
+
+    axios
+      .put(`${server}user/update-info`, userIformation, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          toast.success(res.data.message, {
+            toastId: "updateInfoSuccess",
+          });
+          window.location.reload(true);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        let errMessage = err.response?.data
+          ? err.response.data.message
+          : err.message;
+        setError(errMessage);
+      });
+  };
+
+  const handleVerify = async (e) => {
+    setVerifying(true);
+    axios
+      .put(`${server}user/email-verify-req`, null, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          setVerifying(false);
+          toast.success(res.data.message, {
+            toastId: "verifyEmail",
+          });
+        }
+      })
+      .catch((err) => {
+        setVerifying(false);
+        let errMessage = err.response?.data
+          ? err.response.data.message
+          : err.message;
+        toast.error(errMessage, {
+          toastId: "verifyError",
+        });
+      });
+  };
+
   return (
     <div className="w-full">
       <div className="w-full bg-gray-100 py-1 flex flex-row gap-4 px-3 items-end">
@@ -12,58 +80,123 @@ function AccountSettings() {
         </Link>
         <h1 className="text-xl">Account Settings</h1>
       </div>
+
       <div className="w-full flex flex-row mt-7 pr-10 gap-4 px-3 items-end justify-between">
         <h2 className="text-xl bg-white font-semibold">Profile Details</h2>
         <button
+          onClick={() => setEditable((prev) => !prev)}
+          disabled={loading}
           type="button"
-          className=" bg-deep-primary px-4 py-1 text-white flex flex-row gap-2"
+          className={`${
+            editable
+              ? "bg-red-100 text-red-600"
+              : "bg-deep-primary text-white  "
+          } px-4 py-1  flex flex-row
+           gap-2`}
         >
-          <CiEdit size={24} />
-          <span>Edit Profile</span>
+          {editable ? (
+            "Cancel"
+          ) : (
+            <>
+              <CiEdit size={24} />
+              <span>Edit Profile</span>
+            </>
+          )}
         </button>
       </div>
-      <div className="w-full px-3 mt-10 flex flex-col gap-3">
+
+      <form
+        className="w-full px-3 mt-10 flex flex-col gap-3"
+        onSubmit={(e) => handleSubmit(e)}
+      >
+        {error && (
+          <p className="text-red-800 text-center bg-red-100 py-1">{error}</p>
+        )}
+
         <div className="">
           <p>First Name</p>
-          <p className=""></p>
-          <input
-            type="text"
-            value={"Asum"}
-            disabled={true}
-            name=""
-            id=""
-            className="w-full outline-0 text-xl font-medium"
-          />
-          <hr className="mt-2 border-deep-primary" />
+          {editable ? (
+            <input
+              type="text"
+              required={true}
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              disabled={!editable}
+              name="firstName"
+              id="firstName"
+              className="w-full outline-0 text-xl font-medium"
+            />
+          ) : (
+            <p className="w-full outline-0 text-xl font-medium">
+              {user.first_name}
+            </p>
+          )}
+          <hr className={`mt-2 ${editable && "border-deep-primary"} `} />
         </div>
-        <button className="py-2 px-4 bg-deep-primary text-white font-medium">
-          Save Changes
-        </button>
-      </div>
-
-
-      <div className="w-full flex flex-row mt-20 pr-10 gap-4 px-3 items-end justify-between">
-        <h2 className="text-xl bg-white font-semibold">Security Settings</h2>
-        
-      </div>
-      <div className="w-full px-3 mt-10 flex flex-col gap-3">
         <div className="">
-          <p>Password</p>
-          <p className=""></p>
-          <input
-            type="password"
-            value={"*************"}
-            disabled={true}
-            name=""
-            id=""
-            className="w-full outline-0 text-xl font-medium"
-          />
+          <p>Last Name</p>
+          {editable ? (
+            <input
+              required={true}
+              type="text"
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
+              disabled={!editable}
+              name="firstName"
+              id="firstName"
+              className="w-full outline-0 text-xl font-medium"
+            />
+          ) : (
+            <p className="w-full outline-0 text-xl font-medium">
+              {user.last_name}
+            </p>
+          )}
+          <hr className={`mt-2 ${editable && "border-deep-primary"} `} />
+        </div>
+        <div className="w-full">
+          <p>Email Address</p>
+          <div className="w-full grid grid-cols-10">
+            <input
+              type="text"
+              value={user.email}
+              disabled={true}
+              name="email"
+              id="email"
+              className="w-full outline-0 text-xl font-medium col-span-7"
+            />
+            <button
+              type="button"
+              onClick={() => handleVerify()}
+              disabled={user.isEmail_verified}
+              className={`py-1 px-2 ${
+                !user.isEmail_verified
+                  ? "bg-deep-primary text-white"
+                  : "text-emerald-600"
+              } ${verifying && "opacity-40"}   col-span-3 600px:col-span-2`}
+            >
+              {user.isEmail_verified ? (
+                <div className="flex gap-1 items-center">
+                  <HiBadgeCheck />
+                  <span>Verfied</span>
+                </div>
+              ) : (
+                <>{verifying ? "Wait..." : "Verify"}</>
+              )}
+            </button>
+          </div>
           <hr className="mt-2 border-deep-primary" />
         </div>
-        <button className="py-2 px-4 bg-deep-primary text-white font-medium">
-          Change Password
-        </button>
-      </div>
+
+        {editable && (
+          <button
+            type="submit"
+            disabled={loading}
+            className="py-2 px-4 bg-deep-primary text-white font-medium disabled:opacity-30"
+          >
+            {loading ? "Saving..." : "Save Changes"}
+          </button>
+        )}
+      </form>
     </div>
   );
 }

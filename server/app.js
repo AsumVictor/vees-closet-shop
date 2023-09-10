@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
+
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
@@ -31,9 +32,9 @@ app.use(
     secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-     cookie: {
-       secure: false, 
-     },
+    cookie: {
+      secure: false,
+    },
   })
 );
 
