@@ -16,6 +16,7 @@ router.post(
     try {
       const { shipping_address, items, payment_number, coupon, delivery_cost } =
         req.body;
+        
       if (!delivery_cost || !payment_number) {
         return next(
           new ErrorHandler("Error: Provide all neccessary information", 400)

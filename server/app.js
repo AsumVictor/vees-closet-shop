@@ -5,12 +5,14 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")
+const mongoose = require('mongoose')
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://veescloset.onrender.com",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -27,16 +29,20 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
+const mongoStore = MongoStore.create({
+  mongoUrl: process.env.DATABASE_URL,
+  mongooseConnection: mongoose.connection,
+  collection: 'cart', 
+});
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
+    store:  mongoStore,
     cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      expires: null
+      secure: false,
     },
   })
 );

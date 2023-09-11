@@ -43,7 +43,8 @@ const OrderSchema = mongoose.Schema(
     },
     tracking_no: {
       type: String,
-      required: true
+      required: true,
+      unique: [true, "Error collition occured! Try again"],
     },
     total_price: {
       type: Number,

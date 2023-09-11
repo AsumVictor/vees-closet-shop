@@ -30,6 +30,7 @@ router.post(
         _id,
         qty,
       };
+      
       variation && (item.variation = variation);
       const foundItem = req.session.cart.find((item) => {
         if (item._id === _id) {
