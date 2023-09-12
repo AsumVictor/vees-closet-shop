@@ -92,7 +92,7 @@ router.get(
       );
 
       const totalCost = cartItems.reduce(
-        (sum, product) => sum + product.cost,
+        (sum, product) => sum + Number(product.cost),
         0
       );
 
@@ -100,7 +100,7 @@ router.get(
         success: true,
         cart: {
           productsItems: cartItems,
-          total_cost: totalCost.toFixed(2),
+          total_cost: Number(totalCost.toFixed(2)),
         },
       });
     } catch (error) {

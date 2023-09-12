@@ -14,7 +14,7 @@ router.post(
   isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const { shipping_address, items, payment_number, coupon, delivery_cost } =
+      const { userDetails, shipping_address, items, payment_number, coupon, delivery_cost } =
         req.body;
         
       if (!delivery_cost || !payment_number) {

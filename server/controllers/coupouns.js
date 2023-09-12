@@ -75,6 +75,7 @@ router.get(
   "/get-coupon-value/:code",
   catchAsyncErrors(async (req, res, next) => {
     try {
+      let value = null;
       const price = req.query.price;
       if (!price) {
         return next(new ErrorHandler("Price must be included", 400));
@@ -98,7 +99,7 @@ router.get(
       if (couponCode.minimumAmount && couponCode.minimumAmount > price) {
         return next(
           new ErrorHandler(
-            `Coupon applies only if shipping cost is more than GH₵ ${couponCode.minimumAmount.toFixed(
+            `Coupon applies only if total cost is more than GH₵ ${couponCode.minimumAmount.toFixed(
               2
             )}`,
             400
@@ -109,7 +110,7 @@ router.get(
       if (couponCode.maximumAmount && couponCode.maximumAmount < price) {
         return next(
           new ErrorHandler(
-            `Coupon applies only if shipping cost is less than GH₵ ${couponCode.maximumAmount.toFixed(
+            `Coupon applies only if total cost is less than GH₵ ${couponCode.maximumAmount.toFixed(
               2
             )}`,
             400
@@ -117,9 +118,16 @@ router.get(
         );
       }
 
+      if (couponCode.discountType === "percentage") {
+        value = (Number(couponCode.discountValue) * Number(price)) / 100;
+      } else {
+        value = couponCode.discountValue;
+      }
+
       res.status(200).json({
         success: true,
-        couponCode,
+        code: couponCode.code,
+        value,
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
