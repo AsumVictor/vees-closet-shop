@@ -27,7 +27,11 @@ body {
   transition: 0.1s;
 }
 
-.form-group.active .label {
+.form-group.disabled {
+  opacity: 0.4;
+}
+
+.form-group.active .label{
   transition: 0.1s;
   transform: translateY(-25px);
   font-weight: bold;
@@ -58,14 +62,19 @@ body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: radial-gradient(farthest-side,#351e16 94%,#0000) top/3.8px 3.8px no-repeat,
-         conic-gradient(#0000 30%,#351e16);
-  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 3.8px),#000 0);
+  background: radial-gradient(farthest-side, #351e16 94%, #0000) top/3.8px 3.8px
+      no-repeat,
+    conic-gradient(#0000 30%, #351e16);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    #0000 calc(100% - 3.8px),
+    #000 0
+  );
   animation: spinner-c7wet2 1s infinite linear;
 }
 
 @keyframes spinner-c7wet2 {
   100% {
-     transform: rotate(1turn);
+    transform: rotate(1turn);
   }
 }

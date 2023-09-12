@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlinePersonalInjury } from "react-icons/md";
 import OrderSummaryBoxInfo from "../components/checkout/orderSummaryBox";
 import { LabelInput } from "../components/inputs/labelInput";
@@ -8,45 +8,87 @@ import { PaymentRadio } from "../components/inputs/radioButton";
 import mtn from "../assets/images/mtn.png";
 import vodafone from "../assets/images/vodafone.png";
 import airtelTigo from "../assets/images/airteligo.png";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import CouponApply from "../components/order/CouponApply";
+import { AiFillInfoCircle } from "react-icons/ai";
 
 function CheckoutPage() {
+  const { user } = useSelector((state) => state.client);
+  const { totalCost } = useSelector((state) => state.cart);
+  const [formData, setFormData] = useState({
+    delivery_cost: 45.0,
+    coupon: null,
+  });
+  const [userDetails, setUserDetails] = useState({
+    first_name: user ? user.first_name : "",
+    last_name: user ? user.last_name : "",
+    email: user ? user.email : "",
+  });
+  const [discount, setDiscount] = useState(0);
+
+  let netCost = totalCost + formData.delivery_cost - discount;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleCoupon = (data) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        coupon: data,
+      };
+    });
+  };
+  console.log(formData);
   return (
-    <div className=" grid grid-cols-3 mt-20">
+    <div className=" grid grid-cols-3 mt-[3rem]">
       <div className="py-10 col-span-full 800px:col-span-2 text-black">
-        <h1 className="px-10  text-2xl">Order information</h1>
-        <div className="px-4 1000px:px-10 mt-10 ">
+        {!user && (
+          <p className="py-1 px-3 mx-3 bg-[#351e161e] border-t-2 border-t-deep-primary flex gap-2 mb-5">
+            <span>Returning customer?</span>
+            <Link to={"../login"} className=" hover:underline text-blue-600">
+              Click here to login
+            </Link>
+          </p>
+        )}
+        <h1 className=" px-3 text-2xl">Order information</h1>
+
+        <form className="px-4 1000px:px-10 mt-5 ">
           <div className="w-full border-l-[4px] border-deep-primary">
             <OrderSummaryBoxInfo
               title={"Personal Information"}
               icon={<MdOutlinePersonalInjury size={23} color="white" />}
             >
-              <form className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-2 gap-5">
+              <div className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-2 gap-5">
                 <LabelInput
                   label={"First Name"}
                   type={"text"}
+                  value={userDetails.first_name}
                   isRequired={true}
+                  isDisabled={user}
                 />
                 <LabelInput
                   label={"Last Name"}
-                  type={"number"}
+                  value={userDetails.last_name}
+                  type={"text"}
                   isRequired={true}
+                  isDisabled={user}
                 />
                 <LabelInput
                   label={"Email address"}
                   type={"email"}
+                  value={userDetails.email}
                   isRequired={true}
+                  isDisabled={user}
                 />
-                <LabelInput label={"phone number"} type={"tel"} />
-              </form>
+              </div>
             </OrderSummaryBoxInfo>
             <OrderSummaryBoxInfo
               title={"Shipping Information"}
               icon={<FaShippingFast size={23} color="white" />}
             >
-              <form className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-2 gap-5">
+              <div className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-2 gap-5">
                 <LabelInput
                   label={"Address 1"}
                   type={"text"}
@@ -79,13 +121,13 @@ function CheckoutPage() {
                   </select>
                   <p>Shipping Cost: ₵ XX.00</p>
                 </div>
-              </form>
+              </div>
             </OrderSummaryBoxInfo>
             <OrderSummaryBoxInfo
               title={"Payment Information"}
               icon={<BsCreditCard size={23} color="white" />}
             >
-              <form className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-3 gap-5">
+              <div className="w-full py-5 px-[0.5cm] grid grid-cols-1 500px:grid-cols-3 gap-5">
                 <h2 className="col-span-full">Choose payment provider</h2>
                 <PaymentRadio
                   img={mtn}
@@ -124,31 +166,31 @@ function CheckoutPage() {
                     />
                   </div>
                 </div>
-              </form>
+              </div>
             </OrderSummaryBoxInfo>
           </div>
-        </div>
+        </form>
       </div>
 
       <div className="sticky top-10 py-10 col-span-full 800px:col-span-1 px-5 ">
         <h1 className=" text-2xl capitalize  sticky top-0">cart summary</h1>
         <h3 className="flex justify-between mt-10 py-2 uppercase font-semibold">
           <span>Subtotal</span>
-          <span>₵ 200.00</span>
+          <span>₵ {totalCost}</span>
         </h3>
         <h3 className="flex justify-between py-2 uppercase font-semibold">
           <span>Shipping cost</span>
-          <span>₵ 200.00</span>
+          <span>₵ {formData.delivery_cost.toFixed(2)}</span>
         </h3>
         <h3 className="flex justify-between py-2 uppercase font-semibold">
           <span>Discount</span>
-          <span>-</span>
+          <span>{discount > 0 ? `- ${discount}` : "-"}</span>
         </h3>
 
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
         <h3 className="flex justify-between py-2 uppercase font-semibold">
           <span>total</span>
-          <span>₵ 200.00</span>
+          <span>₵ {netCost.toFixed(2)}</span>
         </h3>
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
 
@@ -156,12 +198,16 @@ function CheckoutPage() {
           <li className=" grid grid-cols-10"></li>
         </ul>
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
-        <div className="w-full py-1 grid grid-cols-12 mt-5">
-          <LabelInput InputParentExtendClass=' col-span-9' label={'Do you coupon ?'}/>
-          <button type="button" className="py-1 px-2 bg-primary-800 col-span-3 text-white">Apply</button>
-        </div>
+
+        <CouponApply handleChange={handleCoupon} handleDiscount={setDiscount} />
+        {discount > 0 && (
+          <p className=" items-center grid grid-cols-12 px-2 py-1 text-emerald-700 bg-emerald-200">
+            <AiFillInfoCircle />
+            <span className=" col-span-10">Coupon discount allowed</span>
+          </p>
+        )}
         <button className=" uppercase text-center w-full mt-10 py-2 bg-primary-800 text-white font-medium">
-          proceed to checkout
+          Place order
         </button>
       </div>
     </div>
