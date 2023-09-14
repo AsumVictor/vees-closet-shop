@@ -9,7 +9,7 @@ function Orders() {
   let [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page");
   let sort = searchParams.get("sort");
-  let [products, setProducts] = useState(null);
+  let [products, setProducts] = useState([]);
   let [totalPages, setTotalPages] = useState(1);
   let [currentPage, setCurrentPage] = useState(page || 1);
   let [isLoading, setLoading] = useState(true);
