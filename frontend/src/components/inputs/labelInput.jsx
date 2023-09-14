@@ -14,13 +14,14 @@ export function LabelInput({
   //focus inputs
   const [isFocus, setIsFocus] = useState(true);
   const inputRef = useRef(null);
+
   function FocusOnInput(e) {
-    setIsFocus(true);
+    return setIsFocus(true);
   }
 
   function BlurOnInput(e) {
     if (e.target.value.trim() == "") {
-      e.target.parentNode.classList.remove("active");
+      return setIsFocus(false);
     }
   }
 

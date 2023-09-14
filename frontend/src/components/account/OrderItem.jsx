@@ -9,7 +9,10 @@ function OrderItem({ _id, trackingID, status, date, totalItems }) {
       <div className="flex flex-row justify-between 400px:pr-10">
         <p className=" text-[15px] 500px:text-[18px] flex gap-1">
           <span>Order</span>
-          <Link to={`./${_id}`} className=" underline hover:text-blue-500">{`#${trackingID}`}</Link>
+          <Link
+            to={`./${_id}`}
+            className=" underline hover:text-blue-500"
+          >{`#${trackingID}`}</Link>
         </p>
         <button
           type="button"

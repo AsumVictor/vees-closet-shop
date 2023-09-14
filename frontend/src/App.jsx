@@ -29,7 +29,6 @@ import ProtectedRoute from "./components/auth/ProtectedRoutes";
 
 function App() {
   const { loading } = useSelector((state) => state.client);
-  console.log(loading);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCart());

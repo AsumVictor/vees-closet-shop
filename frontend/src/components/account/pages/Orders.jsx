@@ -21,10 +21,13 @@ function Orders() {
       try {
         setLoading(true);
         let res = await axios(
-          `${server}product/products-by-category?category=men&page=${currentPage}&sort=${sortQuery}`
+          `${server}order/get-user-orders?page=${currentPage}&sort=${sortQuery}`,
+          {
+            withCredentials: true,
+          }
         );
         if (res.data.success) {
-          setProducts(res.data.products);
+          setProducts(res.data.orders);
           setTotalPages(res.data.totalPages);
           setLoading(false);
         } else {
@@ -89,8 +92,8 @@ function Orders() {
 
       <div className="mt-10 w-full py-2 flex flex-row justify-between px-2">
         <p>
-          {` Showing ${1 + (Number(currentPage) - 1) * 12}–
-          ${1 + (Number(currentPage) - 1) * 12 + 11} of ${
+          {` Showing ${1 + (Number(currentPage) - 1) * 20}–
+          ${1 + (Number(currentPage) - 1) * 20 + 19} of ${
             products?.length
           } results`}
         </p>
@@ -101,14 +104,26 @@ function Orders() {
            bg-gray-300          `}
         >
           <option value={""}>All</option>
-          <option value={"delevered"}>Delivered</option>
-          <option value={"cancelled"}>Cancelled</option>
+          <option value={"pending"}>Pending</option>
           <option value={"processing"}>Processing</option>
+          <option value={"shipped"}>Shipped</option>
+          <option value={"refund"}>Refund</option>
+          <option value={"cancelled"}>Cancelled</option>
+          <option value={"delivered"}>Delivered</option>
         </select>
       </div>
 
       <div className=" flex flex-col w-full py-1 mt-5 px-2 gap-4">
-        <OrderItem _id={1} trackingID={'AY83909E'} status={'cancelled'} date={'593403404238'} totalItems={7} />
+        {products.map((order) => (
+          <OrderItem
+          key={order._id}
+            _id={order._id}
+            trackingID={order.tracking_no}
+            status={order.status}
+            date={order.date}
+            totalItems={order.items}
+          />
+        ))}
       </div>
 
       <div className="w-full mt-10 px-2 flex justify-center items-center">

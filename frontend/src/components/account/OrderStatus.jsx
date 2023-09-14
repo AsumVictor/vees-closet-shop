@@ -12,7 +12,20 @@ function OrderStatus({ status }) {
         ? "bg-blue-600"
         : status === "cancelled"
         ? "bg-red-600"
+        : status === "pending"
+        ? "bg-blue-600"
+        : status === "shipped"
+        ? "bg-emerald-400"
+        : status === "refund"
+        ? "bg-orange-600"
         : null
+
+        // "pending",
+        // "processing",
+        // "shipped",
+        // "delivered",
+        // "refund",
+        // "cancelled",
     }
     
     `}

@@ -8,12 +8,15 @@ const CatchAsyncError = require("../middleware/CatchAsyncErrors");
 const { isAuthenticated } = require("../middleware/auth");
 const { OrderItem, Order } = require("../models/orders");
 const getTrackingID = require("../helpers/getTrackingID");
+const generateStrongPassword = require("../helpers/getRandomPassword");
+const sendMail = require("../helpers/sendMail");
 
 // create order --- already user
+// guest-place-order
 
 const createOrder = async (data) => {
   try {
-    const { user_id, order_details } = data;
+    const { user_id, email, order_details } = data;
     const totalCost = order_details.items.reduce(
       (sum, product) => sum + Number(product.cost),
       0
@@ -58,6 +61,14 @@ const createOrder = async (data) => {
       paymentInfo: order_details.paymentInfo,
     });
 
+    await sendMail({
+      from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
+      to: email,
+      subject: "Confirm your order",
+      text: "Make payment to confirm your order",
+      html: null,
+    });
+
     return {
       success: true,
       order,
@@ -67,6 +78,7 @@ const createOrder = async (data) => {
   }
 };
 
+// Place order for already user
 router.post(
   "/place-order",
   isAuthenticated,
@@ -75,8 +87,9 @@ router.post(
       const { shipping_address, paymentInfo, items, coupon, shipping_cost } =
         req.body;
 
-      let order = await createOrder({
+      let response = await createOrder({
         user_id: req.user._id,
+        email: req.user.email,
         order_details: {
           shipping_address,
           coupon,
@@ -86,35 +99,67 @@ router.post(
         },
       });
 
-      // if (!delivery_cost || !payment_number) {
-      //   return next(
-      //     new ErrorHandler("Error: Provide all neccessary information", 400)
-      //   );
-      // }
-      // let discount = coupon ? coupon : 0;
-      // const totalCost = items.reduce((sum, item) => sum + item.totalPrice, 0);
-      // const net_cost = Number(
-      //   (totalCost + delivery_cost - discount).toFixed(2)
-      // );
-
-      // const orderItems = await Promise.all(
-      //   items.map(async (item) => {
-      //     const { _id } = await OrderItem.create(item);
-      //     return _id;
-      //   })
-      // );
-
-      // let { _id } = await Order.create({
-      //   shipping_address,
-      //   user: req.user.id,
-      //   total_price: net_cost,
-      //   items: orderItems,
-      // });
+      if (response.success) {
+        req.session.cart = [];
+      }
 
       res.status(201).json({
         success: true,
-        order,
-        message: `Order placed with ID: `,
+        order: response.order.tracking_no,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
+// Guest checkout
+router.post(
+  "/guest-place-order",
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const {
+        userDetails,
+        shipping_address,
+        paymentInfo,
+        items,
+        coupon,
+        shipping_cost,
+      } = req.body;
+
+      const duplicate_user = await User.findOne({ email: userDetails.email });
+
+      if (duplicate_user) {
+        return next(
+          new ErrorHandler(
+            `Email aready exist. Try logging in to place your order`,
+            409
+          )
+        );
+      }
+      const { _id, email } = await User.create({
+        ...userDetails,
+        password: generateStrongPassword(),
+      });
+
+      let order = await createOrder({
+        user_id: _id,
+        email: email,
+        order_details: {
+          shipping_address,
+          coupon,
+          shipping_cost,
+          paymentInfo,
+          items,
+        },
+      });
+      if (order.success) {
+        req.session.cart = [];
+      }
+
+      res.status(201).json({
+        success: true,
+        order: order.order.tracking_no,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
@@ -265,10 +310,48 @@ router.get(
   isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const orders = await Order.find({ user: req.user.id });
+      const page = Number(req.query.page) || 1;
+      const limit = 20;
+      const sortType = req.query.sort;
+      let sortOptions = { user: req.user._id };
+
+      let status = [
+        "pending",
+        "processing",
+        "shipped",
+        "delivered",
+        "refund",
+        "cancelled",
+      ];
+
+      status.forEach((status) => {
+        if (sortType === status) {
+          sortOptions = { ...sortOptions, status: status };
+        }
+      });
+
+      const totalCount = await Order.countDocuments(sortOptions);
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const response = await Order.find(sortOptions, "status tracking_no items createdAt ")
+        .sort({ updatedAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      let orders = response.map((order) => {
+        return {
+          _id: order._id,
+          status: order.status,
+          tracking_no: order.tracking_no,
+          items: order.items.length,
+          date: order.createdAt
+        };
+      });
+
       res.status(200).json({
         success: true,
         orders,
+        totalPages
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));

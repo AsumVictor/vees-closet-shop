@@ -341,4 +341,25 @@ router.put(
   })
 );
 
+// log out user
+router.post(
+  "/logout",
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      res.cookie("x_user_auth_v1", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+      res.status(201).json({
+        success: true,
+        message: "Log out successful!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+)
+
 module.exports = router;

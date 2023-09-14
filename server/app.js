@@ -43,6 +43,7 @@ app.use(
     store:  mongoStore,
     cookie: {
       secure: false,
+      expires: null,
     },
   })
 );
