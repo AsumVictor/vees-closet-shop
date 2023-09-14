@@ -5,8 +5,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
-const MongoStore = require("connect-mongo")
-const mongoose = require('mongoose')
+const MongoStore = require("connect-mongo");
+const mongoose = require("mongoose");
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 const mongoStore = MongoStore.create({
   mongoUrl: process.env.DATABASE_URL,
   mongooseConnection: mongoose.connection,
-  collection: 'cart', 
+  collection: "cart",
 });
 
 app.use(
@@ -40,10 +40,12 @@ app.use(
     secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-    store:  mongoStore,
+    store: mongoStore,
     cookie: {
-      secure: false,
       expires: null,
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
     },
   })
 );
