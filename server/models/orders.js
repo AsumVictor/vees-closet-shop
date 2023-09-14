@@ -46,9 +46,39 @@ const OrderSchema = mongoose.Schema(
       required: true,
       unique: [true, "Error collition occured! Try again"],
     },
+    charges: {
+      coupon: {
+        type: String,
+        default: null,
+      },
+      discount: {
+        type: Number,
+        default: 0,
+      },
+      shipping_cost: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      items_cost: {
+        type: Number,
+        required: true,
+        default: 0,
+      },
+    },
     total_price: {
       type: Number,
       default: 0,
+    },
+    paymentInfo: {
+      provider: {
+        type: String,
+        required: true,
+      },
+      payment_number: {
+        type: Number,
+        required: true,
+      },
     },
     items: [
       {
@@ -86,9 +116,7 @@ const orderItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // userSchema.pre("save", async function (next) {
-  
 
 //   this.password = await bcrypt.hash(this.password, 10);
 // });

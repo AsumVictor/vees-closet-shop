@@ -7,44 +7,114 @@ const ErrorHandler = require("../helpers/ErrorHandler");
 const CatchAsyncError = require("../middleware/CatchAsyncErrors");
 const { isAuthenticated } = require("../middleware/auth");
 const { OrderItem, Order } = require("../models/orders");
+const getTrackingID = require("../helpers/getTrackingID");
 
 // create order --- already user
+
+const createOrder = async (data) => {
+  try {
+    const { user_id, order_details } = data;
+    const totalCost = order_details.items.reduce(
+      (sum, product) => sum + Number(product.cost),
+      0
+    );
+    const coupon = await CoupounCode.findOne({ code: order_details.coupon });
+    let discount = 0;
+    if (coupon) {
+      discount =
+        coupon.discountType === "percentage"
+          ? (coupon.discountValue * totalCost) / 100
+          : coupon.discountValue;
+    }
+
+    const net_cost = Number(
+      totalCost + order_details.shipping_cost - Number(discount.toFixed(2))
+    );
+    const orderItems = await Promise.all(
+      order_details.items.map(async (item) => {
+        const { _id } = await OrderItem.create({
+          product: item._id,
+          quantity: item.qty,
+          unitPrice: item.actual_price,
+          totalPrice: item.cost,
+          variation_choice: item.variation_choice ? item.variation_choice : {},
+        });
+        return _id;
+      })
+    );
+
+    let order = await Order.create({
+      shipping_address: order_details.shipping_address,
+      user: user_id,
+      tracking_no: await getTrackingID(),
+      charges: {
+        coupon: order_details.coupon,
+        discount,
+        shipping_cost: order_details.shipping_cost,
+        items_cost: totalCost,
+      },
+      total_price: net_cost,
+      items: orderItems,
+      paymentInfo: order_details.paymentInfo,
+    });
+
+    return {
+      success: true,
+      order,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 router.post(
   "/place-order",
   isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const { userDetails, shipping_address, items, payment_number, coupon, delivery_cost } =
+      const { shipping_address, paymentInfo, items, coupon, shipping_cost } =
         req.body;
-        
-      if (!delivery_cost || !payment_number) {
-        return next(
-          new ErrorHandler("Error: Provide all neccessary information", 400)
-        );
-      }
-      let discount = coupon ? coupon : 0;
-      const totalCost = items.reduce((sum, item) => sum + item.totalPrice, 0);
-      const net_cost = Number(
-        (totalCost + delivery_cost - discount).toFixed(2)
-      );
 
-      const orderItems = await Promise.all(
-        items.map(async (item) => {
-          const { _id } = await OrderItem.create(item);
-          return _id;
-        })
-      );
-
-      let { _id } = await Order.create({
-        shipping_address,
-        user: req.user.id,
-        total_price: net_cost,
-        items: orderItems,
+      let order = await createOrder({
+        user_id: req.user._id,
+        order_details: {
+          shipping_address,
+          coupon,
+          shipping_cost,
+          paymentInfo,
+          items,
+        },
       });
+
+      // if (!delivery_cost || !payment_number) {
+      //   return next(
+      //     new ErrorHandler("Error: Provide all neccessary information", 400)
+      //   );
+      // }
+      // let discount = coupon ? coupon : 0;
+      // const totalCost = items.reduce((sum, item) => sum + item.totalPrice, 0);
+      // const net_cost = Number(
+      //   (totalCost + delivery_cost - discount).toFixed(2)
+      // );
+
+      // const orderItems = await Promise.all(
+      //   items.map(async (item) => {
+      //     const { _id } = await OrderItem.create(item);
+      //     return _id;
+      //   })
+      // );
+
+      // let { _id } = await Order.create({
+      //   shipping_address,
+      //   user: req.user.id,
+      //   total_price: net_cost,
+      //   items: orderItems,
+      // });
 
       res.status(201).json({
         success: true,
-        message: `Order placed with ID: ${_id}`,
+        order,
+        message: `Order placed with ID: `,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
@@ -211,7 +281,7 @@ router.get(
   isSeller,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const orders = await Order.find({status: req.body.status});
+      const orders = await Order.find({ status: req.body.status });
 
       res.status(200).json({
         success: true,

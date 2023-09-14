@@ -11,6 +11,7 @@ export function PaymentRadio({ label, img, id, value, handleChange }) {
           className="payment absolute"
           value={value}
           onChange={handleChange}
+          required
         />
         <div className="checkbox w-full py-2 rounded-md flex flex-col justify-center items-center gap-2 px-2 relative">
           <img src={img} alt={label} className="w-[1cm] h-[1cm]" />

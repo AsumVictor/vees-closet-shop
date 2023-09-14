@@ -12,13 +12,23 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CouponApply from "../components/order/CouponApply";
 import { AiFillInfoCircle } from "react-icons/ai";
+import server from "../server";
+import axios from "axios";
 
 function CheckoutPage() {
   const { user } = useSelector((state) => state.client);
-  const { totalCost } = useSelector((state) => state.cart);
+  const { totalCost, items } = useSelector((state) => state.cart);
+console.log(items)
   const [formData, setFormData] = useState({
-    delivery_cost: 45.0,
+    shippingCost: 45.0,
     coupon: null,
+    address1: "",
+    address2: "",
+    phone_number: "",
+    region: "",
+    location: "",
+    paymentProvider: "",
+    payment_number: "",
   });
   const [userDetails, setUserDetails] = useState({
     first_name: user ? user.first_name : "",
@@ -27,22 +37,53 @@ function CheckoutPage() {
   });
   const [discount, setDiscount] = useState(0);
 
-  let netCost = totalCost + formData.delivery_cost - discount;
+  let netCost = totalCost + formData.shippingCost - discount;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleCoupon = (data) => {
+  const handleFormData = (field, value) => {
     setFormData((prev) => {
       return {
         ...prev,
-        coupon: data,
+        [field]: value,
       };
     });
   };
-  console.log(formData);
+
+  const handleSubmit = async (e) => {
+    let url = user ? "place-order" : "guest-place-order";
+    e.preventDefault();
+    try {
+      // setLoading(true);
+      let res = await axios.post(
+        `${server}order/${url}`,
+        {
+          shipping_address: {
+            address1: formData.address1,
+            address2: formData.address2,
+            region: formData.region,
+            location: formData.location,
+            phone_number: formData.phone_number,
+          },
+          paymentInfo: {
+            provider: formData.paymentProvider,
+            payment_number: formData.payment_number,
+          },
+          items,
+          coupon: formData.coupon,
+          shipping_cost: formData.shippingCost,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res);
+    } catch (error) {}
+  };
+
   return (
-    <div className=" grid grid-cols-3 mt-[3rem]">
+    <form className=" grid grid-cols-3 mt-[3rem]" onSubmit={handleSubmit}>
       <div className="py-10 col-span-full 800px:col-span-2 text-black">
         {!user && (
           <p className="py-1 px-3 mx-3 bg-[#351e161e] border-t-2 border-t-deep-primary flex gap-2 mb-5">
@@ -54,7 +95,7 @@ function CheckoutPage() {
         )}
         <h1 className=" px-3 text-2xl">Order information</h1>
 
-        <form className="px-4 1000px:px-10 mt-5 ">
+        <div className="px-4 1000px:px-10 mt-5 ">
           <div className="w-full border-l-[4px] border-deep-primary">
             <OrderSummaryBoxInfo
               title={"Personal Information"}
@@ -93,33 +134,55 @@ function CheckoutPage() {
                   label={"Address 1"}
                   type={"text"}
                   isRequired={true}
+                  handleChange={(e) =>
+                    handleFormData("address1", e.target.value)
+                  }
                 />
                 <LabelInput
                   label={"Additional address"}
-                  type={"number"}
+                  type={"text"}
                   isRequired={true}
+                  handleChange={(e) =>
+                    handleFormData("address2", e.target.value)
+                  }
                 />
                 <LabelInput
                   label={"Phone number"}
                   type={"tel"}
+                  pattern="^0[25]\d{8}$"
                   isRequired={true}
+                  handleChange={(e) =>
+                    handleFormData("phone_number", e.target.value)
+                  }
                 />
-                <select className="py-2 outline-none cursor-pointer bg-white border-2 border-primary-800 px-2 text-sm capitalize">
-                  <option>Select a region</option>
-                  <option>Ashanti region</option>
-                  <option>Bono East</option>
-                  <option>Central </option>
-                  <option>Greater Accra </option>
+                <select
+                  className="py-2 outline-none cursor-pointer bg-white border-2 border-primary-800 px-2 text-sm capitalize"
+                  required={true}
+                  value={formData.region}
+                  onChange={(e) => handleFormData("region", e.target.value)}
+                >
+                  <option value="">Select a region</option>
+                  <option value="ashanti">Ashanti region</option>
+                  <option value="bono">Bono East</option>
+                  <option value="central">Central </option>
+                  <option value="greaterAccra">Greater Accra </option>
                 </select>
                 <div className="w-full">
-                  <select className="w-full py-2 outline-none cursor-pointer bg-white border-2 border-primary-800 px-2 text-sm capitalize">
-                    <option>Select delivery city</option>
-                    <option>Kumasi</option>
-                    <option>Sunyani</option>
-                    <option>Accra </option>
-                    <option>Outside Accra</option>
+                  <select
+                    className="w-full py-2 outline-none cursor-pointer bg-white border-2 border-primary-800 px-2 text-sm capitalize"
+                    required={true}
+                    value={formData.deliveryCity}
+                    onChange={(e) => {
+                      handleFormData("location", e.target.value);
+                    }}
+                  >
+                    <option value="">Select delivery city</option>
+                    <option value="kumasi">Kumasi</option>
+                    <option value="sunyani">Sunyani</option>
+                    <option value="accra">Accra </option>
+                    <option value="outside">Outside Accra</option>
                   </select>
-                  <p>Shipping Cost: ₵ XX.00</p>
+                  <p>Shipping Cost: ₵{formData.shippingCost.toFixed(2)}</p>
                 </div>
               </div>
             </OrderSummaryBoxInfo>
@@ -133,19 +196,28 @@ function CheckoutPage() {
                   img={mtn}
                   label={"MTN MoMo"}
                   id={"mtn"}
-                  name="paymentProvide"
+                  value={"mtn"}
+                  handleChange={(e) =>
+                    handleFormData("paymentProvider", e.target.value)
+                  }
                 />
                 <PaymentRadio
                   img={vodafone}
                   label={"Vodafone cash"}
                   id={"vodafone"}
-                  name="paymentProvide"
+                  value={"vodafone"}
+                  handleChange={(e) =>
+                    handleFormData("paymentProvider", e.target.value)
+                  }
                 />
                 <PaymentRadio
                   img={airtelTigo}
                   label={"Airtel Tigo cash"}
                   id={"tigo"}
-                  name="paymentProvide"
+                  value={"AirtelTigo"}
+                  handleChange={(e) =>
+                    handleFormData("paymentProvider", e.target.value)
+                  }
                 />
                 <h2 className="mt-2 col-span-full">Mobile number</h2>
                 <div className="w-full grid grid-cols-12 h-[1.1cm] col-span-full 550px:col-span-2">
@@ -159,17 +231,22 @@ function CheckoutPage() {
                   </div>
                   <div className="col-span-9 h-full">
                     <input
-                      type="number"
+                      onChange={(e) =>
+                        handleFormData("payment_number", e.target.value)
+                      }
+                      pattern="^(2|5)\d{8}$" 
+                      required
+                      type="tel"
                       name="mobileNumber"
                       id="mobileNumber"
-                      className="col-span-9 w-full h-full outline-none px-2 border-2 border-deep-primary"
+                      className="col-span-9 w-full h-full outline-none px-2 border-2 border-deep-primary invalid:text-red-600"
                     />
                   </div>
                 </div>
               </div>
             </OrderSummaryBoxInfo>
           </div>
-        </form>
+        </div>
       </div>
 
       <div className="sticky top-10 py-10 col-span-full 800px:col-span-1 px-5 ">
@@ -180,7 +257,7 @@ function CheckoutPage() {
         </h3>
         <h3 className="flex justify-between py-2 uppercase font-semibold">
           <span>Shipping cost</span>
-          <span>₵ {formData.delivery_cost.toFixed(2)}</span>
+          <span>₵ {formData.shippingCost.toFixed(2)}</span>
         </h3>
         <h3 className="flex justify-between py-2 uppercase font-semibold">
           <span>Discount</span>
@@ -199,18 +276,24 @@ function CheckoutPage() {
         </ul>
         <hr className=" col-span-full h-[0.03cm] bg-slate-200" />
 
-        <CouponApply handleChange={handleCoupon} handleDiscount={setDiscount} />
+        <CouponApply
+          handleChange={handleFormData}
+          handleDiscount={setDiscount}
+        />
         {discount > 0 && (
           <p className=" items-center grid grid-cols-12 px-2 py-1 text-emerald-700 bg-emerald-200">
             <AiFillInfoCircle />
             <span className=" col-span-10">Coupon discount allowed</span>
           </p>
         )}
-        <button className=" uppercase text-center w-full mt-10 py-2 bg-primary-800 text-white font-medium">
+        <button
+          type="submit"
+          className=" uppercase text-center w-full mt-10 py-2 bg-primary-800 text-white font-medium"
+        >
           Place order
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 

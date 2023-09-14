@@ -11,23 +11,22 @@ function CouponApply({ handleChange, handleDiscount }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const getCoupon = async (e) => {
+  const getCoupon = async () => {
     setError(null);
     handleChange(null);
     handleDiscount(0);
-    e.preventDefault();
     try {
-        setLoading(true);
+      setLoading(true);
       let res = await axios(
         `${server}coupon/get-coupon-value/${coupon}?price=${totalCost}`
       );
       if (res.data.success) {
-        handleChange(res.data.code);
+        handleChange("coupon", res.data.code);
         handleDiscount(res.data.value);
         setLoading(false);
       }
     } catch (error) {
-        setLoading(false);
+      setLoading(false);
       let errmsg = error.response?.data?.message
         ? error.response.data.message
         : error.message;
@@ -36,23 +35,23 @@ function CouponApply({ handleChange, handleDiscount }) {
   };
 
   useEffect(() => {
-    handleChange(null);
+    handleChange('coupon', null);
     handleDiscount(0);
     setError(null);
   }, [coupon]);
 
   return (
-    <form className="w-full py-1 grid grid-cols-12 mt-5" onSubmit={getCoupon}>
+    <div className="w-full py-1 grid grid-cols-12 mt-5">
       <LabelInput
-        isRequired={true}
         InputParentExtendClass=" col-span-9"
         label={"Do you coupon ?"}
         handleChange={(e) => setCoupon(e.target.value)}
         isDisabled={loading}
       />
       <button
-        type="submit"
+        type="button"
         disabled={loading}
+        onClick={() => getCoupon()}
         className={`py-1 px-2 ${
           loading ? "bg-slate-100" : "bg-primary-800"
         }  col-span-3 text-white flex justify-center items-center `}
@@ -65,7 +64,7 @@ function CouponApply({ handleChange, handleDiscount }) {
           {error}
         </p>
       )}
-    </form>
+    </div>
   );
 }
 

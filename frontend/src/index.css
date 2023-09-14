@@ -39,7 +39,7 @@ body {
 }
 
 .payment {
-  visibility: hidden;
+  opacity: 0;
 }
 
 .checkbox {
