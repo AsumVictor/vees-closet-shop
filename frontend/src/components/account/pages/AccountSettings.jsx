@@ -164,7 +164,7 @@ function AccountSettings() {
               id="email"
               className="w-full outline-0 text-xl font-medium col-span-7"
             />
-            <button
+            {/* <button
               type="button"
               onClick={() => handleVerify()}
               disabled={user.isEmail_verified}
@@ -182,7 +182,7 @@ function AccountSettings() {
               ) : (
                 <>{verifying ? "Wait..." : "Verify"}</>
               )}
-            </button>
+            </button> */}
           </div>
           <hr className="mt-2 border-deep-primary" />
         </div>

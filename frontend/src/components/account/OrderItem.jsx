@@ -5,7 +5,12 @@ function OrderItem({ _id, trackingID, status, date, totalItems }) {
   const navigate = useNavigate();
 
   return (
-    <div className=" w-full py-1 px-3">
+    <div
+      className=" w-full px-3 py-2 cursor-pointer"
+      onClick={() => {
+        navigate(`./${_id}`);
+      }}
+    >
       <div className="flex flex-row justify-between 400px:pr-10">
         <p className=" text-[15px] 500px:text-[18px] flex gap-1">
           <span>Order</span>

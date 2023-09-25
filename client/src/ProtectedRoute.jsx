@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
+import PulseLoader from "../../frontend/src/components/loaders/pulseLoader";
 
 const ProtectedRoute = () => {
   const location = useLocation();
@@ -8,7 +9,7 @@ const ProtectedRoute = () => {
   if(loading){
     return (
       <>
-      <h1>Loading..</h1>
+      < PulseLoader />
       </>
     )
   }

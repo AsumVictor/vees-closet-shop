@@ -79,7 +79,7 @@ function Navbar() {
               women
             </NavLink>
           </li>
-          <NavCategory />
+          <NavCategory handleClick={() => setIsNavOpen(false)} />
           <li className="flex flex-col">
             <NavLink
               onClick={() => setIsNavOpen(false)}

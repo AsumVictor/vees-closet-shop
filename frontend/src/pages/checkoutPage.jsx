@@ -16,6 +16,7 @@ import server from "../server";
 import axios from "axios";
 import { HiCheckCircle } from "react-icons/hi";
 import { getCart } from "../redux/actions/cart";
+import { toast } from "react-toastify";
 
 function CheckoutPage() {
   const { user } = useSelector((state) => state.client);

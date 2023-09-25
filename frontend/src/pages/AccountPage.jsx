@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 function AccountPage() {
   const { user } = useSelector((state) => state.client);
-  console.log(user);
   const location = useLocation();
   const { pathname } = location;
   let page = pathname.split("/")[2];

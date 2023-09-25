@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { HiOutlineChevronDown, HiOutlineChevronUp } from "react-icons/hi";
 
-export function NavCategory() {
+export function NavCategory({ handleClick }) {
   const [isOpen, setIsOpen] = useState(false);
 
   document.addEventListener("click", (e) => {
@@ -32,6 +32,7 @@ export function NavCategory() {
         <ul className="mt-3 750px:mt-0 750px:absolute -left-[2rem] flex flex-col px-2 top-[1.8rem] w-[4cm] bg-white border">
           <Link
             to={"/category/dresses"}
+            onClick={handleClick}
             className=" px-2 w-full nav-link capitalize"
           >
             Dresses

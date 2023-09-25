@@ -92,9 +92,10 @@ function LoginPage() {
           </div>
           <button
             type="submit"
-            className="py-2 bg-primary-800 text-white font-semibold"
+            disabled={loading}
+            className=" disabled:opacity-50 py-2 bg-primary-800 text-white font-semibold"
           >
-            Login
+            {loading ? "Signing in..." : "Login"}
           </button>
         </div>
         <p className="mt-2">

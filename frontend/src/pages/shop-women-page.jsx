@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/product/productCard";
 import axios from "axios";
 import server from "../server";
+import PulseLoader from "../components/loaders/pulseLoader";
 
 function ShopWowomenPage() {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,7 @@ function ShopWowomenPage() {
   let [isLoading, setLoading] = useState(true);
   let [isError, setError] = useState(false);
   let [sortQuery, setSortQuery] = useState(sort || "");
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -81,7 +83,7 @@ function ShopWowomenPage() {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
-        <h2>Loading...</h2>
+        <PulseLoader />
       </div>
     );
   }

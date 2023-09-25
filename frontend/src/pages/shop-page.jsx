@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/product/productCard";
 import axios from "axios";
 import server from "../server";
+import PulseLoader from "../components/loaders/pulseLoader";
+
 
 function ShopPage() {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -79,7 +81,7 @@ function ShopPage() {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
-        <h2>Loading...</h2>
+        <PulseLoader />
       </div>
     );
   }

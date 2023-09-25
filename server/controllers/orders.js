@@ -10,6 +10,7 @@ const { OrderItem, Order } = require("../models/orders");
 const getTrackingID = require("../helpers/getTrackingID");
 const generateStrongPassword = require("../helpers/getRandomPassword");
 const sendMail = require("../helpers/sendMail");
+const { format } = require("date-fns");
 
 // create order --- already user
 // guest-place-order
@@ -264,7 +265,7 @@ router.get(
     }
   })
 );
-// get a specific order
+// get a specific order --user
 router.get(
   "/get-orders/:id",
   isAuthenticated,
@@ -276,18 +277,16 @@ router.get(
         );
       }
 
-      const order = await Order.findById(req.params.id)
-        .populate({
-          path: "user",
-          select: "first_name last_name email", // Specify the fields you want
-        })
-        .populate({
-          path: "items",
-          populate: {
-            path: "product",
-            model: "product-v2",
-          },
-        });
+      const order = await Order.findById(
+        req.params.id,
+        "charges items paymentInfo shipping_address  status total_price tracking_no createdAt"
+      ).populate({
+        path: "items",
+        populate: {
+          path: "product",
+          model: "product-v2",
+        },
+      });
 
       if (!order) {
         return next(
@@ -333,25 +332,31 @@ router.get(
       const totalCount = await Order.countDocuments(sortOptions);
       const totalPages = Math.ceil(totalCount / limit);
 
-      const response = await Order.find(sortOptions, "status tracking_no items createdAt ")
+      const response = await Order.find(
+        sortOptions,
+        "status tracking_no items createdAt "
+      )
         .sort({ updatedAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit);
 
       let orders = response.map((order) => {
+        const date = new Date(order.createdAt);
+        const formattedDate = format(date, "MMM d yyyy");
+
         return {
           _id: order._id,
           status: order.status,
           tracking_no: order.tracking_no,
           items: order.items.length,
-          date: order.createdAt
+          date: formattedDate,
         };
       });
 
       res.status(200).json({
         success: true,
         orders,
-        totalPages
+        totalPages,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));

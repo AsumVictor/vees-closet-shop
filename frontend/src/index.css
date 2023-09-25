@@ -78,3 +78,18 @@ body {
     transform: rotate(1turn);
   }
 }
+
+.pulse {
+  width: 35.2px;
+  height: 35.2px;
+  border-radius: 50%;
+  background: #351e16;
+  box-shadow: 0 0 0 0 rgba(53,30,22,0.5);
+  animation: pulse-c6zlskhg 0.8s infinite;
+}
+
+@keyframes pulse-c6zlskhg {
+  100% {
+     box-shadow: 0 0 0 52.8px #0000;
+  }
+}

@@ -16,6 +16,7 @@ import {
   Address,
   Security,
   Orders,
+  OrderDetail,
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +27,7 @@ import { loadUser } from "./redux/actions/user";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
+import PulseLoader from "./components/loaders/pulseLoader";
 
 function App() {
   const { loading } = useSelector((state) => state.client);
@@ -38,7 +40,7 @@ function App() {
   return (
     <>
       {loading ? (
-        <p>LOADING...</p>
+        <PulseLoader />
       ) : (
         <BrowserRouter>
           <Routes>
@@ -54,15 +56,15 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               {/* User account */}
               <Route element={<ProtectedRoute />}>
+                <Route path="/my-account" element={<AccountPage />}>
+                  <Route index element={<h1>HELO</h1>} />
 
-              <Route path="/my-account" element={<AccountPage />}>
-                <Route index element={<h1>HELO</h1>} />
-
-                <Route path="settings" element={<AccountSettings />} />
-                <Route path="orders" element={<Orders />} />
-                <Route path="addresses" element={<Address />} />
-                <Route path="security" element={<Security />} />
-              </Route>
+                  <Route path="settings" element={<AccountSettings />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="orders/:id" element={<OrderDetail />} />
+                  <Route path="addresses" element={<Address />} />
+                  <Route path="security" element={<Security />} />
+                </Route>
               </Route>
 
               <Route path="/login" element={<LoginPage />} />

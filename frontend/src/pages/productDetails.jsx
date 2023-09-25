@@ -8,12 +8,16 @@ import server from "../server";
 import checkVariantEmpty from "../helpers/checkVariantEmpty";
 import { getCart } from "../redux/actions/cart";
 import { useDispatch } from "react-redux";
+import PulseLoader from "../components/loaders/pulseLoader";
+import { toast } from "react-toastify";
 
 function ProductDetails() {
   const params = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+
   const [product, setProduct] = useState(null);
   const [relatedProduct, setRelatedProduct] = useState([]);
   const [error, setError] = useState(false);
@@ -73,15 +77,15 @@ function ProductDetails() {
         }
       } catch (error) {}
     };
-    setSubmissionError(null)
+    setSubmissionError(null);
     getRealtedProduct();
     getProduct();
   }, [params.name]);
 
   if (loading) {
     return (
-      <div className="py-40 mt-20 ">
-        <h2 className="flex justify-center items-center">LOADING...</h2>
+      <div className="mt-20 ">
+        <PulseLoader />
       </div>
     );
   }
@@ -103,12 +107,12 @@ function ProductDetails() {
           return;
         }
       }
-
-    let res = await axios.post(`${server}cart/add-to-cart`, cartData, 
-    {
-      withCredentials: true,
-    });
+      setIsAdding(true);
+      let res = await axios.post(`${server}cart/add-to-cart`, cartData, {
+        withCredentials: true,
+      });
       if (res.data.success) {
+        setIsAdding(false);
         dispatch(getCart());
         setAddedToCard(true);
         setTimeout(() => {
@@ -116,14 +120,23 @@ function ProductDetails() {
         }, 3000);
       }
     } catch (error) {
-      console.log(error);
+      setIsAdding(false);
+      let errMsg = error.response.data.message
+        ? error.response.data.message
+        : error.message;
+      toast.error(errMsg, {
+        toastId: "addToCart",
+      });
     }
   };
 
   return (
     <div className="w-full py-20 relative">
       {addedToCard && (
-        <div onClick={()=>navigate('/cart')} className="mt-16 py-2 grid grid-cols-12 bg-white border-emerald-700 border fixed z-50 left-0 w-full top-0 px-3">
+        <div
+          onClick={() => navigate("/cart")}
+          className="mt-16 py-2 grid grid-cols-12 bg-white border-emerald-700 border fixed z-50 left-0 w-full top-0 px-3"
+        >
           <p className=" col-span-8 py-1 750px:text-right 750px:px-20">
             Added "{product.name.slice(0, 15) + "..."}" to cart
           </p>
@@ -256,10 +269,11 @@ function ProductDetails() {
 
           <button
             type="button"
+            disabled={isAdding}
             onClick={() => addToCart()}
-            className="w-full uppercase py-2 mt-5 text-white bg-black font-medium"
+            className="w-full uppercase py-2 mt-5 text-white bg-black font-medium disabled:opacity-50"
           >
-            add to cart
+            {isAdding ? "Adding..." : "add to cart"}
           </button>
         </div>
       </div>

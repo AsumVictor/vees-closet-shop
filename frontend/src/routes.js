@@ -14,6 +14,8 @@ import AccountSettings from "./components/account/pages/AccountSettings";
 import Address from "./components/account/pages/Address";
 import Security from "./components/account/pages/Security";
 import Orders from "./components/account/pages/Orders";
+import OrderDetail from "./components/account/pages/OrderDetail.jsx";
+
 
 export {
   Address,
@@ -32,4 +34,5 @@ export {
   SignupPage,
   AccountPage,
   AccountSettings,
+  OrderDetail
 };

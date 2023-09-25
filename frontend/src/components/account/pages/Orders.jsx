@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import server from "../../../server";
 import axios from "axios";
 import OrderItem from "../OrderItem";
+import PulseLoader from "../../loaders/pulseLoader";
 
 function Orders() {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -81,6 +82,12 @@ function Orders() {
     setSortQuery(data);
   };
 
+  if (isLoading) {
+    return (
+      <PulseLoader />
+    );
+  }
+
   return (
     <div className="w-full">
       <div className="w-full py-1 bg-slate-100 flex flex-row gap-4 px-3 items-end">
@@ -113,20 +120,24 @@ function Orders() {
         </select>
       </div>
 
-      <div className=" flex flex-col w-full py-1 mt-5 px-2 gap-4">
-        {products.map((order) => (
-          <OrderItem
-          key={order._id}
-            _id={order._id}
-            trackingID={order.tracking_no}
-            status={order.status}
-            date={order.date}
-            totalItems={order.items}
-          />
+      <div className=" flex flex-col w-full py-1 mt-5 px-2 gap-6">
+        {products.map((order, index) => (
+          <div
+            className={`"w-full border ${(index + 1) % 2 === 0 ? "bg-gray-100" : ""} `}
+            key={order._id}
+          >
+            <OrderItem
+              _id={order._id}
+              trackingID={order.tracking_no}
+              status={order.status}
+              date={order.date}
+              totalItems={order.items}
+            />
+          </div>
         ))}
       </div>
 
-      <div className="w-full mt-10 px-2 flex justify-center items-center">
+      <div className="wkey={order._id}full mt-10 px-2 flex justify-center items-center">
         <button
           className={` ${
             currentPage <= 1 ? "hidden" : null

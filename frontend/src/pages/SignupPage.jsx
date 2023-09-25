@@ -28,7 +28,7 @@ function SignupPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null)
+    setError(null);
     const userIformation = {
       email,
       password,
@@ -56,11 +56,11 @@ function SignupPage() {
       });
   };
 
- useEffect(() => {
-   if (isAuthenticated) {
-     navigate(path);
-   }
- }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(path);
+    }
+  }, []);
 
   return (
     <div className="w-full  overflow-y-auto h-screen py-20 flex flex-col justify-center items-center px-3">
@@ -117,10 +117,10 @@ function SignupPage() {
 
           <button
             type="submit"
-            disabled={!canSubmit}
+            disabled={!canSubmit || loading}
             className="py-2 bg-primary-800 text-white font-semibold disabled:opacity-20"
           >
-            Create Account
+            {loading ? "Creating..." : "Create Account"}
           </button>
         </div>
         <p className="mt-2">
