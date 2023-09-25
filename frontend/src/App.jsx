@@ -17,6 +17,7 @@ import {
   Security,
   Orders,
   OrderDetail,
+  MyAccount
 } from "./routes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +58,7 @@ function App() {
               {/* User account */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/my-account" element={<AccountPage />}>
-                  <Route index element={<h1>HELO</h1>} />
+                  <Route index element={<MyAccount />} />
 
                   <Route path="settings" element={<AccountSettings />} />
                   <Route path="orders" element={<Orders />} />

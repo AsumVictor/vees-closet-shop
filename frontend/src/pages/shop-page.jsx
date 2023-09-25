@@ -5,12 +5,11 @@ import axios from "axios";
 import server from "../server";
 import PulseLoader from "../components/loaders/pulseLoader";
 
-
 function ShopPage() {
   let [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page");
   let sort = searchParams.get("sort");
-  let [products, setProducts] = useState(null);
+  let [products, setProducts] = useState([]);
   let [totalPages, setTotalPages] = useState(null);
   let [currentPage, setCurrentPage] = useState(page || 1);
   let [isLoading, setLoading] = useState(true);
@@ -21,9 +20,11 @@ function ShopPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        let res = await axios(`${server}product/get-all-products?page=${currentPage}&sort=${sortQuery}`);
+        let res = await axios(
+          `${server}product/get-all-products?page=${currentPage}&sort=${sortQuery}`
+        );
         if (res.data.success) {
-          setProducts(res.data.products);
+           setProducts(res.data.products);
           setTotalPages(res.data.totalPages);
           setLoading(false);
         } else {
@@ -88,6 +89,18 @@ function ShopPage() {
 
   return (
     <div className="py-20 w-full">
+        <Helmet>
+        <title>Shop high quality clothing - Vees closet </title>
+        <meta
+          name="description"
+          content={`Explore our wide range of high-quality clothing for every need. Find the perfect fashion at Vees closet.`}
+        />
+        <meta
+          name="keywords"
+          content="Fashion, Clothing, Apparel, Online Fashion, Fashion Store, Fashion Boutique, Women's Fashion, Men's Fashion, Kids' Fashion, Trendy Fashion, Fashion Trends, Fashionable Outfits, Designer Clothing, Affordable Fashion, Stylish Clothing, Fashion Accessories, Fashion Shoes, Fashion Bags, Fashion Jewelry, Luxury Fashion, Streetwear, Vintage Fashion, Sustainable Fashion, Plus-size Fashion, Maternity Fashion, Activewear, Swimwear, Lingerie, Formal Wear, Casual Wear, Workwear, Evening Gowns, Prom Dresses, Wedding Dresses, Men's Suits, T-Shirts, Jeans, Dresses, Tops, Bottoms, Outerwear, Footwear, Boots, Sneakers, Sandals, High Heels, Flats, Handbags, Clutches, Backpacks, Wallets, Scarves, Hats, Sunglasses, Watches, Earrings, Necklaces, Bracelets, Rings, Fashion Brands, Seasonal Fashion, Holiday Fashion, Fashion Discounts, Sale Items, New Arrivals, Fashion Blog, Fashion Tips, Fashion Inspiration, Fashion Lookbook, Sustainable Fabrics, Eco-friendly Fashion, Ethical Fashion, Fashion Influencers, Celebrity Fashion, Fashion Reviews, Online Shopping, Shop Online, Buy Fashion Online, Fashion Deals, Free Shipping, Customer Reviews, Size Guides, Return Policy, Fashion Customer Service, Fashion Newsletter, Fashion Subscription, Fashion Rewards, Fashion Gift Cards, Fashion Wishlist, Secure Payment, Payment Options, Checkout Process, Shipping and Delivery, International Shipping, Track Order, Customer Support, Fashion Trends 2023, Holiday Fashion Collection, Summer Fashion, Winter Fashion."
+        />
+      </Helmet>
+
       <h2 className="flex flex-row gap-2 px-2 500px:px-10">
         <Link to={"/"} className="underline">
           Home
@@ -118,11 +131,17 @@ function ShopPage() {
       </div>
 
       <section className="w-full py-20 bg-white">
-        <div className="grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-20 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
-          {products.map((product) => (
-            <ProductCard product={product} />
-          ))}
-        </div>
+        {products.length > 0 ? (
+          <div className="grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-20 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
+            {products.map((product) => (
+              <ProductCard product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className=" w-full py-10 flex justify-center items-center">
+            <p className=" font-medium text-xl">No product found</p>
+          </div>
+        )}
       </section>
       <div className="w-full px-2 flex justify-center items-center">
         <button

@@ -13,12 +13,6 @@ function OrderDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  let item = {
-    variation_choice: {
-      x: 0,
-    },
-  };
-
   const getOrderDetail = async () => {
     setIsLoading(true);
     try {
@@ -41,9 +35,7 @@ function OrderDetail() {
   }, []);
 
   if (isLoading) {
-    return (
-      <PulseLoader />
-    );
+    return <PulseLoader />;
   }
 
   if (isError) {
@@ -56,6 +48,18 @@ function OrderDetail() {
 
   return (
     <div className="w-full">
+       <Helmet>
+        <title>Orders {orderData.tracking_no} - Vees closet </title>
+        <meta
+          name="description"
+          content={`Explore our wide range of high-quality clothing for every need. Find the perfect fashion at Vees closet.`}
+        />
+        <meta
+          name="keywords"
+          content="Fashion, Clothing, Apparel, Online Fashion, Fashion Store, Fashion Boutique, Women's Fashion, Men's Fashion, Kids' Fashion, Trendy Fashion, Fashion Trends, Fashionable Outfits, Designer Clothing, Affordable Fashion, Stylish Clothing, Fashion Accessories, Fashion Shoes, Fashion Bags, Fashion Jewelry, Luxury Fashion, Streetwear, Vintage Fashion, Sustainable Fashion, Plus-size Fashion, Maternity Fashion, Activewear, Swimwear, Lingerie, Formal Wear, Casual Wear, Workwear, Evening Gowns, Prom Dresses, Wedding Dresses, Men's Suits, T-Shirts, Jeans, Dresses, Tops, Bottoms, Outerwear, Footwear, Boots, Sneakers, Sandals, High Heels, Flats, Handbags, Clutches, Backpacks, Wallets, Scarves, Hats, Sunglasses, Watches, Earrings, Necklaces, Bracelets, Rings, Fashion Brands, Seasonal Fashion, Holiday Fashion, Fashion Discounts, Sale Items, New Arrivals, Fashion Blog, Fashion Tips, Fashion Inspiration, Fashion Lookbook, Sustainable Fabrics, Eco-friendly Fashion, Ethical Fashion, Fashion Influencers, Celebrity Fashion, Fashion Reviews, Online Shopping, Shop Online, Buy Fashion Online, Fashion Deals, Free Shipping, Customer Reviews, Size Guides, Return Policy, Fashion Customer Service, Fashion Newsletter, Fashion Subscription, Fashion Rewards, Fashion Gift Cards, Fashion Wishlist, Secure Payment, Payment Options, Checkout Process, Shipping and Delivery, International Shipping, Track Order, Customer Support, Fashion Trends 2023, Holiday Fashion Collection, Summer Fashion, Winter Fashion."
+        />
+      </Helmet>
+
       <div className="w-full py-1 bg-slate-100 flex flex-row gap-4 px-3 items-end">
         <Link to={".."} relative={"path"} className=" 650px:hidden">
           <MdOutlineKeyboardBackspace size={31} />
@@ -67,7 +71,7 @@ function OrderDetail() {
         <p className=" font-medium text-xl">Order #{orderData.tracking_no}</p>
         <OrderStatus status={orderData.status} />
         <p>Placed on: {orderData.createdAt.split("T")[0]} </p>
-        <p>Total: GH₵ {orderData.total_price}</p>
+        <p>Total: GH₵ {orderData.total_price.toFixed(2)}</p>
         <p>Shipping cost: GH₵ {orderData.charges.shipping_cost}</p>
         {orderData.charges.coupon && (
           <p>Discount: GH₵ {orderData.charges.discount}</p>

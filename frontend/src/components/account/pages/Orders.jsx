@@ -83,13 +83,23 @@ function Orders() {
   };
 
   if (isLoading) {
-    return (
-      <PulseLoader />
-    );
+    return <PulseLoader />;
   }
 
   return (
     <div className="w-full">
+      <Helmet>
+        <title>My Orders - Vees closet </title>
+        <meta
+          name="description"
+          content={`Explore our wide range of high-quality clothing for every need. Find the perfect fashion at Vees closet.`}
+        />
+        <meta
+          name="keywords"
+          content="Fashion, Clothing, Apparel, Online Fashion, Fashion Store, Fashion Boutique, Women's Fashion, Men's Fashion, Kids' Fashion, Trendy Fashion, Fashion Trends, Fashionable Outfits, Designer Clothing, Affordable Fashion, Stylish Clothing, Fashion Accessories, Fashion Shoes, Fashion Bags, Fashion Jewelry, Luxury Fashion, Streetwear, Vintage Fashion, Sustainable Fashion, Plus-size Fashion, Maternity Fashion, Activewear, Swimwear, Lingerie, Formal Wear, Casual Wear, Workwear, Evening Gowns, Prom Dresses, Wedding Dresses, Men's Suits, T-Shirts, Jeans, Dresses, Tops, Bottoms, Outerwear, Footwear, Boots, Sneakers, Sandals, High Heels, Flats, Handbags, Clutches, Backpacks, Wallets, Scarves, Hats, Sunglasses, Watches, Earrings, Necklaces, Bracelets, Rings, Fashion Brands, Seasonal Fashion, Holiday Fashion, Fashion Discounts, Sale Items, New Arrivals, Fashion Blog, Fashion Tips, Fashion Inspiration, Fashion Lookbook, Sustainable Fabrics, Eco-friendly Fashion, Ethical Fashion, Fashion Influencers, Celebrity Fashion, Fashion Reviews, Online Shopping, Shop Online, Buy Fashion Online, Fashion Deals, Free Shipping, Customer Reviews, Size Guides, Return Policy, Fashion Customer Service, Fashion Newsletter, Fashion Subscription, Fashion Rewards, Fashion Gift Cards, Fashion Wishlist, Secure Payment, Payment Options, Checkout Process, Shipping and Delivery, International Shipping, Track Order, Customer Support, Fashion Trends 2023, Holiday Fashion Collection, Summer Fashion, Winter Fashion."
+        />
+      </Helmet>
+
       <div className="w-full py-1 bg-slate-100 flex flex-row gap-4 px-3 items-end">
         <Link to={".."} relative={"path"} className=" 650px:hidden">
           <MdOutlineKeyboardBackspace size={31} />
@@ -123,7 +133,9 @@ function Orders() {
       <div className=" flex flex-col w-full py-1 mt-5 px-2 gap-6">
         {products.map((order, index) => (
           <div
-            className={`"w-full border ${(index + 1) % 2 === 0 ? "bg-gray-100" : ""} `}
+            className={`"w-full border ${
+              (index + 1) % 2 === 0 ? "bg-gray-100" : ""
+            } `}
             key={order._id}
           >
             <OrderItem

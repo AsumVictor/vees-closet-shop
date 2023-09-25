@@ -14,10 +14,11 @@ import AccountSettings from "./components/account/pages/AccountSettings";
 import Address from "./components/account/pages/Address";
 import Security from "./components/account/pages/Security";
 import Orders from "./components/account/pages/Orders";
-import OrderDetail from "./components/account/pages/OrderDetail.jsx";
-
+import OrderDetail from "./components/account/pages/OrderDetail"
+import MyAccount from "./components/account/pages/MyAccount.jsx";
 
 export {
+  MyAccount,
   Address,
   Security,
   Orders,
