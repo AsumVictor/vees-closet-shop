@@ -7,6 +7,8 @@ import { HiBadgeCheck } from "react-icons/hi";
 import { toast } from "react-toastify";
 import server from "../../../server";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
+
 
 function AccountSettings() {
   const { user } = useSelector((state) => state.client);

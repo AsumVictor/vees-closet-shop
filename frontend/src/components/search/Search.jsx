@@ -72,6 +72,7 @@ export const Search = ({ handleSearch }) => {
         <div className="w-full px-3 flex mt-1 bg-white border gap-3 py-4 flex-col ">
           {suggestions.map((product) => (
             <div
+              key={product.name}
               className="w-full grid grid-cols-12 cursor-pointer hover:bg-gray-100"
               onClick={() => {
                 navigate(`product/${product.name}`);

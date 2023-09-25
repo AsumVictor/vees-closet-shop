@@ -47,21 +47,20 @@ function Footer() {
           Useful links
         </h2>
         <ul className="mt-8 flex flex-col gap-2">
-          <Link to={"/"} className="underline text-white">
+          <Link to={"/shop"} className="underline text-white">
             Shop
           </Link>
-          <Link to={"/"} className="underline text-white">
-            Products
-          </Link>
-          <Link to={"/"} className="underline text-white">
+
+          <Link to={"/shop?sort=price_asc"} className="underline text-white">
             Best price
           </Link>
-          <Link to={"/"} className="underline text-white">
-            For men
-          </Link>
-          <Link to={"/"} className="underline text-white">
+          <Link to={"/women"} className="underline text-white">
             For women
           </Link>
+          <Link to={"/men"} className="underline text-white">
+            For men
+          </Link>
+          
         </ul>
       </div>
 

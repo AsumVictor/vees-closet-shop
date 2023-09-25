@@ -10,6 +10,9 @@ import { getCart } from "../redux/actions/cart";
 import { useDispatch } from "react-redux";
 import PulseLoader from "../components/loaders/pulseLoader";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
+import Error from "../components/errorHandler/error";
+
 
 function ProductDetails() {
   const params = useParams();
@@ -82,14 +85,8 @@ function ProductDetails() {
     getProduct();
   }, [params.name]);
 
-  if (loading) {
-    return (
-      <div className="mt-20 ">
-        <PulseLoader />
-      </div>
-    );
-  }
 
+  
   const addToCart = async () => {
     setSubmissionError(null);
     try {
@@ -129,6 +126,23 @@ function ProductDetails() {
       });
     }
   };
+
+  if (loading) {
+    return (
+      <div className="mt-20 ">
+        <PulseLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mt-20 py-10">
+        <Error message={'Failed to load data'} />
+      </div>
+    );
+  }
+
 
   return (
     <div className="w-full py-20 relative">
@@ -218,7 +232,7 @@ function ProductDetails() {
                       Select {variant.variation.name}
                     </option>
                     {variant.selected_values.map((value) => (
-                      <option value={value}>{value}</option>
+                      <option value={value} key={value}>{value}</option>
                     ))}
                   </select>
                 </div>
@@ -297,7 +311,7 @@ function ProductDetails() {
           </h2>
           <div className="mt-3 grid justify-center px-2 550px:px-5 grid-cols-2 550px:grid-cols-3 1100px:px-10 900px:grid-cols-4 gap-x-2 gap-y-[4rem] 1200px:gap-x-6">
             {relatedProduct.map((product) => (
-              <ProductCard product={product} />
+              <ProductCard product={product} key={product._id} />
             ))}
           </div>
         </section>

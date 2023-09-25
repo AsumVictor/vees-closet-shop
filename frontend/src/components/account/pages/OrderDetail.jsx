@@ -6,6 +6,8 @@ import server from "../../../server";
 import OrderStatus from "../OrderStatus";
 import OrderDetailsItem from "../OrderDetailsItem";
 import PulseLoader from "../../loaders/pulseLoader";
+import { Helmet } from "react-helmet-async";
+import Error from "../../errorHandler/error";
 
 function OrderDetail() {
   const { id } = useParams();
@@ -40,16 +42,16 @@ function OrderDetail() {
 
   if (isError) {
     return (
-      <>
-        <h1>Error occured try again...</h1>
-      </>
+      <div className="mt-20 py-10">
+        <Error message={"Failed to load data"} />
+      </div>
     );
   }
 
   return (
     <div className="w-full">
-       <Helmet>
-        <title>Orders {orderData.tracking_no} - Vees closet </title>
+      <Helmet>
+        <title>Order #{orderData.tracking_no} - Vees closet </title>
         <meta
           name="description"
           content={`Explore our wide range of high-quality clothing for every need. Find the perfect fashion at Vees closet.`}
@@ -83,7 +85,7 @@ function OrderDetail() {
         <p className=" font-medium text-xl">Order Items</p>
         <div className="w-full">
           {orderData.items.map((item) => (
-            <OrderDetailsItem item={item} />
+            <OrderDetailsItem item={item} key={item._id} />
           ))}
         </div>
 

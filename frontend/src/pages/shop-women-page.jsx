@@ -4,6 +4,9 @@ import ProductCard from "../components/product/productCard";
 import axios from "axios";
 import server from "../server";
 import PulseLoader from "../components/loaders/pulseLoader";
+import { Helmet } from "react-helmet-async";
+import Error from "../components/errorHandler/error";
+
 
 function ShopWowomenPage() {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -84,6 +87,14 @@ function ShopWowomenPage() {
     return (
       <div className="h-screen w-full flex justify-center items-center">
         <PulseLoader />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-20 py-10">
+        <Error message={'Failed to load data'} />
       </div>
     );
   }

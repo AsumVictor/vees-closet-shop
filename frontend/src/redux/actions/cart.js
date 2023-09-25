@@ -69,11 +69,17 @@ export const removeFromCart = (data) => async (dispatch) => {
         });
       }
     } else {
+      dispatch({
+        type: "clearRemoved",
+      });
       toast.error("Failed to remove item cart. Try again", {
         toastId: "removeErr",
       });
     }
   } catch (error) {
+    dispatch({
+      type: "clearRemoved",
+    });
     toast.error("Failed to remove item cart. Try again", {
       toastId: "removeErr",
     });

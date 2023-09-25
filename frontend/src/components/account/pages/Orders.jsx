@@ -5,7 +5,10 @@ import server from "../../../server";
 import axios from "axios";
 import OrderItem from "../OrderItem";
 import PulseLoader from "../../loaders/pulseLoader";
+import { Helmet } from "react-helmet-async";
+import Error from "../../errorHandler/error";
 
+ 
 function Orders() {
   let [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page");
@@ -84,6 +87,14 @@ function Orders() {
 
   if (isLoading) {
     return <PulseLoader />;
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-20 py-10">
+        <Error message={'Failed to load data'} />
+      </div>
+    );
   }
 
   return (

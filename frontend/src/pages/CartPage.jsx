@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import CartItem from "../components/cart/cartItem";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
+import PulseLoader from "../components/loaders/pulseLoader";
+import Error from "../components/errorHandler/error";
 
 function CartPage() {
   useEffect(() => {
@@ -16,7 +19,15 @@ function CartPage() {
   if (isGettingCart) {
     return (
       <div className="mt-20 py-10">
-        <h1 className="text-center">LOADING CART DATA..</h1>
+        <PulseLoader />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-20 py-10">
+        <Error message={'Failed to load cart data'} />
       </div>
     );
   }
@@ -94,7 +105,7 @@ function CartPage() {
       )}
 
       {removing && (
-        <div className=" h-screen w-full top-0 left-0 bg-[#ffffff56] z-[10] fixed flex justify-center items-center font-bold">
+        <div className=" h-screen w-full top-0 left-0 bg-[#ffffff79] z-[10] fixed flex justify-center items-center font-bold">
           <span className="py-2 px-3 bg-white">Removing...</span>
         </div>
       )}

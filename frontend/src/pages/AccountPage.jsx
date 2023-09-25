@@ -2,6 +2,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import AccountNavbar from "../components/account/AccountNavbar";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
+
 
 function AccountPage() {
   const { user } = useSelector((state) => state.client);
@@ -48,10 +50,7 @@ function AccountPage() {
             page ? "block" : "hidden"
           } w-full col-span-full 650px:col-span-8 650px:block 1000px:col-span-9`}
         >
-          {/* <div className=" bg-deep-primary py-1 w-full text-white px-5">
-            <h3 className="text-xl">Welcome, Asum</h3>
-            <p>iamasum369@gmail.com</p>
-          </div> */}
+
           <Outlet />
         </div>
       </div>

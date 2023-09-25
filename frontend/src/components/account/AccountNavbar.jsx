@@ -38,6 +38,7 @@ function AccountNavbar() {
         </div>
         {links.map((link) => (
           <NavLink
+          key={link.href}
             state={true}
             to={link.href}
             className={({ isActive }) =>

@@ -49,4 +49,10 @@ export const cartReducer = createReducer(initialState, {
       removing: true
     };
   },
+  clearRemoved: (state) => {
+    return {
+      ...state,
+      removing: false
+    };
+  },
 });

@@ -23,7 +23,7 @@ function OrderDetailsItem({ item }) {
         <div className="flex flex-col gap-1">
           {item.variation_choice &&
             Object.entries(item.variation_choice).map(([key, value]) => (
-              <p className="flex text-[10px] flex-row gap-1">
+              <p className="flex text-[10px] flex-row gap-1" key={key}>
                 <span className=" uppercase font-semibold">{key}:</span>
                 <span className=" capitalize">{value}</span>
               </p>
