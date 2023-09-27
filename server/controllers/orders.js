@@ -62,7 +62,7 @@ const createOrder = async (data) => {
       paymentInfo: order_details.paymentInfo,
     });
 
-    await sendMail({
+     sendMail({
       from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
       to: email,
       subject: "Confirm your order",

@@ -118,7 +118,7 @@ function ProductDetails() {
       }
     } catch (error) {
       setIsAdding(false);
-      let errMsg = error.response.data.message
+      let errMsg = error?.response?.data?.message
         ? error.response.data.message
         : error.message;
       toast.error(errMsg, {
