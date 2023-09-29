@@ -51,6 +51,72 @@ router.get(
   })
 );
 
+// get all products -- Admin
+router.get(
+  "/get-products",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 20;
+      const searchTerm = req.query.q;
+      const sortType = req.query.sort;
+      let sortOptions = {};
+
+      if (sortType === "recent_update") {
+        sortOptions = { updatedAt: -1 };
+      } else if (sortType === "price_desc") {
+        sortOptions = { actual_price: -1 };
+      } else if (sortType === "price_asc") {
+        sortOptions = { actual_price: 1 };
+      } else if (sortType === "newest") {
+        sortOptions = { createdAt: -1 };
+      } else if (sortType === "oldest") {
+        sortOptions = { createdAt: 1 };
+      } else if (sortType === "stock_asc") {
+        sortOptions = { qty_in_stock: -1 };
+      } else if (sortType === "stock_desc") {
+        sortOptions = { qty_in_stock: 1 };
+      } else if (sortType === "name_asc") {
+        sortOptions = { name: -1 };
+      } else if (sortType === "name_desc") {
+        sortOptions = { name: 1 };
+      } else {
+        sortOptions = { createdAt: -1 };
+      }
+
+      const totalCount = await Product.countDocuments({});
+      const totalPages = Math.ceil(totalCount / limit);
+      let params;
+      if (searchTerm) {
+        params = {
+          $or: [
+            { name: { $regex: searchTerm, $options: "i" } },
+            { description: { $regex: searchTerm, $options: "i" } },
+          ],
+        };
+      } else {
+        params = {};
+      }
+
+      const products = await Product.find(
+        params,
+        "name images actual_price qty_in_stock createdAt updatedAt "
+      )
+        .sort(sortOptions)
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      res.status(200).json({
+        success: true,
+        products,
+        totalPages,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 // create product -- Only admin
 router.post(
   "/create-product",
@@ -198,11 +264,13 @@ router.get(
       if (searchTerm.length >= 3) {
         const suggestions = await Product.find(
           {
-          $or: [
-            { name: { $regex: searchTerm, $options: "i" } },
-            { description: { $regex: searchTerm, $options: "i" } },
-          ],
-        }, 'name images').limit(5);
+            $or: [
+              { name: { $regex: searchTerm, $options: "i" } },
+              { description: { $regex: searchTerm, $options: "i" } },
+            ],
+          },
+          "name images"
+        ).limit(5);
 
         return res.status(200).json({
           success: true,
@@ -414,61 +482,61 @@ router.delete(
   })
 );
 
-// review for a product
-router.put(
-  "/create-new-review",
-  isAuthenticated,
-  catchAsyncErrors(async (req, res, next) => {
-    try {
-      const { user, rating, comment, productId, orderId } = req.body;
+// // review for a product
+// router.put(
+//   "/create-new-review",
+//   isAuthenticated,
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const { user, rating, comment, productId, orderId } = req.body;
 
-      const product = await Product.findById(productId);
+//       const product = await Product.findById(productId);
 
-      const review = {
-        user,
-        rating,
-        comment,
-        productId,
-      };
+//       const review = {
+//         user,
+//         rating,
+//         comment,
+//         productId,
+//       };
 
-      const isReviewed = product.reviews.find(
-        (rev) => rev.user._id === req.user._id
-      );
+//       const isReviewed = product.reviews.find(
+//         (rev) => rev.user._id === req.user._id
+//       );
 
-      if (isReviewed) {
-        product.reviews.forEach((rev) => {
-          if (rev.user._id === req.user._id) {
-            (rev.rating = rating), (rev.comment = comment), (rev.user = user);
-          }
-        });
-      } else {
-        product.reviews.push(review);
-      }
+//       if (isReviewed) {
+//         product.reviews.forEach((rev) => {
+//           if (rev.user._id === req.user._id) {
+//             (rev.rating = rating), (rev.comment = comment), (rev.user = user);
+//           }
+//         });
+//       } else {
+//         product.reviews.push(review);
+//       }
 
-      let avg = 0;
+//       let avg = 0;
 
-      product.reviews.forEach((rev) => {
-        avg += rev.rating;
-      });
+//       product.reviews.forEach((rev) => {
+//         avg += rev.rating;
+//       });
 
-      product.ratings = avg / product.reviews.length;
+//       product.ratings = avg / product.reviews.length;
 
-      await product.save({ validateBeforeSave: false });
+//       await product.save({ validateBeforeSave: false });
 
-      await Order.findByIdAndUpdate(
-        orderId,
-        { $set: { "cart.$[elem].isReviewed": true } },
-        { arrayFilters: [{ "elem._id": productId }], new: true }
-      );
+//       await Order.findByIdAndUpdate(
+//         orderId,
+//         { $set: { "cart.$[elem].isReviewed": true } },
+//         { arrayFilters: [{ "elem._id": productId }], new: true }
+//       );
 
-      res.status(200).json({
-        success: true,
-        message: "Reviwed succesfully!",
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error, 400));
-    }
-  })
-);
+//       res.status(200).json({
+//         success: true,
+//         message: "Reviwed succesfully!",
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error, 400));
+//     }
+//   })
+// );
 
 module.exports = router;
