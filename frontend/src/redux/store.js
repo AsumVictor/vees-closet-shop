@@ -2,10 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { cartReducer } from "./reducers/cart";
 import { newArrivalReducer } from "./reducers/newArrival";
 import { userReducers } from "./reducers/user";
-
-import { wishlistReducer } from "./reducers/wishlist";
-import { shopReducer } from "./reducers/shop";
-import { productReducer } from "./reducers/product";
+import { adminReducer } from "./reducers/admin";
 
 
 
@@ -13,7 +10,8 @@ const Store = configureStore({
   reducer: {
     cart: cartReducer,
     newProducts: newArrivalReducer,
-    client: userReducers
+    client: userReducers,
+    admin: adminReducer
   },
 });
 

@@ -19,7 +19,9 @@ function Footer() {
           inspiring shopping haven. Join us in redefining fashion's role –
           enhancing confidence and self-expression.
         </p>
-        <button className="underline text-blue-600">Staff</button>
+        <Link to="./admin" className="underline text-blue-600">
+          Staff
+        </Link>
       </div>
 
       <div className="py-2 flex flex-col items-center">
@@ -60,7 +62,6 @@ function Footer() {
           <Link to={"/men"} className="underline text-white">
             For men
           </Link>
-          
         </ul>
       </div>
 

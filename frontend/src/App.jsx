@@ -17,8 +17,9 @@ import {
   Security,
   Orders,
   OrderDetail,
-  MyAccount
+  MyAccount,
 } from "./routes";
+import { AdminLayout, AdminLoginPage,Products } from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -29,6 +30,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import PulseLoader from "./components/loaders/pulseLoader";
+import AdminProtected from "./components/auth/adminRoutes";
 
 function App() {
   const { loading } = useSelector((state) => state.client);
@@ -71,6 +73,41 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
             </Route>
+            <Route element={<AdminProtected />}>
+              <Route path="admin" element={<AdminLayout />}>
+                <Route index element={<h1 className="mt-10">Dashboard</h1>} />
+                <Route
+                  path="products"
+                  element={<Products />}
+                />
+                <Route
+                  path="create-product"
+                  element={<h1 className="mt-20">Dashboard</h1>}
+                />
+
+                <Route
+                  path="products/:name"
+                  element={<h1 className="mt-10">Dashboard</h1>}
+                />
+                <Route
+                  path="orders"
+                  element={<h1 className="mt-10">Dashboard</h1>}
+                />
+                <Route
+                  path="orders/:id"
+                  element={<h1 className="mt-10">Dashboard</h1>}
+                />
+                <Route
+                  path="coupons"
+                  element={<h1 className="mt-10">Dashboard</h1>}
+                />
+                <Route
+                  path="settings"
+                  element={<h1 className="mt-10">Dashboard</h1>}
+                />
+              </Route>
+            </Route>
+            <Route path="admin/login" element={<AdminLoginPage />} />
           </Routes>
         </BrowserRouter>
       )}
