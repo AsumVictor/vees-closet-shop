@@ -19,7 +19,7 @@ import {
   OrderDetail,
   MyAccount,
 } from "./routes";
-import { AdminLayout, AdminLoginPage,Products } from "./adminRoutes";
+import { AdminLayout, AdminLoginPage,Products, SpecificProduct } from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -86,8 +86,8 @@ function App() {
                 />
 
                 <Route
-                  path="products/:name"
-                  element={<h1 className="mt-10">Dashboard</h1>}
+                  path="products/:id"
+                  element={<SpecificProduct />}
                 />
                 <Route
                   path="orders"

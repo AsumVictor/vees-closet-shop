@@ -202,6 +202,157 @@ router.get(
   })
 );
 
+// get a specific product -- admin
+router.get(
+  "/get-product-ebece57326214432/:_id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      if (!req.params._id) {
+        return next(
+          new ErrorHandler("Error occured! Product _id required", 400)
+        );
+      }
+
+      const product = await Product.findOne({ _id: req.params._id })
+        .populate({
+          path: "variations.variation",
+          select: "name",
+        })
+        .populate("gender category");
+      if (!product) {
+        return next(
+          new ErrorHandler(`Product with _id ${req.params._id} not found`, 400)
+        );
+      }
+      res.status(200).json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
+// update product -- admin
+router.put(
+  "/update-product/:_id",
+  catchAsyncErrors(async (req, res, next) => {
+    const { data, field } = req.body;
+    try {
+      if (!req.params._id) {
+        return next(
+          new ErrorHandler("Error occured! Product _id required", 400)
+        );
+      }
+
+      if (!field) {
+        return next(
+          new ErrorHandler("Error occured! Specify field to be updated", 400)
+        );
+      }
+
+      if (!data) {
+        return next(
+          new ErrorHandler(
+            "Error occured! product information cannot empty",
+            400
+          )
+        );
+      }
+
+      let product = await Product.findOneAndUpdate(
+        { _id: req.params._id },
+        { [field]: data },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
+// update product image -- admin
+router.delete(
+  "/delete-product-image/:_id",
+  catchAsyncErrors(async (req, res, next) => {
+    const { _id } = req.query;
+
+    try {
+      if (!req.params._id) {
+        return next(
+          new ErrorHandler("Error occured! Product _id required", 400)
+        );
+      }
+
+      if (!_id) {
+        return next(
+          new ErrorHandler(
+            "Error occured! Specify image _id to be deleted",
+            400
+          )
+        );
+      }
+
+      let product = await Product.findById(req.params._id);
+
+      let images = product.images.filter((i) => i._id.toString() !== _id);
+
+      cloudinary.uploader.destroy(req.query.ref);
+
+      product.images = images;
+
+      await product.save();
+
+      res.status(200).json({
+        success: true,
+        images,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
+// update product image new-- Only admin
+router.put(
+  "/update-product-image-new/:_id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const product = await Product.findById(req.params._id);
+      const images = product.images;
+
+      const imagesLinks = await Promise.all(
+        req.body.images.map(async (image) => {
+          const { public_id, secure_url } = await cloudinary.v2.uploader.upload(
+            image,
+            {
+              folder: "products",
+            }
+          );
+          images.push({ public_id, url: secure_url });
+          return { public_id, url: secure_url };
+        })
+      );
+
+      product.images = images;
+      await product.save();
+
+      res.status(201).json({
+        success: true,
+        images,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 // Search for products
 router.get(
   "/search",
