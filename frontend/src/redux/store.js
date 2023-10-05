@@ -3,6 +3,7 @@ import { cartReducer } from "./reducers/cart";
 import { newArrivalReducer } from "./reducers/newArrival";
 import { userReducers } from "./reducers/user";
 import { adminReducer } from "./reducers/admin";
+import { variationReducer } from "./reducers/variation";
 
 
 
@@ -11,7 +12,8 @@ const Store = configureStore({
     cart: cartReducer,
     newProducts: newArrivalReducer,
     client: userReducers,
-    admin: adminReducer
+    admin: adminReducer,
+    variations: variationReducer,
   },
 });
 

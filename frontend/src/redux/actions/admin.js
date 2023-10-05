@@ -23,28 +23,3 @@ export const LoadAdmin = () => async (dispatch) => {
   }
 };
 
-// load seller
-export const loadShop = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "LoadSellerRequest",
-    });
-    const { data } = await axios.get(`${server}/shop/getShop`, {
-      withCredentials: true,
-    });
-    if (data) {
-      dispatch({
-        type: "LoadSellerSuccess",
-        payload: data.seller,
-      });
-    }
-  } catch (error) {
-    let errorMessage = error.response
-      ? error.response.data.message
-      : error.message;
-    dispatch({
-      type: "LoadSellerFail",
-      payload: errorMessage,
-    });
-  }
-};

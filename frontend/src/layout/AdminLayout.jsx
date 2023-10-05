@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { TfiClose } from "react-icons/tfi";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { LoadVariation } from "../redux/actions/variations";
+import { useDispatch } from "react-redux";
 
 function AdminLayout() {
   const [IsNavOpen, setIsNavOpen] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(LoadVariation());
+  }, []);
   return (
     <div className="w-full">
       <header className="w-full h-[1.6cm] bg-white fixed top-0 border flex flex-row items-center justify-between z-[99]">

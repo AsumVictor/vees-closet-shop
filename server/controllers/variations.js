@@ -45,7 +45,9 @@ router.get(
   "/get-variations",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const variations = await Variations.find();
+      const variations = await Variations.find().sort({
+        createdAt: -1,
+      });
       return res.status(200).json({
         success: true,
         variations,
@@ -61,13 +63,13 @@ router.post(
   "/create-variation",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const variations = await Variations.create(req.body);
-      if (!variations) {
+      const variation = await Variations.create(req.body);
+      if (!variation) {
         return next(new ErrorHandler("Error occured creating variations", 400));
       }
       return res.status(200).json({
         success: true,
-        variations,
+        variation,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
@@ -76,7 +78,7 @@ router.post(
 );
 
 // edit varaiations
-router.patch(
+router.put(
   "/edit-variation",
   catchAsyncErrors(async (req, res, next) => {
     try {

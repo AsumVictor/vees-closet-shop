@@ -3,7 +3,10 @@ import AccountNavbar from "../components/account/AccountNavbar";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
-
+import { MdManageAccounts } from "react-icons/md";
+import { FaRegAddressBook } from "react-icons/fa";
+import { LuPackage2 } from "react-icons/lu";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 function AccountPage() {
   const { user } = useSelector((state) => state.client);
@@ -17,7 +20,7 @@ function AccountPage() {
 
   return (
     <div className="mt-[4rem] 650px:mt-[6rem]  w-full mb-10">
-        <Helmet>
+      <Helmet>
         <title>My account - Vees closet </title>
         <meta
           name="description"
@@ -42,7 +45,26 @@ function AccountPage() {
             page ? "hidden" : "block"
           } w-full bg-gray-100 650px:block col-span-full 650px:col-span-4 1000px:col-span-3 650px:px-0`}
         >
-          <AccountNavbar />
+          <AccountNavbar
+            logout={true}
+            links={[
+              {
+                href: "./settings",
+                icon: <MdManageAccounts />,
+                text: "Account Settings",
+              },
+              {
+                href: "./orders",
+                icon: <LuPackage2 />,
+                text: "My Orders",
+              },
+              {
+                href: "./security",
+                icon: <RiLockPasswordLine />,
+                text: "Change Password",
+              },
+            ]}
+          />
         </div>
 
         <div
@@ -50,7 +72,6 @@ function AccountPage() {
             page ? "block" : "hidden"
           } w-full col-span-full 650px:col-span-8 650px:block 1000px:col-span-9`}
         >
-
           <Outlet />
         </div>
       </div>

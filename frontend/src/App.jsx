@@ -19,7 +19,14 @@ import {
   OrderDetail,
   MyAccount,
 } from "./routes";
-import { AdminLayout, AdminLoginPage,Products, SpecificProduct } from "./adminRoutes";
+import {
+  AdminLayout,
+  AdminLoginPage,
+  Products,
+  SpecificProduct,
+  SettingLayout,
+  VariationPage
+} from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -76,19 +83,13 @@ function App() {
             <Route element={<AdminProtected />}>
               <Route path="admin" element={<AdminLayout />}>
                 <Route index element={<h1 className="mt-10">Dashboard</h1>} />
-                <Route
-                  path="products"
-                  element={<Products />}
-                />
+                <Route path="products" element={<Products />} />
                 <Route
                   path="create-product"
                   element={<h1 className="mt-20">Dashboard</h1>}
                 />
 
-                <Route
-                  path="products/:id"
-                  element={<SpecificProduct />}
-                />
+                <Route path="products/:id" element={<SpecificProduct />} />
                 <Route
                   path="orders"
                   element={<h1 className="mt-10">Dashboard</h1>}
@@ -101,10 +102,14 @@ function App() {
                   path="coupons"
                   element={<h1 className="mt-10">Dashboard</h1>}
                 />
-                <Route
-                  path="settings"
-                  element={<h1 className="mt-10">Dashboard</h1>}
-                />
+                <Route path="settings" element={<SettingLayout />}>
+                  <Route index element={<h1>Index</h1>} />
+                  <Route path="variations" element={<VariationPage />} />
+                  <Route path="delivery" element={<h1>Delivery</h1>} />
+                  <Route path="gender" element={<h1>Gender</h1>} />
+                  <Route path="category" element={<h1>Gender</h1>} />
+                </Route>
+
               </Route>
             </Route>
             <Route path="admin/login" element={<AdminLoginPage />} />
