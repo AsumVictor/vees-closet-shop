@@ -36,14 +36,16 @@ const productSchema = new mongoose.Schema(
         ],
       },
     ],
+
     gender: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "genderOption",
+      type: String,
+      enum: ["women", "men", "unisex"],
       required: [
         true,
         "Select gender for this product!. This will improve search functionality",
       ],
     },
+
     base_price: {
       type: Number,
       min: 0,

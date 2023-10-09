@@ -1,20 +1,38 @@
 import { useState } from "react";
 import { HiChevronDown, HiChevronRight } from "react-icons/hi";
 import { IoAddCircleSharp } from "react-icons/io5";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
-function Variant({ index, data, handleAction, handleClose }) {
+function Variant({ index, data, handleAction, handleClose, removeVariant }) {
   const [isSelecting, setIsSelecting] = useState(false);
   const [isDisplay, setIsDisplay] = useState(true);
+  const { isVariation, variation } = useSelector((state) => state.variations);
+  let value = [];
+  if (isVariation) {
+    let currentVariation = variation.find((i) => i._id === data.variation._id);
+    value = currentVariation.values;
+  }
   return (
     <div>
-      <div
-        onClick={() => setIsDisplay((prev) => !prev)}
-        className=" text-xl flex flex-row items-center cursor-pointer"
-      >
-        {isDisplay ? <HiChevronDown size={25} /> : <HiChevronRight size={25} />}
+      <div className="flex flex-row gap-2 items-center">
+        <AiOutlineMinusCircle
+          size={25}
+          color="red"
+          onClick={() => removeVariant(data._id)}
+        />
+        <div
+          onClick={() => setIsDisplay((prev) => !prev)}
+          className=" text-xl flex flex-row items-center cursor-pointer"
+        >
+          {isDisplay ? (
+            <HiChevronDown size={25} />
+          ) : (
+            <HiChevronRight size={25} />
+          )}
 
-        <span className=" capitalize">{data.variation.name}</span>
+          <span className=" capitalize">{data.variation.name}</span>
+        </div>
       </div>
       {isDisplay && (
         <div className="ml-8">
@@ -37,7 +55,7 @@ function Variant({ index, data, handleAction, handleClose }) {
           {isSelecting ? (
             <div className="mt-1 flex flex-row gap-2">
               <select
-                disabled={false}
+                disabled={!isVariation}
                 name={data.variation.name}
                 id={data.variation.name}
                 className="px-2 py-1"
@@ -45,11 +63,9 @@ function Variant({ index, data, handleAction, handleClose }) {
                   handleAction(index, e.target.value);
                 }}
               >
-                <option value="L">L</option>
-                <option value="L">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
+                {value.map((v) => (
+                  <option value={v}>{v}</option>
+                ))}
               </select>
               <AiFillCloseCircle
                 size={20}

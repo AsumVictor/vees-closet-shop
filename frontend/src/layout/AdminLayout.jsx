@@ -77,15 +77,7 @@ function AdminLayout() {
                 Orders
               </NavLink>
             </li>
-            <li className="flex flex-col">
-              <NavLink
-                onClick={() => setIsNavOpen(false)}
-                to="coupons"
-                className={"nav-link  self-center  px-3"}
-              >
-                Coupons
-              </NavLink>
-            </li>
+
             <li className="flex flex-col">
               <NavLink
                 onClick={() => setIsNavOpen(false)}

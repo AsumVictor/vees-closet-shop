@@ -27,30 +27,12 @@ router.post(
   "/create-category",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { name, image } = req.body;
-      if (!name || !image) {
+      const { name } = req.body;
+      if (!name) {
         return next(new ErrorHandler("All fields are required!", 400));
       }
 
-      const { public_id, secure_url } = await cloudinary.v2.uploader.upload(
-        req.body.image,
-        {
-          folder: "categories",
-        }
-      );
-
-      if (!public_id || !secure_url) {
-        return next(
-          new ErrorHandler("Error occured! Can not add category", 400)
-        );
-      }
-
-      const category = req.body;
-      category.image = {
-        public_id,
-        url: secure_url,
-      };
-      const new_category = await Category.create(category);
+      const new_category = await Category.create(req.body);
       if (!new_category) {
         return next(
           new ErrorHandler("Error occured! Can not add category", 400)

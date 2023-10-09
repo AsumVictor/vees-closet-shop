@@ -12,6 +12,8 @@ import { HiTrash } from "react-icons/hi";
 import { BiSolidCloudUpload } from "react-icons/bi";
 import PulseLoader from "../../components/loaders/pulseLoader";
 import Error from "../../components/errorHandler/error";
+import { useSelector } from "react-redux";
+import AddVariantBtn from "../../components/inputs/AddVariantBtn.jsx";
 
 function SpecificProduct() {
   const { id } = useParams();
@@ -21,7 +23,7 @@ function SpecificProduct() {
   const [isError, setError] = useState(false);
   const [isImgDlt, setImgDlt] = useState(false);
   const [product, setProduct] = useState(null);
-
+  const { isCategory, category } = useSelector((state) => state.categories);
   const handleProductUpdate = (field, data) => {
     setProduct((prev) => {
       return {
@@ -73,6 +75,42 @@ function SpecificProduct() {
       return {
         ...prev,
         variations: newVarState,
+      };
+    });
+  };
+
+  const VariationChangeRemove = (id) => {
+    setProduct((prev) => {
+      let Prev_variation = [...prev.variations];
+
+      let newVariation = Prev_variation.filter((i) => i._id !== id);
+
+      return {
+        ...prev,
+        variations: newVariation,
+      };
+    });
+  };
+
+  const VariationChangeAdd = (variation) => {
+    let duplicate = product.variations.some(
+      (i) => (i.variation._id === variation._id)
+    );
+
+    if (duplicate) {
+      return null;
+    }
+    setProduct((prev) => {
+      let Prev_variation = [...prev.variations];
+
+      Prev_variation.push({
+        variation: variation,
+        selected_values: [],
+      });
+
+      return {
+        ...prev,
+        variations: Prev_variation,
       };
     });
   };
@@ -142,13 +180,13 @@ function SpecificProduct() {
   }, [id]);
 
   if (isLoading) {
-    return <PulseLoader />
+    return <PulseLoader />;
   }
 
   if (isError) {
     return (
       <div className="mt-20 py-10">
-        <Error message={'Failed to load data'} />
+        <Error message={"Failed to load data"} />
       </div>
     );
   }
@@ -168,6 +206,7 @@ function SpecificProduct() {
           <h1 className="text-xl font-medium text-center ">
             Product information
           </h1>
+
           <div className="w-full">
             <p>Product name * </p>
             <div className="w-full grid grid-cols-12">
@@ -184,6 +223,7 @@ function SpecificProduct() {
               />
             </div>
           </div>
+
           <div className="w-full mt-5">
             <p>Product description * </p>
             <div className="w-full grid grid-cols-12 justify-end items-end gap-1">
@@ -205,21 +245,25 @@ function SpecificProduct() {
               </div>
             </div>
           </div>
+
           <div className="w-full mt-5">
             <p>Product category * </p>
             <div className="w-full flex flex-row gap-2">
               <select
                 name="category"
                 id="category"
+                disabled={!isCategory}
                 className=" capitalize px-3 py-1 font-bold"
-                value={product.category._id}
-                // onChange={(e) =>
-                //   handleProductUpdate("category", e.target.value)
-                // }
+                value={JSON.stringify(product.category)}
+                onChange={(e) => {
+                  handleProductUpdate("category", JSON.parse(e.target.value));
+                }}
               >
-                <option value={product.category._id} className=" capitalize">
-                  {product.category.name}
-                </option>
+                {category.map((c) => (
+                  <option value={JSON.stringify(c)} className=" capitalize">
+                    {c.name}
+                  </option>
+                ))}
               </select>
               <UpdateButton
                 classExtnd={"w-[3cm]"}
@@ -229,6 +273,7 @@ function SpecificProduct() {
               />
             </div>
           </div>
+
           <div className="w-full mt-5">
             <p>Product gender * </p>
             <div className="w-full flex flex-row gap-2">
@@ -236,43 +281,76 @@ function SpecificProduct() {
                 name="gender"
                 id="gender"
                 className=" capitalize px-3 py-1 font-bold"
-                value={product.gender._id}
-                // onChange={(e) =>
-                //   handleProductUpdate("gender", e.target.value)
-                // }
+                value={product.gender}
+                onChange={(e) => {
+                  handleProductUpdate("gender", e.target.value);
+                }}
               >
-                <option value={product.gender._id} className=" capitalize">
-                  {product.gender.name}
+                <option value={"women"} className=" capitalize">
+                  women
+                </option>
+                <option value={"men"} className=" capitalize">
+                  men
+                </option>
+                <option value={"unisex"} className=" capitalize">
+                  unisex
                 </option>
               </select>
               <UpdateButton
                 classExtnd={"w-[3cm]"}
                 field={"gender"}
-                data={product.gender._id}
+                data={product.gender}
                 id={product._id}
               />
             </div>
           </div>
-          <div className="w-full mt-5">
-            <p>Product variations * </p>
-            <div className="w-full pl-4 flex flex-col gap-4">
-              {product.variations.map((variant, index) => (
-                <Variant
-                  index={index}
-                  data={variant}
-                  handleAction={handleVariationChange}
-                  handleClose={handleVariationChangeRemove}
-                />
-              ))}
 
+          <div className="w-full mt-5">
+            <div className="w-full flex flex-row gap-2">
+              <input
+                type="checkbox"
+                id="isFeatured"
+                checked={product.hasVariations}
+                onChange={(e) => {
+                  handleProductUpdate("hasVariations", e.target.checked);
+                }}
+              />
+              <label htmlFor="isFeatured">
+                Does this product has variations ?
+              </label>
               <UpdateButton
                 classExtnd={"w-[3cm]"}
-                field={"variations"}
-                data={product.variations}
+                field={"hasVariations"}
+                data={product.hasVariations}
                 id={product._id}
               />
             </div>
           </div>
+
+          {product.hasVariations && (
+            <div className="w-full mt-5">
+              <p>Product variations * </p>
+              <div className="w-full pl-4 flex flex-col gap-4">
+                {product.variations.map((variant, index) => (
+                  <Variant
+                    index={index}
+                    data={variant}
+                    handleAction={handleVariationChange}
+                    handleClose={handleVariationChangeRemove}
+                    removeVariant={VariationChangeRemove}
+                  />
+                ))}
+                <AddVariantBtn handleClick={VariationChangeAdd} />
+                <UpdateButton
+                  classExtnd={"w-[3cm]"}
+                  field={"variations"}
+                  data={product.variations}
+                  id={product._id}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="w-full mt-5">
             <p>Product flat price ( without discount ) * </p>
             <div className="w-full flex flex-row gap-2">
@@ -295,6 +373,7 @@ function SpecificProduct() {
               />
             </div>
           </div>
+
           <div className="w-full mt-5">
             <p>Product actual price ( To be display on page ) * </p>
             <div className="w-full flex flex-row gap-2">
@@ -317,6 +396,7 @@ function SpecificProduct() {
               />
             </div>
           </div>
+
           <div className="w-full mt-5">
             <p>Number of products in sctock * </p>
             <div className="w-full flex flex-row gap-2">
@@ -339,6 +419,7 @@ function SpecificProduct() {
               />
             </div>
           </div>
+
           <div className="w-full mt-5">
             <div className="w-full flex flex-row gap-2">
               <input

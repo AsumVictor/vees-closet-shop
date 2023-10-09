@@ -169,10 +169,9 @@ router.post(
 );
 
 // update order status -- user
-router.post(
-  "/update-status-user",
-  isAuthenticated,
-  CatchAsyncError(async (req, res, next) => {
+router.patch(
+  "/update-status",
+    CatchAsyncError(async (req, res, next) => {
     try {
       const { _id, status } = req.body;
       if (!status || !_id) {
@@ -190,9 +189,9 @@ router.post(
       }
 
       product.status = status;
-      let { _id: updated_id } = await product.save();
+      let { status: updated_status } = await product.save();
 
-      if (!updated_id) {
+      if (!updated_status) {
         return next(
           new ErrorHandler("Order status could not saved! Try again", 404)
         );
@@ -200,7 +199,7 @@ router.post(
 
       res.status(201).json({
         success: true,
-        message: `Order status has been updated to ${status}`,
+        status: updated_status,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
@@ -251,20 +250,100 @@ router.post(
 // get all orders
 router.get(
   "/get-orders",
-  isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
-      const orders = await Order.find();
+      const page = Number(req.query.page) || 1;
+      const limit = 20;
+      const sortType = req.query.sort;
+      let sortOptions = {  };
+
+      let status = [
+        "pending",
+        "processing",
+        "shipped",
+        "delivered",
+        "refund",
+        "cancelled",
+      ];
+
+      status.forEach((status) => {
+        if (sortType === status) {
+          sortOptions = { ...sortOptions, status: status };
+        }
+      });
+
+      const totalCount = await Order.countDocuments(sortOptions);
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const response = await Order.find(
+        sortOptions,
+        "status tracking_no items createdAt "
+      )
+        .sort({ updatedAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      let orders = response.map((order) => {
+        const date = new Date(order.createdAt);
+        const formattedDate = format(date, "MMM d yyyy");
+
+        return {
+          _id: order._id,
+          status: order.status,
+          tracking_no: order.tracking_no,
+          items: order.items.length,
+          date: formattedDate,
+        };
+      });
 
       res.status(200).json({
         success: true,
         orders,
+        totalPages,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 400));
     }
   })
 );
+
+// Specific order with order --admin
+router.get(
+  "/get-order/:id",
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      if (!req.params.id) {
+        return next(
+          new ErrorHandler("Provide an id to get a specific order", 400)
+        );
+      }
+
+      const order = await Order.findById(
+        req.params.id,
+      ).populate({
+        path: "items",
+        populate: {
+          path: "product",
+          model: "product-v2",
+        },
+      }).populate('user');
+
+      if (!order) {
+        return next(
+          new ErrorHandler(`Order with id - ${req.params.id} not found`, 400)
+        );
+      }
+
+      res.status(200).json({
+        success: true,
+        order,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
 // get a specific order --user
 router.get(
   "/get-orders/:id",
@@ -363,6 +442,9 @@ router.get(
     }
   })
 );
+
+
+
 // get order with specific status -- shop owner
 router.get(
   "/get-orders-status",

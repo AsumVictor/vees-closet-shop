@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import server from "../../server";
 
-function AccountNavbar({ links, logout }) {
+function AccountNavbar({ links, logout, shop }) {
   const navigate = useNavigate();
 
   return (
     <div className="w-full">
       <div className=" border flex flex-col gap-4">
         <div className=" bg-white text-center text-xl py-2 capitalize">
-          My account
+          {shop ? shop : "My account"}
         </div>
         {links.map((link) => (
           <NavLink

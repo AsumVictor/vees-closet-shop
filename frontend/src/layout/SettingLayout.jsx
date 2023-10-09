@@ -36,21 +36,12 @@ function SettingLayout() {
                   text: "Variations",
                 },
                 {
-                  href: "./delivery",
-                  icon: <TbTruckDelivery />,
-                  text: "Delivery Ports",
-                },
-                {
-                  href: "./gender",
-                  icon: <BsGenderAmbiguous />,
-                  text: "Genders",
-                },
-                {
                   href: "./category",
                   icon: <BiCategoryAlt />,
                   text: "Categories",
                 },
               ]}
+              shop={'Shop settings'}
             />
           </div>
         </div>

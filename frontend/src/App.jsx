@@ -25,7 +25,12 @@ import {
   Products,
   SpecificProduct,
   SettingLayout,
-  VariationPage
+  VariationPage,
+  DeliveryPage,
+  GenderPage,
+  CategoriesPage,
+  AdminOrders,
+  AdminOrderDetails,
 } from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +43,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import PulseLoader from "./components/loaders/pulseLoader";
 import AdminProtected from "./components/auth/adminRoutes";
+import { LoadCategories } from "./redux/actions/variations";
 
 function App() {
   const { loading } = useSelector((state) => state.client);
@@ -46,6 +52,7 @@ function App() {
     dispatch(getCart());
     dispatch(getNewProducts());
     dispatch(loadUser());
+    dispatch(LoadCategories());
   }, []);
   return (
     <>
@@ -90,26 +97,16 @@ function App() {
                 />
 
                 <Route path="products/:id" element={<SpecificProduct />} />
-                <Route
-                  path="orders"
-                  element={<h1 className="mt-10">Dashboard</h1>}
-                />
-                <Route
-                  path="orders/:id"
-                  element={<h1 className="mt-10">Dashboard</h1>}
-                />
-                <Route
-                  path="coupons"
-                  element={<h1 className="mt-10">Dashboard</h1>}
-                />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="orders/:id" element={<AdminOrderDetails />} />
+
                 <Route path="settings" element={<SettingLayout />}>
                   <Route index element={<h1>Index</h1>} />
                   <Route path="variations" element={<VariationPage />} />
-                  <Route path="delivery" element={<h1>Delivery</h1>} />
-                  <Route path="gender" element={<h1>Gender</h1>} />
-                  <Route path="category" element={<h1>Gender</h1>} />
+                  <Route path="delivery" element={<DeliveryPage />} />
+                  <Route path="gender" element={<GenderPage />} />
+                  <Route path="category" element={<CategoriesPage />} />
                 </Route>
-
               </Route>
             </Route>
             <Route path="admin/login" element={<AdminLoginPage />} />
