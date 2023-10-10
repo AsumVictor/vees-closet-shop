@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 function AddVariantBtn({ handleClick }) {
   const [isSelecting, setIsSelecting] = React.useState(false);
   const { isVariation, variation } = useSelector((state) => state.variations);
-  const [value, setValue] = useState("");
+
+
   return (
     <div className=" w-full flex justify-center">
       {isSelecting ? (
@@ -23,6 +24,7 @@ function AddVariantBtn({ handleClick }) {
               });
             }}
           >
+             <option value={''}>Select Variant</option>
             {variation.map((c) => (
               <option value={JSON.stringify(c)}>{c.name}</option>
             ))}

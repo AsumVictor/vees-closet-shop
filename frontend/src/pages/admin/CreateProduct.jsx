@@ -14,16 +14,27 @@ import PulseLoader from "../../components/loaders/pulseLoader";
 import Error from "../../components/errorHandler/error";
 import { useSelector } from "react-redux";
 import AddVariantBtn from "../../components/inputs/AddVariantBtn.jsx";
+import hasEmptyValues from "../../helpers/hasEmptyVar";
 
-function SpecificProduct() {
-  const { id } = useParams();
+function CreateProduct() {
   const [images, setImages] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [isUploading, setUploading] = useState(false);
   const [isError, setError] = useState(false);
   const [isImgDlt, setImgDlt] = useState(false);
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState({
+    name: "",
+    description: "",
+    category: null,
+    hasVariations: false,
+    variations: [],
+    gender: null,
+    actual_price: null,
+    qty_in_stock: null,
+    isFeatured: false,
+  });
   const { isCategory, category } = useSelector((state) => state.categories);
+
   const handleProductUpdate = (field, data) => {
     setProduct((prev) => {
       return {
@@ -31,25 +42,6 @@ function SpecificProduct() {
         [field]: data,
       };
     });
-  };
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      let res = await axios(
-        `${server}product/get-product-ebece57326214432/${id}`
-      );
-      if (res.data.success) {
-        setProduct(res.data.product);
-        setLoading(false);
-      } else {
-        setError(true);
-        setLoading(false);
-      }
-    } catch (error) {
-      setError(true);
-      setLoading(false);
-    }
   };
 
   const handleVariationChange = (index, data) => {
@@ -83,18 +75,18 @@ function SpecificProduct() {
     setProduct((prev) => {
       let Prev_variation = [...prev.variations];
 
-      let newVariation = Prev_variation.filter((i) => i.variation._id !== id);
+      let newState = Prev_variation.filter((i) => i.variation._id !== id);
 
       return {
         ...prev,
-        variations: newVariation,
+        variations: newState,
       };
     });
   };
 
   const VariationChangeAdd = (variation) => {
     let duplicate = product.variations.some(
-      (i) => (i.variation._id === variation._id)
+      (i) => i.variation === variation._id
     );
 
     if (duplicate) {
@@ -115,25 +107,6 @@ function SpecificProduct() {
     });
   };
 
-  const deleteImage = async (_id, url) => {
-    try {
-      setImgDlt(true);
-      const res = await axios.delete(
-        `${server}product/delete-product-image/${product._id}?_id=${_id}&ref=${url}`
-      );
-      if (res.data.success) {
-        handleProductUpdate("images", res.data.images);
-        setImgDlt(false);
-      }
-    } catch (error) {
-      let errmsg = error.response?.data?.message
-        ? error.response.data.message
-        : error.message;
-      toast.error(errmsg);
-      setImgDlt(false);
-    }
-  };
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
 
@@ -149,35 +122,19 @@ function SpecificProduct() {
     });
   };
 
-  const addNewImages = async () => {
+  const createProduct = async (e)=>{
+    e.preventDefault();
     try {
-      setUploading(true);
-      const res = await axios.put(
-        `${server}product/update-product-image-new/${product._id}`,
-        { images },
-        {
-          withCredentials: true,
-        }
-      );
-      if (res.data.success) {
-        setUploading(false);
-        handleProductUpdate("images", res.data.images);
-        setImages([]);
-        toast.success("Image(s) added successfuly");
-      }
+        let isValid = hasEmptyValues(product.variations, true, product.hasVariations)
+        console.log(isValid)
     } catch (error) {
-      setUploading(false);
-      let errmsg = error.response?.data?.message
-        ? error.response.data.message
-        : error.message;
-      toast.error(errmsg);
+        console.log(error)
     }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-    window.scrollTo(0, 0);
-  }, [id]);
+  }
+  //   useEffect(() => {
+  //     fetchProducts();
+  //     window.scrollTo(0, 0);
+  //   }, [id]);
 
   if (isLoading) {
     return <PulseLoader />;
@@ -191,8 +148,10 @@ function SpecificProduct() {
     );
   }
 
+console.log(product)
+
   return (
-    <div className=" w-full px-3 bg-white py-5">
+    <form onSubmit={createProduct} className=" w-full px-3 bg-white py-5">
       <Link
         to={".."}
         relative="path"
@@ -212,14 +171,10 @@ function SpecificProduct() {
             <div className="w-full grid grid-cols-12">
               <input
                 type="text"
+                required
                 value={product.name}
                 onChange={(e) => handleProductUpdate("name", e.target.value)}
                 className="w-full px-2 py-1 border border-black outline-none col-span-10"
-              />
-              <UpdateButton
-                field={"name"}
-                data={product.name}
-                id={product._id}
               />
             </div>
           </div>
@@ -229,20 +184,14 @@ function SpecificProduct() {
             <div className="w-full grid grid-cols-12 justify-end items-end gap-1">
               <textarea
                 rows={15}
+                required
                 value={product.description}
                 onChange={(e) =>
                   handleProductUpdate("description", e.target.value)
                 }
                 className="w-full px-2 py-1 border border-black outline-none col-span-full"
               />
-              <div className="w-full flex justify-end flex-row col-span-full">
-                <UpdateButton
-                  classExtnd={"h-[1cm]"}
-                  field={"description"}
-                  data={product.description}
-                  id={product._id}
-                />
-              </div>
+              <div className="w-full flex justify-end flex-row col-span-full"></div>
             </div>
           </div>
 
@@ -251,26 +200,24 @@ function SpecificProduct() {
             <div className="w-full flex flex-row gap-2">
               <select
                 name="category"
+                required
                 id="category"
                 disabled={!isCategory}
                 className=" capitalize px-3 py-1 font-bold"
-                value={JSON.stringify(product.category)}
+                value={product.category}
                 onChange={(e) => {
-                  handleProductUpdate("category", JSON.parse(e.target.value));
+                  handleProductUpdate("category", e.target.value);
                 }}
               >
+                 <option value={''} className=" capitalize">
+                    Select category
+                  </option>
                 {category.map((c) => (
-                  <option value={JSON.stringify(c)} className=" capitalize">
+                  <option value={c._id} className=" capitalize">
                     {c.name}
                   </option>
                 ))}
               </select>
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"category"}
-                data={product.category._id}
-                id={product._id}
-              />
             </div>
           </div>
 
@@ -280,12 +227,17 @@ function SpecificProduct() {
               <select
                 name="gender"
                 id="gender"
+                required
                 className=" capitalize px-3 py-1 font-bold"
                 value={product.gender}
                 onChange={(e) => {
                   handleProductUpdate("gender", e.target.value);
                 }}
               >
+                <option value={""} className=" capitalize">
+                  Select gender
+                </option>
+
                 <option value={"women"} className=" capitalize">
                   women
                 </option>
@@ -296,12 +248,6 @@ function SpecificProduct() {
                   unisex
                 </option>
               </select>
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"gender"}
-                data={product.gender}
-                id={product._id}
-              />
             </div>
           </div>
 
@@ -309,21 +255,15 @@ function SpecificProduct() {
             <div className="w-full flex flex-row gap-2">
               <input
                 type="checkbox"
-                id="isFeatured"
+                id="isVaries"
                 checked={product.hasVariations}
                 onChange={(e) => {
                   handleProductUpdate("hasVariations", e.target.checked);
                 }}
               />
-              <label htmlFor="isFeatured">
+              <label htmlFor="isVaries">
                 Does this product has variations ?
               </label>
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"hasVariations"}
-                data={product.hasVariations}
-                id={product._id}
-              />
             </div>
           </div>
 
@@ -341,12 +281,6 @@ function SpecificProduct() {
                   />
                 ))}
                 <AddVariantBtn handleClick={VariationChangeAdd} />
-                <UpdateButton
-                  classExtnd={"w-[3cm]"}
-                  field={"variations"}
-                  data={product.variations}
-                  id={product._id}
-                />
               </div>
             </div>
           )}
@@ -364,13 +298,6 @@ function SpecificProduct() {
                   handleProductUpdate("base_price", e.target.value)
                 }
               />
-
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"base_price"}
-                data={product.base_price}
-                id={product._id}
-              />
             </div>
           </div>
 
@@ -379,6 +306,7 @@ function SpecificProduct() {
             <div className="w-full flex flex-row gap-2">
               <input
                 type="number"
+                required
                 name="price-2"
                 id="price-2"
                 className="border border-black capitalize px-3 py-1 font-bold"
@@ -387,35 +315,22 @@ function SpecificProduct() {
                   handleProductUpdate("actual_price", e.target.value)
                 }
               />
-
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"actual_price"}
-                data={product.actual_price}
-                id={product._id}
-              />
             </div>
           </div>
 
           <div className="w-full mt-5">
-            <p>Number of products in sctock * </p>
+            <p>Number of products in stock * </p>
             <div className="w-full flex flex-row gap-2">
               <input
                 type="number"
                 name="stock"
                 id="stock"
+                required
                 className="border border-black capitalize px-3 py-1 font-bold"
                 value={product.qty_in_stock}
                 onChange={(e) =>
                   handleProductUpdate("qty_in_stock", e.target.value)
                 }
-              />
-
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"qty_in_stock"}
-                data={product.qty_in_stock}
-                id={product._id}
               />
             </div>
           </div>
@@ -433,12 +348,6 @@ function SpecificProduct() {
               <label htmlFor="isFeatured">
                 Will you like to feature this product ?
               </label>
-              <UpdateButton
-                classExtnd={"w-[3cm]"}
-                field={"isFeatured"}
-                data={product.isFeatured}
-                id={product._id}
-              />
             </div>
           </div>
         </div>
@@ -447,18 +356,7 @@ function SpecificProduct() {
           <h1 className="text-xl font-medium text-center ">Product images</h1>
 
           <div className="relative px-3 justify-center flex flex-row flex-wrap gap-2 gap-y-5">
-            {product.images.map((image) => (
-              <ProductImage
-                handleIMageDelete={() =>
-                  deleteImage(image._id, image.public_id)
-                }
-                product_id={product._id}
-                image={image}
-              />
-            ))}
-
             <div className=" w-full flex flex-col justify-center items-center">
-              <p className=" font-medium text-xl">Add new image</p>
               <div className="flex items-center justify-center w-full col-span-full">
                 <label
                   htmlFor="dropzone-file"
@@ -521,33 +419,17 @@ function SpecificProduct() {
                     <img src={i} alt="..." className="w-full" />
                   </div>
                 ))}
-
-              {images.length > 0 && (
-                <button
-                  onClick={() => addNewImages()}
-                  disabled={isUploading}
-                  className="flex gap-2 items-center justify-center px-3 py-1 bg-black text-white font-medium w-full disabled:opacity-50"
-                >
-                  <BiSolidCloudUpload />
-                  <span>{isUploading ? "Uploading..." : "Upload all"}</span>
-                </button>
-              )}
             </div>
-
-            {isImgDlt && (
-              <div className=" absolute w-full h-full bg-[#ffffffd3] top-0 left-0 flex items-center justify-center flex-col font-medium">
-                <AiTwotoneDelete color="red" size={32} />
-                <p>Deleting...</p>
-              </div>
-            )}
           </div>
         </div>
       </div>
-    </div>
+
+      <button className=" px-3 py-2 bg-black text-white w-full" type="submit">Create Product</button>
+    </form>
   );
 }
 
-export default SpecificProduct;
+export default CreateProduct;
 
 const UpdateButton = ({ id, field, data, classExtnd }) => {
   const [isLoading, setLoading] = useState(false);

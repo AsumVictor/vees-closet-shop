@@ -13,13 +13,14 @@ function Variant({ index, data, handleAction, handleClose, removeVariant }) {
     let currentVariation = variation.find((i) => i._id === data.variation._id);
     value = currentVariation.values;
   }
+
   return (
     <div>
       <div className="flex flex-row gap-2 items-center">
         <AiOutlineMinusCircle
           size={25}
           color="red"
-          onClick={() => removeVariant(data._id)}
+          onClick={() => removeVariant(data.variation._id)}
         />
         <div
           onClick={() => setIsDisplay((prev) => !prev)}
@@ -63,6 +64,7 @@ function Variant({ index, data, handleAction, handleClose, removeVariant }) {
                   handleAction(index, e.target.value);
                 }}
               >
+                <option value={""}>Select value for {data.variation.name}</option>
                 {value.map((v) => (
                   <option value={v}>{v}</option>
                 ))}

@@ -8,7 +8,8 @@ import DeliveryPage from "./pages/admin/DeliveryPage";
 import GenderPage from "./pages/admin/GenderPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
 import AdminOrders from "./pages/admin/AdminOrders";
-import AdminOrderDetails from "./pages/admin/AdminOrderDetails.jsx";
+import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
+import CreateProduct from './pages/admin/CreateProduct.jsx'
 
 export {
   AdminOrderDetails,
@@ -22,4 +23,5 @@ export {
   SpecificProduct,
   SettingLayout,
   VariationPage,
+  CreateProduct
 };
