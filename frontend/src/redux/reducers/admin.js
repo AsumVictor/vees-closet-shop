@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: true,
-  isAdmin: true,
+  isAdmin: false,
   admin: null,
   isError: false,
 };
@@ -20,7 +20,7 @@ export const adminReducer = createReducer(initialState, {
   },
   LoadAdminFail: (state, action) => {
     state.isLoading = false;
-    state.isAdmin = true;
+    state.isAdmin = false;
     state.isError = true;
   },
 });

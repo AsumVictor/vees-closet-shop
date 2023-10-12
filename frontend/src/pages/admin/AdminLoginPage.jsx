@@ -27,7 +27,7 @@ function AdminLoginPage() {
     };
 
     axios
-      .post(`${server}user/auth`, userIformation, { withCredentials: true })
+      .post(`${server}shop/auth01`, userIformation, { withCredentials: true })
       .then((res) => {
         setEmail("");
         setPassword("");

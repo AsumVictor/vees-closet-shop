@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { LoadAdmin } from "../../redux/actions/admin";
+import PulseLoader from "../loaders/pulseLoader";
 
 const AdminProtected = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const AdminProtected = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="">Loading...</div>;
+    return <PulseLoader />;
   }
 
   if (!isLoading && !isAdmin) {

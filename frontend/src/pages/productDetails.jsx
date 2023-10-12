@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { HiMinus, HiPlus } from "react-icons/hi";
+import { HiBan, HiMinus, HiPlus } from "react-icons/hi";
 import ImageViewer from "../components/product/imageViewer";
 import ProductCard from "../components/product/productCard";
 import axios from "axios";
@@ -12,7 +12,6 @@ import PulseLoader from "../components/loaders/pulseLoader";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import Error from "../components/errorHandler/error";
-
 
 function ProductDetails() {
   const params = useParams();
@@ -85,8 +84,6 @@ function ProductDetails() {
     getProduct();
   }, [params.name]);
 
-
-  
   const addToCart = async () => {
     setSubmissionError(null);
     try {
@@ -138,15 +135,14 @@ function ProductDetails() {
   if (error) {
     return (
       <div className="mt-20 py-10">
-        <Error message={'Failed to load data'} />
+        <Error message={"Failed to load data"} />
       </div>
     );
   }
 
-
   return (
     <div className="w-full py-20 relative">
-       <Helmet>
+      <Helmet>
         <title>{product.name} - Vees closet </title>
         <meta
           name="description"
@@ -232,7 +228,9 @@ function ProductDetails() {
                       Select {variant.variation.name}
                     </option>
                     {variant.selected_values.map((value) => (
-                      <option value={value} key={value}>{value}</option>
+                      <option value={value} key={value}>
+                        {value}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -301,6 +299,10 @@ function ProductDetails() {
           >
             {isAdding ? "Adding..." : "add to cart"}
           </button>
+          <p className="">
+            <HiBan />
+            
+          </p>
         </div>
       </div>
 

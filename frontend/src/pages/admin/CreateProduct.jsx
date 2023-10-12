@@ -19,8 +19,8 @@ import hasEmptyValues from "../../helpers/hasEmptyVar";
 function CreateProduct() {
   const [images, setImages] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [isUploading, setUploading] = useState(false);
-  const [isError, setError] = useState(false);
+  const [isVarError, setVarError] = useState(false);
+  const [noImgs, setNoImgs] = useState(false);
   const [isImgDlt, setImgDlt] = useState(false);
   const [product, setProduct] = useState({
     name: "",
@@ -31,6 +31,7 @@ function CreateProduct() {
     gender: null,
     actual_price: null,
     qty_in_stock: null,
+    base_price: null,
     isFeatured: false,
   });
   const { isCategory, category } = useSelector((state) => state.categories);
@@ -122,36 +123,90 @@ function CreateProduct() {
     });
   };
 
-  const createProduct = async (e)=>{
+  const createProduct = async (e) => {
     e.preventDefault();
     try {
-        let isValid = hasEmptyValues(product.variations, true, product.hasVariations)
-        console.log(isValid)
+      let { isValid, variations } = hasEmptyValues(
+        product.variations,
+        true,
+        product.hasVariations
+      );
+      if (!isValid) {
+        return setVarError(true);
+      }
+
+      if (images.length < 1) {
+        return setNoImgs(true);
+      }
+      setLoading(true);
+      let res = await axios.post(
+        `${server}product/create-product`,
+        {
+          ...product,
+          images: images,
+          variations: variations ? variations : [],
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        setLoading(false);
+        toast.success("Product added to store successfully");
+        setImages([]);
+        setProduct({
+          name: "",
+          description: "",
+          category: null,
+          hasVariations: false,
+          variations: [],
+          gender: null,
+          actual_price: null,
+          qty_in_stock: null,
+          isFeatured: false,
+          base_price: null
+        });
+      } else {
+        toast.error(res.response.data.message);
+        setLoading(false);
+      }
     } catch (error) {
-        console.log(error)
+      setLoading(false);
+      errMsg = error?.response?.data?.message
+        ? error.response.data.message
+        : error.message;
+      toast.error(errMsg);
     }
-  }
-  //   useEffect(() => {
-  //     fetchProducts();
-  //     window.scrollTo(0, 0);
-  //   }, [id]);
+  };
 
-  if (isLoading) {
-    return <PulseLoader />;
-  }
+  useEffect(() => {
+    setVarError(false);
+  }, [product.hasVariations, product.variations]);
 
-  if (isError) {
-    return (
-      <div className="mt-20 py-10">
-        <Error message={"Failed to load data"} />
-      </div>
-    );
-  }
+  useEffect(() => {
+    setNoImgs(false);
+  }, [images]);
 
-console.log(product)
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [isLoading]);
+
+  let error = isVarError || noImgs;
 
   return (
-    <form onSubmit={createProduct} className=" w-full px-3 bg-white py-5">
+    <form
+      onSubmit={createProduct}
+      className=" relative w-full px-3 bg-white py-5"
+    >
       <Link
         to={".."}
         relative="path"
@@ -209,9 +264,9 @@ console.log(product)
                   handleProductUpdate("category", e.target.value);
                 }}
               >
-                 <option value={''} className=" capitalize">
-                    Select category
-                  </option>
+                <option value={""} className=" capitalize">
+                  Select category
+                </option>
                 {category.map((c) => (
                   <option value={c._id} className=" capitalize">
                     {c.name}
@@ -284,7 +339,13 @@ console.log(product)
               </div>
             </div>
           )}
-
+          {isVarError && (
+            <p className="text-red-600 py-2 px-3 text-center font-medium text-[16px] mb-2">
+              ** You have check that product has variations but did not add
+              variants. Add variations to the product and make sure all variants
+              have value(s).
+            </p>
+          )}
           <div className="w-full mt-5">
             <p>Product flat price ( without discount ) * </p>
             <div className="w-full flex flex-row gap-2">
@@ -295,7 +356,7 @@ console.log(product)
                 className="border border-black capitalize px-3 py-1 font-bold"
                 value={product.base_price}
                 onChange={(e) =>
-                  handleProductUpdate("base_price", e.target.value)
+                  handleProductUpdate("base_price", Number(e.target.value))
                 }
               />
             </div>
@@ -312,7 +373,7 @@ console.log(product)
                 className="border border-black capitalize px-3 py-1 font-bold"
                 value={product.actual_price}
                 onChange={(e) =>
-                  handleProductUpdate("actual_price", e.target.value)
+                  handleProductUpdate("actual_price", Number(e.target.value))
                 }
               />
             </div>
@@ -329,7 +390,7 @@ console.log(product)
                 className="border border-black capitalize px-3 py-1 font-bold"
                 value={product.qty_in_stock}
                 onChange={(e) =>
-                  handleProductUpdate("qty_in_stock", e.target.value)
+                  handleProductUpdate("qty_in_stock", Number(e.target.value))
                 }
               />
             </div>
@@ -355,7 +416,12 @@ console.log(product)
         <div className="w-full py-1 col-span-full 1000px:col-span-4 1300px:col-span-5 ">
           <h1 className="text-xl font-medium text-center ">Product images</h1>
 
-          <div className="relative px-3 justify-center flex flex-row flex-wrap gap-2 gap-y-5">
+          <div className="relative px-3 justify-center flex flex-row flex-wrap ">
+            {noImgs && (
+              <p className="text-red-600 py-2 px-3 text-center font-medium text-[16px]">
+                ** Add at least one image of the product
+              </p>
+            )}
             <div className=" w-full flex flex-col justify-center items-center">
               <div className="flex items-center justify-center w-full col-span-full">
                 <label
@@ -423,8 +489,19 @@ console.log(product)
           </div>
         </div>
       </div>
-
-      <button className=" px-3 py-2 bg-black text-white w-full" type="submit">Create Product</button>
+      {error && (
+        <p className="text-red-600 py-2 px-3 text-center font-medium text-[18px] bg-red-200 my-2">
+          Something bad occured! Please check if all field are filled completely
+        </p>
+      )}
+      <button className=" px-3 py-2 bg-black text-white w-full" type="submit">
+        {isLoading ? "Adding to product..." : "Create Product"}
+      </button>
+      {isLoading && (
+        <div className="bg-[#ffffff98] flex justify-center items-center absolute top-0 left-0 h-full w-full">
+          <PulseLoader />
+        </div>
+      )}
     </form>
   );
 }

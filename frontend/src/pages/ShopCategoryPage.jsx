@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import ProductCard from "../components/product/productCard";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -42,7 +41,7 @@ function ShopCategoryPage() {
     };
     fetchProducts();
     window.scrollTo(0, 0);
-  }, [currentPage, sortQuery]);
+  }, [currentPage, sortQuery, params.name]);
 
   function handleSearchParams(key, value) {
     setSearchParams((prevParams) => {

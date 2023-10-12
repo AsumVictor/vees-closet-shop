@@ -15,12 +15,12 @@ exports.isAuthenticated = CatchAsyncErrors(async (req, res, next) => {
 });
 
 exports.isSeller = CatchAsyncErrors(async (req, res, next) => {
-  const { shop_token } = req.cookies;
-  if (!shop_token) {
+  const { _v_ } = req.cookies;
+  if (!_v_) {
     return next(new ErrorHandler("Please login to continue", 401));
   }
 
-  const decoded = jwt.verify(shop_token, process.env.JWT_SECRET_KEY);
+  const decoded = jwt.verify(_v_, process.env.JWT_SECRET_KEY);
 
   req.seller = await Shop.findById(decoded.id);
 

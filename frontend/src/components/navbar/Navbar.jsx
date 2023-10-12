@@ -80,15 +80,7 @@ function Navbar() {
             </NavLink>
           </li>
           <NavCategory handleClick={() => setIsNavOpen(false)} />
-          <li className="flex flex-col">
-            <NavLink
-              onClick={() => setIsNavOpen(false)}
-              to="/about"
-              className={"nav-link  self-center  px-3"}
-            >
-              about us
-            </NavLink>
-          </li>
+         
         </ul>
       </nav>
       <div className="relative flex flex-row px-2 gap-x-3">

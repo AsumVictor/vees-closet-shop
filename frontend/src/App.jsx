@@ -31,7 +31,7 @@ import {
   CategoriesPage,
   AdminOrders,
   AdminOrderDetails,
-  CreateProduct
+  CreateProduct,
 } from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,63 +57,57 @@ function App() {
   }, []);
   return (
     <>
-      {loading ? (
-        <PulseLoader />
-      ) : (
-        <BrowserRouter>
-          <Routes>
-            <Route element={<PageLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/shop" element={<ShopPage />} />
-              <Route path="/men" element={<ShopMenPage />} />
-              <Route path="/women" element={<ShopWomenPage />} />
-              <Route path="/category/:name" element={<ShopCategoryPage />} />
-              <Route path="/product" element={<ProductSearchPage />} />
-              <Route path="/product/:name" element={<ProductDetailsPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              {/* User account */}
-              <Route element={<ProtectedRoute />}>
-                <Route path="/my-account" element={<AccountPage />}>
-                  <Route index element={<MyAccount />} />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<PageLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/men" element={<ShopMenPage />} />
+            <Route path="/women" element={<ShopWomenPage />} />
+            <Route path="/category/:name" element={<ShopCategoryPage />} />
+            <Route path="/product" element={<ProductSearchPage />} />
+            <Route path="/product/:name" element={<ProductDetailsPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            {/* User account */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/my-account" element={<AccountPage />}>
+                <Route index element={<MyAccount />} />
 
-                  <Route path="settings" element={<AccountSettings />} />
-                  <Route path="orders" element={<Orders />} />
-                  <Route path="orders/:id" element={<OrderDetail />} />
-                  <Route path="addresses" element={<Address />} />
-                  <Route path="security" element={<Security />} />
-                </Route>
-              </Route>
-
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-            </Route>
-            <Route element={<AdminProtected />}>
-              <Route path="admin" element={<AdminLayout />}>
-                <Route index element={<h1 className="mt-10">Dashboard</h1>} />
-                <Route path="products" element={<Products />} />
-                <Route
-                  path="create-product"
-                  element={<CreateProduct />}
-                />
-
-                <Route path="products/:id" element={<SpecificProduct />} />
-                <Route path="orders" element={<AdminOrders />} />
-                <Route path="orders/:id" element={<AdminOrderDetails />} />
-
-                <Route path="settings" element={<SettingLayout />}>
-                  <Route index element={<h1>Index</h1>} />
-                  <Route path="variations" element={<VariationPage />} />
-                  <Route path="delivery" element={<DeliveryPage />} />
-                  <Route path="gender" element={<GenderPage />} />
-                  <Route path="category" element={<CategoriesPage />} />
-                </Route>
+                <Route path="settings" element={<AccountSettings />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="orders/:id" element={<OrderDetail />} />
+                <Route path="addresses" element={<Address />} />
+                <Route path="security" element={<Security />} />
               </Route>
             </Route>
-            <Route path="admin/login" element={<AdminLoginPage />} />
-          </Routes>
-        </BrowserRouter>
-      )}
+
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+          </Route>
+          <Route element={<AdminProtected />}>
+            <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<h1 className="mt-10">Dashboard</h1>} />
+              <Route path="products" element={<Products />} />
+              <Route path="create-product" element={<CreateProduct />} />
+
+              <Route path="products/:id" element={<SpecificProduct />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="orders/:id" element={<AdminOrderDetails />} />
+
+              <Route path="settings" element={<SettingLayout />}>
+                <Route index element={<h1>Index</h1>} />
+                <Route path="variations" element={<VariationPage />} />
+                <Route path="delivery" element={<DeliveryPage />} />
+                <Route path="gender" element={<GenderPage />} />
+                <Route path="category" element={<CategoriesPage />} />
+              </Route>
+            </Route>
+          </Route>
+          <Route path="admin/login" element={<AdminLoginPage />} />
+        </Routes>
+      </BrowserRouter>
+
       <ToastContainer
         position="top-center"
         autoClose={5000}

@@ -1,12 +1,17 @@
 import { BiEditAlt } from "react-icons/bi";
+import { HiBan } from "react-icons/hi";
 import { HiMiniViewfinderCircle } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 
 function Product({ product }) {
   return (
-    <div className=" w-[265px] py-1 border px-2">
+    <div className=" relative w-[265px] py-1 border px-2">
       <div className="w-full bg-white py-1">
-        <img src={product.images[0]?.url} alt="product-img" className="w-full" />
+        <img
+          src={product.images[0]?.url}
+          alt="product-img"
+          className="w-full"
+        />
       </div>
       <div className="w-full">
         <p className=" font-medium">{product.name}</p>
@@ -43,6 +48,12 @@ function Product({ product }) {
           <span>View</span>
         </Link>
       </div>
+      {product.qty_in_stock < 1 && (
+        <div className=" flex gap-2 items-center justify-center absolute top-3 left-2 px-3 py-2 bg-red-400 font-medium text-white">
+          <HiBan size={22} />
+          Out of Stock
+        </div>
+      )}
     </div>
   );
 }

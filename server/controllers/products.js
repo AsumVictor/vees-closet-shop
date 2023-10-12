@@ -34,7 +34,7 @@ router.get(
 
       const products = await Product.find(
         {},
-        "name images actual_price base_price"
+        "name images actual_price base_price qty_in_stock"
       )
         .sort(sortOptions)
         .skip((page - 1) * limit)
@@ -54,6 +54,7 @@ router.get(
 // get all products -- Admin
 router.get(
   "/get-products",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const page = Number(req.query.page) || 1;
@@ -120,6 +121,7 @@ router.get(
 // create product -- Only admin
 router.post(
   "/create-product",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       if (!Array.isArray(req.body.images) || req.body.images.length === 0) {
@@ -205,6 +207,7 @@ router.get(
 // get a specific product -- admin
 router.get(
   "/get-product-ebece57326214432/:_id",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       if (!req.params._id) {
@@ -237,6 +240,7 @@ router.get(
 // update product -- admin
 router.put(
   "/update-product/:_id",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     const { data, field } = req.body;
     try {
@@ -280,6 +284,7 @@ router.put(
 // update product image -- admin
 router.delete(
   "/delete-product-image/:_id",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     const { _id } = req.query;
 
@@ -322,6 +327,7 @@ router.delete(
 // update product image new-- Only admin
 router.put(
   "/update-product-image-new/:_id",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const product = await Product.findById(req.params._id);
@@ -388,7 +394,7 @@ router.get(
             { description: { $regex: searchTerm, $options: "i" } },
           ],
         },
-        "name images actual_price base_price"
+        "name images actual_price base_price qty_in_stock"
       )
         .sort(sortOptions)
         .skip((page - 1) * limit)
@@ -538,16 +544,6 @@ router.get(
         return next(new ErrorHandler("Specify the category name", 400));
       }
       let category = await Category.findOne({ name: category_name });
-      let gender = await Gender.findOne({ name: category_name });
-
-      if (!category && !gender) {
-        return next(
-          new ErrorHandler(
-            ` Category with name ${category_name} not found. Specify 'men', 'women', 'dresses' , 'shirt' `,
-            400
-          )
-        );
-      }
 
       const page = Number(req.query.page) || 1;
       const limit = 12;
@@ -570,21 +566,23 @@ router.get(
       if (category) {
         products = await Product.find(
           { category: category._id },
-          "name images actual_price base_price"
+          "name images actual_price base_price qty_in_stock"
+        )
+          .sort(sortOptions)
+          .skip((page - 1) * limit)
+          .limit(limit);
+      } else {
+        products = await Product.find(
+          { gender: category_name },
+          "name images actual_price base_price qty_in_stock"
         )
           .sort(sortOptions)
           .skip((page - 1) * limit)
           .limit(limit);
       }
 
-      if (gender) {
-        products = await Product.find(
-          { gender: gender._id },
-          "name images actual_price base_price"
-        )
-          .sort(sortOptions)
-          .skip((page - 1) * limit)
-          .limit(limit);
+      if(!products){
+        return next(new ErrorHandler('Error occured getting products! Try again', 400));
       }
 
       res.status(200).json({

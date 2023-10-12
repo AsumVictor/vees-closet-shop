@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Img from "../../assets/images/hero-background-3.jpg";
 import "../../styles/productCard.css";
+import {HiBan} from "react-icons/hi";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
   return (
     <div
-      className="product-card flex flex-col cursor-pointer"
+      className="relative product-card flex flex-col cursor-pointer"
       onClick={() => {
         navigate(`/product/${product.name}`);
       }}
@@ -26,6 +27,13 @@ function ProductCard({ product }) {
           </span>
         )}
       </h2>
+   
+      {product.qty_in_stock < 1 && (
+        <div className=" flex gap-2 items-center justify-center absolute top-3 left-2 px-3 py-2 bg-red-400 font-medium text-white">
+          <HiBan size={22} />
+          Out of Stock
+        </div>
+      )}
     </div>
   );
 }

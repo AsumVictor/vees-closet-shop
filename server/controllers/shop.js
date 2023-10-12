@@ -131,7 +131,7 @@ router.get(
 
       if (!seller) {
         return next(new ErrorHandler("User doesn't exists", 400));
-      }
+      } 
 
       res.status(200).json({
         success: true,

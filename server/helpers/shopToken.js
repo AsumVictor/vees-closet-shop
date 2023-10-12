@@ -8,7 +8,7 @@ const sendShopToken = (user, statusCode, res) => {
     sameSite: "None",
   };
 
-  res.status(statusCode).cookie("shop_token", token, options).json({
+  res.status(statusCode).cookie("_v_", token, options).json({
     success: true,
     user,
     token,
