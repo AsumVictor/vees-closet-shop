@@ -10,6 +10,7 @@ import CategoriesPage from "./pages/admin/CategoriesPage";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
 import CreateProduct from './pages/admin/CreateProduct.jsx'
+import Dashboard from "./pages/admin/Dashboard";
 
 export {
   AdminOrderDetails,
@@ -23,5 +24,6 @@ export {
   SpecificProduct,
   SettingLayout,
   VariationPage,
-  CreateProduct
+  CreateProduct,
+  Dashboard
 };

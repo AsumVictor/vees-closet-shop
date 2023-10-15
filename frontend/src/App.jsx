@@ -32,6 +32,7 @@ import {
   AdminOrders,
   AdminOrderDetails,
   CreateProduct,
+  Dashboard,
 } from "./adminRoutes";
 import PageLayout from "./layout/Page.layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -87,7 +88,7 @@ function App() {
           </Route>
           <Route element={<AdminProtected />}>
             <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<h1 className="mt-10">Dashboard</h1>} />
+              <Route index element={<Dashboard />} />
               <Route path="products" element={<Products />} />
               <Route path="create-product" element={<CreateProduct />} />
 
