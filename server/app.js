@@ -60,6 +60,8 @@ const Variation = require("./controllers/variations");
 const category = require("./controllers/category");
 const cart = require("./controllers/shopppingCart");
 const order = require("./controllers/orders");
+const analytics = require("./controllers/analytics");
+
 
 // import router
 app.use("/api/v1/user", user);
@@ -70,6 +72,7 @@ app.use("/api/v1/variation", Variation);
 app.use("/api/v1/category", category);
 app.use("/api/v1/cart", cart);
 app.use("/api/v1/order", order);
+app.use("/api/v1/analytics", analytics);
 
 app.use(ErrorHandler);
 module.exports = app;
