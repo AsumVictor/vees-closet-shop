@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loadUser } from "../redux/actions/user";
 import PulseLoader from "../components/loaders/pulseLoader";
+import CookieConsent from '../components/cookie/CookieConsent.jsx'
 
 function PageLayout() {
   const { loading } = useSelector((state) => state.client);
@@ -23,6 +24,7 @@ function PageLayout() {
       <Navbar />
       <Outlet />
       <Footer />
+      <CookieConsent />
     </div>
   );
 }
