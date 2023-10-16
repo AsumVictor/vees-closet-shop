@@ -299,10 +299,12 @@ function ProductDetails() {
           >
             {isAdding ? "Adding..." : "add to cart"}
           </button>
-          <p className="">
-            <HiBan />
-            
-          </p>
+          {product.qty_in_stock < 1 && (
+            <div className=" flex gap-2 items-center justify-center absolute top-3 left-2 px-3 py-2 bg-red-400 font-medium text-white">
+              <HiBan size={22} />
+              Out of Stock
+            </div>
+          )}
         </div>
       </div>
 
