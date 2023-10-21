@@ -1,143 +1,118 @@
-import axios from "axios";
-import server from "../../../server";
+import axios from 'axios';
+import server from '../../../server';
 
 export const loadUser = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "LoadUserRequest",
-    });
-    const { data } = await axios.get(`${server}/user/getuser`, {
-      withCredentials: true,
-    });
-    if (data) {
-      dispatch({
-        type: "LoadUserSuccess",
-        payload: data.user,
-      });
+    try {
+        dispatch({
+            type: 'LoadUserRequest',
+        });
+        const { data } = await axios.get(`${server}/user/getuser`);
+        if (data) {
+            dispatch({
+                type: 'LoadUserSuccess',
+                payload: data.user,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: 'LoadUserFail',
+            payload: error,
+        });
     }
-  } catch (error) {
-    dispatch({
-      type: "LoadUserFail",
-      payload: error,
-    });
-  }
 };
 
 // user update information
-export const updateUserInformation =
-  (name, email, phoneNumber, password) => async (dispatch) => {
+export const updateUserInformation = (name, email, phoneNumber, password) => async (dispatch) => {
     try {
-      dispatch({
-        type: "updateUserInfoRequest",
-      });
+        dispatch({
+            type: 'updateUserInfoRequest',
+        });
 
-      const { data } = await axios.put(
-        `${server}/user/update-user-info`,
-        {
-          email,
-          password,
-          phoneNumber,
-          name,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Credentials": true,
-          },
-        }
-      );
+        const { data } = await axios.put(`${server}/user/update-user-info`, {
+            email,
+            password,
+            phoneNumber,
+            name,
+        });
 
-      dispatch({
-        type: "updateUserInfoSuccess",
-        payload: data.user,
-      });
+        dispatch({
+            type: 'updateUserInfoSuccess',
+            payload: data.user,
+        });
     } catch (error) {
-      dispatch({
-        type: "updateUserInfoFailed",
-        payload: error.response.data.message,
-      });
+        dispatch({
+            type: 'updateUserInfoFailed',
+            payload: error.response.data.message,
+        });
     }
-  };
+};
 
 // update user address
-export const updatUserAddress =
-  (addressInfo) =>
-  async (dispatch) => {
+export const updatUserAddress = (addressInfo) => async (dispatch) => {
     try {
-      dispatch({
-        type: "updateUserAddressRequest",
-      });
+        dispatch({
+            type: 'updateUserAddressRequest',
+        });
 
-      const { data } = await axios.put(
-        `${server}/user/update-user-addresses`,
-        addressInfo,
-        { withCredentials: true }
-      );
+        const { data } = await axios.put(`${server}/user/update-user-addresses`, addressInfo);
 
-      dispatch({
-        type: "updateUserAddressSuccess",
-        payload: {
-          successMessage: "User address updated succesfully!",
-          user: data.user,
-        },
-      });
+        dispatch({
+            type: 'updateUserAddressSuccess',
+            payload: {
+                successMessage: 'User address updated succesfully!',
+                user: data.user,
+            },
+        });
     } catch (error) {
-      dispatch({
-        type: "updateUserAddressFailed",
-        payload: error.response.data.message,
-      });
+        dispatch({
+            type: 'updateUserAddressFailed',
+            payload: error.response.data.message,
+        });
     }
-  };
+};
 
 // delete user address
 export const deleteUserAddress = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "deleteUserAddressRequest",
-    });
+    try {
+        dispatch({
+            type: 'deleteUserAddressRequest',
+        });
 
-    const { data } = await axios.delete(
-      `${server}/user/delete-user-address/${id}`,
-      { withCredentials: true }
-    );
+        const { data } = await axios.delete(`${server}/user/delete-user-address/${id}`);
 
-    dispatch({
-      type: "deleteUserAddressSuccess",
-      payload: {
-        successMessage: "User deleted successfully!",
-        user: data.user,
-      },
-    });
-  } catch (error) {
-    dispatch({
-      type: "deleteUserAddressFailed",
-      payload: error.response.data.message,
-    });
-  }
+        dispatch({
+            type: 'deleteUserAddressSuccess',
+            payload: {
+                successMessage: 'User deleted successfully!',
+                user: data.user,
+            },
+        });
+    } catch (error) {
+        dispatch({
+            type: 'deleteUserAddressFailed',
+            payload: error.response.data.message,
+        });
+    }
 };
 
 // load seller
 export const loadShop = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "LoadSellerRequest",
-    });
-    const { data } = await axios.get(`${server}/shop/getShop`, {
-      withCredentials: true,
-    });
-    if (data) {
-      dispatch({
-        type: "LoadSellerSuccess",
-        payload: data.seller,
-      });
+    try {
+        dispatch({
+            type: 'LoadSellerRequest',
+        });
+        const { data } = await axios.get(`${server}/shop/getShop`);
+        if (data) {
+            dispatch({
+                type: 'LoadSellerSuccess',
+                payload: data.seller,
+            });
+        }
+    } catch (error) {
+        let errorMessage = error.response ? error.response.data.message : error.message;
+        dispatch({
+            type: 'LoadSellerFail',
+            payload: errorMessage,
+        });
     }
-  } catch (error) {
-    let errorMessage = error.response
-      ? error.response.data.message
-      : error.message;
-    dispatch({
-      type: "LoadSellerFail",
-      payload: errorMessage,
-    });
-  }
 };

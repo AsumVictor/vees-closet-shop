@@ -169,7 +169,7 @@ function Coupouns() {
       try {
         setIsLoading(true);
         let { data } = await axios.get(`${server}/coupon/get-coupon`, {
-          withCredentials: true,
+          ,
         });
 
         if (data.success) {
