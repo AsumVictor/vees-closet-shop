@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { GrClose } from 'react-icons/gr';
-import server from '../../server';
 import { toast } from 'react-toastify';
 import { removeFromCart, updateItemQuantity } from '../../redux/actions/cart';
 import { useDispatch } from 'react-redux';
@@ -33,6 +31,7 @@ function CartItem({ item }) {
         try {
             setLoading(true);
             dispatch(updateItemQuantity({ ...item, quantity: newQty }));
+            setLoading(false);
         } catch (error) {
             setLoading(false);
             let errMessage = error.response?.data?.message
@@ -45,6 +44,7 @@ function CartItem({ item }) {
     };
 
     const Increment = () => {
+        setQty(qty + 1);
         return qty + 1;
     };
     const Decrement = () => {
@@ -52,6 +52,7 @@ function CartItem({ item }) {
             return null;
         }
 
+        setQty(qty - 1);
         return qty - 1;
     };
 

@@ -95,7 +95,7 @@ export const updateItemQuantity = (data) => async (dispatch, getState) => {
         newItems[itemIndex] = {
             ...newItems[index],
             qty: data.quantity,
-            cost: newItems[itemIndex].actual_price * data.quantity,
+            cost: (newItems[itemIndex].actual_price * data.quantity).toFixed(2),
         };
 
         dispatch({
@@ -108,6 +108,7 @@ export const updateItemQuantity = (data) => async (dispatch, getState) => {
             },
         });
     } catch (error) {
+        console.log(error);
         dispatch({
             type: 'Error',
         });
