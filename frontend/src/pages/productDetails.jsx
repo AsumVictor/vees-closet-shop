@@ -6,7 +6,7 @@ import ProductCard from '../components/product/productCard';
 import axios from 'axios';
 import server from '../server';
 import checkVariantEmpty from '../helpers/checkVariantEmpty';
-import { getCart } from '../redux/actions/cart';
+import { getCart, addItemToCart } from '../redux/actions/cart';
 import { useDispatch } from 'react-redux';
 import PulseLoader from '../components/loaders/pulseLoader';
 import { toast } from 'react-toastify';
@@ -98,15 +98,18 @@ function ProductDetails() {
                 }
             }
             setIsAdding(true);
-            let res = await axios.post(`${server}cart/add-to-cart`, cartData);
-            if (res.data.success) {
-                setIsAdding(false);
-                dispatch(getCart());
-                setAddedToCard(true);
-                setTimeout(() => {
-                    setAddedToCard(false);
-                }, 3000);
-            }
+            dispatch(
+                addItemToCart({
+                    _id: cartData._id,
+                    quantity: cartData.qty,
+                    variation: cartData.variation,
+                })
+            );
+            setIsAdding(false);
+            setAddedToCard(true);
+            setTimeout(() => {
+                setAddedToCard(false);
+            }, 3000);
         } catch (error) {
             setIsAdding(false);
             let errMsg = error?.response?.data?.message

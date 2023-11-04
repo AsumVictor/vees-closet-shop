@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 import server from '../../server';
 import { toast } from 'react-toastify';
-import { getCartQTY, removeFromCart } from '../../redux/actions/cart';
+import { removeFromCart, updateItemQuantity } from '../../redux/actions/cart';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -32,16 +32,7 @@ function CartItem({ item }) {
 
         try {
             setLoading(true);
-            let res = await axios.post(`${server}cart/add-to-cart`, {
-                _id: item._id,
-                qty: newQty,
-                variation: item.variation_choice,
-            });
-            if (res.data.success) {
-                setLoading(false);
-                setQty(newQty);
-                dispatch(getCartQTY());
-            }
+            dispatch(updateItemQuantity({ ...item, quantity: newQty }));
         } catch (error) {
             setLoading(false);
             let errMessage = error.response?.data?.message
