@@ -7,7 +7,7 @@ const initialState = {
     isGettingCart: true,
     removing: false,
 };
-
+ 
 export const cartReducer = createReducer(initialState, {
     getCartRequest: (state) => {
         state.isError = false;
