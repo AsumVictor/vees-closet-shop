@@ -31,7 +31,7 @@ router.post(
             };
 
             variation && (item.variation = variation);
-            
+
             const foundItem = req.session.cart.find((item) => {
                 if (item._id === _id) {
                     if (variation) {
@@ -84,7 +84,7 @@ router.post(
                     let productItem = await Product.findById(item.itemId);
 
                     if (productItem) {
-                        let { variation } = item;
+                        let { variations } = item;
                         let basePrice = productItem.base_price && productItem.base_price;
 
                         let total_cost = item.quantity * productItem.actual_price;
@@ -94,7 +94,7 @@ router.post(
                             base_price: basePrice,
                             actual_price: productItem.actual_price,
                             images: productItem.images,
-                            variation_choice: variation,
+                            variation_choice: variations,
                             qty: item.quantity,
                             cost: Number(total_cost.toFixed(2)),
                         };
