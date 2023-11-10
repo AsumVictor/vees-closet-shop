@@ -44,7 +44,7 @@ export const getCart = () => async (dispatch) => {
 };
 
 export const addItemToCart =
-  ({ _id, quantity, variation }) =>
+  ({ _id, quantity, variation_choice }) =>
   async (dispatch) => {
     const cartItems = window.localStorage.getItem("cartItems");
     const items = JSON.parse(cartItems ?? "[]");
@@ -68,16 +68,14 @@ export const addItemToCart =
       return false;
     });
 
-   
-
-     if (foundItem) {
-       items[foundIndex] = {
-         ...items[foundIndex],
-         quantity,
-       };
-     }else {
-         items.push(item);
-     }
+    if (foundItem) {
+      items[foundIndex] = {
+        ...items[foundIndex],
+        quantity,
+      };
+    } else {
+      items.push(item);
+    }
 
     window.localStorage.setItem("cartItems", JSON.stringify(items));
 
@@ -108,12 +106,16 @@ export const updateItemQuantity = (data) => async (dispatch, getState) => {
   const cartItems = window.localStorage.getItem("cartItems");
   const itemsLocal = JSON.parse(cartItems ?? "[]");
 
-  const index = itemsLocal.findIndex((item) => item.itemId === data._id);
+  const index = itemsLocal.findIndex((item) => {
+    return (
+      item.itemId === data._id &&
+      deepEqual(item.variations, data.variation_choice)
+    );
+  });
 
   if (index === -1) {
     return;
   }
-
   itemsLocal[index] = { ...itemsLocal[index], quantity: data.quantity };
 
   window.localStorage.setItem("cartItems", JSON.stringify(itemsLocal));
@@ -123,12 +125,18 @@ export const updateItemQuantity = (data) => async (dispatch, getState) => {
       cart: { items },
     } = getState();
     const newItems = [...items];
-    const itemIndex = newItems.findIndex((item) => item._id === data._id);
+    const itemIndex = newItems.findIndex(
+      (item) =>
+        item._id === data._id &&
+        deepEqual(item.variation_choice, data.variation_choice)
+    );
 
     newItems[itemIndex] = {
       ...newItems[index],
       qty: data.quantity,
-      cost: (newItems[itemIndex].actual_price * data.quantity).toFixed(2),
+      cost: Number(
+        (newItems[itemIndex].actual_price * data.quantity).toFixed(2)
+      ),
     };
 
     dispatch({

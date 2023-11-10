@@ -47,6 +47,7 @@ function CartItem({ item }) {
     setQty(qty + 1);
     return qty + 1;
   };
+  
   const Decrement = () => {
     if (qty <= 1) {
       return null;
