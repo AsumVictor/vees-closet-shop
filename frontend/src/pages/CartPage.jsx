@@ -9,7 +9,7 @@ import Error from "../components/errorHandler/error";
 function CartPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   const navigate = useNavigate();
   const { items, totalCost, isError, isGettingCart, removing } = useSelector(
