@@ -41,6 +41,11 @@ const OrderSchema = mongoose.Schema(
         "cancelled",
       ],
     },
+    paymentStatus: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "paid", "cancelled"],
+    },
     tracking_no: {
       type: String,
       required: true,
@@ -91,7 +96,6 @@ const OrderSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
 const orderItemSchema = new mongoose.Schema(
   {
     product: {
@@ -115,6 +119,7 @@ const orderItemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+OrderSchema.index({ createdAt: 1 });
 
 // userSchema.pre("save", async function (next) {
 
