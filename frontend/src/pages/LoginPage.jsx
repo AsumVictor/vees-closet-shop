@@ -27,7 +27,9 @@ function LoginPage() {
         };
 
         axios
-            .post(`${server}user/auth`, userIformation)
+            .post(`${server}user/auth`, userIformation, {
+                withCredentials: true,
+            })
             .then((res) => {
                 setEmail('');
                 setPassword('');

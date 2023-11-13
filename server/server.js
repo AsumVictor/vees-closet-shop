@@ -10,7 +10,7 @@ process.on("uncaughtException", (err) => {
 
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
-    path: "./config/.env",
+    path: "./.env",
   });
 }
 

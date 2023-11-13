@@ -6,7 +6,9 @@ export const LoadAdmin = () => async (dispatch) => {
         dispatch({
             type: 'LoadAdminRequest',
         });
-        const { data } = await axios.get(`${server}shop/getShop`);
+        const { data } = await axios.get(`${server}shop/getShop`, {
+            withCredentials: true,
+        });
         if (data.success) {
             dispatch({
                 type: 'LoadAdminSuccess',
