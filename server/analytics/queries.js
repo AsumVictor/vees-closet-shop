@@ -1,6 +1,6 @@
 const startOfMonth = new Date();
 startOfMonth.setHours(0, 0, 0, 0);
-startOfMonth.setDate(1); 
+startOfMonth.setDate(1);
 
 const endOfMonth = new Date(startOfMonth);
 
