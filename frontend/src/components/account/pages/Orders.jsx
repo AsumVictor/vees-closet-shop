@@ -24,7 +24,9 @@ function Orders() {
             try {
                 setLoading(true);
                 let res = await axios(
-                    `${server}order/get-user-orders?page=${currentPage}&sort=${sortQuery}`
+                    `${server}order/get-user-orders?page=${currentPage}&sort=${sortQuery}`, {
+                        withCredentials: true,
+                    }
                 );
                 if (res.data.success) {
                     setProducts(res.data.orders);

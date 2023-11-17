@@ -347,7 +347,6 @@ router.get(
 // get a specific order --user
 router.get(
   "/get-orders/:id",
-  isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
     try {
       if (!req.params.id) {

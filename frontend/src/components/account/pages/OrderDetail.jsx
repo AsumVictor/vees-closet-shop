@@ -61,7 +61,7 @@ function OrderDetail() {
             </Helmet>
 
             <div className="w-full py-1 bg-slate-100 flex flex-row gap-4 px-3 items-end">
-                <Link to={'..'} relative={'path'} className=" 650px:hidden">
+                <Link to={'..'} relative={'path'} className="">
                     <MdOutlineKeyboardBackspace size={31} />
                 </Link>
                 <h1 className="text-xl">Order details</h1>

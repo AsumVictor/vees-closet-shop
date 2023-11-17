@@ -28,7 +28,9 @@ function AccountSettings() {
         };
 
         axios
-            .put(`${server}user/update-info`, userIformation)
+            .put(`${server}user/update-info`, userIformation, {
+                withCredentials: true,
+            })
             .then((res) => {
                 if (res.data.success) {
                     toast.success(res.data.message, {

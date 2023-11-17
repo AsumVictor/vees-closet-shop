@@ -105,28 +105,16 @@ function CheckoutPage() {
         items,
         coupon: formData.coupon,
         shipping_cost: formData.shippingCost,
+      }, {
+        withCredentials: true,
       });
       if (res.data.success) {
         setLoading(false);
         setIsModal(true);
         setTackingID(res.data.order);
+        window.localStorage.removeItem('cartItems')
         dispatch(getCart());
-        setFormData({
-          shippingCost: 45.0,
-          coupon: null,
-          address1: "",
-          address2: "",
-          phone_number: "",
-          region: "",
-          location: "",
-          paymentProvider: "",
-          payment_number: "",
-        });
-        setUserDetails({
-          first_name: "",
-          last_name: "",
-          email: "",
-        });
+        
       }
     } catch (error) {
       setLoading(false);
@@ -230,7 +218,7 @@ function CheckoutPage() {
                     isDisabled={loading}
                     isRequired={true}
                     handleChange={(e) =>
-                      handleFormData("region", e.target.value)
+                      handleFormData("phone_number", e.target.value)
                     }
                   />
                   <LabelInput
