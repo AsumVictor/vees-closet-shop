@@ -96,6 +96,7 @@ const OrderSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
 const orderItemSchema = new mongoose.Schema(
   {
     product: {

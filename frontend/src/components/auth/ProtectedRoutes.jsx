@@ -3,8 +3,8 @@ import { Navigate, useLocation, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state) => state.client);
-
+  const { isAuthenticated, user } = useSelector((state) => state.client);
+console.log(isAuthenticated, user)
   if (!isAuthenticated) {
     return (
       <Navigate

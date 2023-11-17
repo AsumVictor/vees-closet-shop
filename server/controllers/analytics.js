@@ -12,7 +12,7 @@ router.get(
   // isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      let sales = await Order.aggregate(dailySales);
+      let sales = await Order.aggregate(currentWeekSales);
 
       res.status(200).json({
         success: true,
