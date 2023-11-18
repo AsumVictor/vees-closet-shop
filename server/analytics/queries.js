@@ -1,8 +1,15 @@
-const startOfMonth = new Date();
-startOfMonth.setHours(0, 0, 0, 0);
-startOfMonth.setDate(1);
+const today = new Date();
+const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-const endOfMonth = new Date(startOfMonth);
+const startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); 
+startOfWeek.setHours(0, 0, 0, 0);
+
+const endOfWeek = new Date();
+endOfWeek.setDate(startOfWeek.getDate() + 6); 
+endOfWeek.setHours(23, 59, 59, 999);
+
 
 const dailySales = [
   {
@@ -34,14 +41,6 @@ const dailySales = [
   },
 ];
 
-const startOfWeek = new Date();
-startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Set to Monday of the current week
-startOfWeek.setHours(0, 0, 0, 0);
-
-const endOfWeek = new Date();
-endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to Sunday of the current week
-endOfWeek.setHours(23, 59, 59, 999);
-
 const currentWeekSales = [
   {
     $match: {
@@ -55,7 +54,7 @@ const currentWeekSales = [
   {
     $group: {
       _id: null,
-      totalSales: { $sum: "$charges.items_cost" },
+      weekSales: { $sum: "$charges.items_cost" },
     },
   },
 ];
@@ -64,21 +63,19 @@ const currentMonthSales = [
   {
     $match: {
       createdAt: {
-        $gte: startOfMonth,
-        $lt: endOfMonth,
+        $gte: startOfMonth, 
+        $lte: endOfMonth  
       },
-      paymentStatus: {
-        $eq: "paid",
-      },
-    },
+      paymentStatus: "paid" 
+    }
   },
   {
     $group: {
       _id: null,
-      totalSales: { $sum: "$total_price" },
-    },
-  },
-];
+      monthlySales: { $sum: "$charges.items_cost" }
+    }
+  }
+]
 
 /*
  * Daily sale

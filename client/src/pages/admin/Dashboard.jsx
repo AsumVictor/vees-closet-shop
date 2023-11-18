@@ -1,4 +1,6 @@
-import React from "react";
+import SaleBox from "../../components/admin/dashboard/SaleBox.jsx";
+import TodaySales from "../../components/admin/dashboard/TodaySales.jsx";
+
 
 function Dashboard() {
   return (
@@ -8,12 +10,9 @@ function Dashboard() {
         Sales
       </h2>
       <div className="w-full py-2 flex gap-4 flex-wrap px-10">
-        <div className="w-[8cm] border-2 border-black py-1 flex flex-col px-2">
-          <span className=" font-medium">Today's sales</span>
-          <span className=" text-4xl text-center my-3 font-bold">
-            GHC 200.00
-          </span>
-        </div>
+      <TodaySales url={'today-sales'} title={'Today'} />
+      <TodaySales url={'week-sales'} title={'This Week'} />
+      <TodaySales url={'monthly-sales'} title={'This Month'} />
       </div>
 
       <h2 className=" mx-4 text-[20px] mt-10 font-medium text-[#383737]">
