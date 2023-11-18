@@ -13,7 +13,6 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       let sales = await Order.aggregate(dailySales);
-
       res.status(200).json({
         success: true,
         sales: sales.length === 0 ? 0.00 : sales[0].dailySales,
@@ -43,7 +42,7 @@ router.get(
 
 router.get(
   "/monthly-sales",
-  // isSeller,
+   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       let sales = await Order.aggregate(currentMonthSales);

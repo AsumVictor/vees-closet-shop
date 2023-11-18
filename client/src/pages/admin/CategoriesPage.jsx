@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import Variants from '../../components/admin/product/Variants.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import PulseLoader from '../../components/loaders/pulseLoader.jsx';
@@ -35,7 +35,9 @@ function CategoriesPage() {
         }
         setAdding(true);
         try {
-            let res = await axios.post(`${server}category/create-category`, newCategory);
+            let res = await axios.post(`${server}category/create-category`, newCategory, {
+                withCredentials: true,
+            });
             if (res.data.success) {
                 toast.success('Category Added successfully', {
                     toastId: 'success-add-c',

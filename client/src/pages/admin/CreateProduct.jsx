@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import server from '../../server';
+import server from '../../server'; 
 import axios from 'axios';
 import { IoAddCircleSharp, IoChevronBackOutline } from 'react-icons/io5';
 import { FaSyncAlt } from 'react-icons/fa';
@@ -141,6 +141,8 @@ function CreateProduct() {
                 ...product,
                 images: images,
                 variations: variations ? variations : [],
+            }, {
+                withCredentials: true,
             });
 
             if (res.data.success) {

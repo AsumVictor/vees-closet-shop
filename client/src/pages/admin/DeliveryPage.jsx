@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import Variants from '../../components/admin/product/Variants.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import PulseLoader from '../../components/loaders/pulseLoader.jsx';
@@ -37,7 +37,9 @@ function DeliveryPage() {
         }
         setAdding(true);
         try {
-            let res = await axios.post(`${server}variation/create-variation`, newVariant);
+            let res = await axios.post(`${server}variation/create-variation`, newVariant, {
+                withCredentials: true
+            });
             if (res.data.success) {
                 toast.success('Variant Added successfully', {
                     toastId: 'success-add-v',

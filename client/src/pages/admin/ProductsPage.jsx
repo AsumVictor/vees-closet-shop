@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import PulseLoader from "../../components/loaders/pulseLoader";
 import Error from "../../components/errorHandler/error";
-
+ 
 function ProductsPage() {
   let [searchParams, setSearchParams] = useSearchParams();
   let page = searchParams.get("page");
@@ -26,7 +26,9 @@ function ProductsPage() {
       setLoading(true);
       let res = await axios(
         `${server}product/get-products?page=${currentPage}&sort=${sortQuery}&limit=${limit}&q=${searchTerm}`
-      );
+      , {
+        withCredentials: true,
+      });
       if (res.data.success) {
         setProducts(res.data.products);
         setTotalPages(res.data.totalPages);
