@@ -18,6 +18,7 @@ import {
     Orders,
     OrderDetail,
     MyAccount,
+    ResetPasswordPage
 } from './routes';
 import {
     AdminLayout,
@@ -69,6 +70,7 @@ function App() {
                         <Route path="/product/:name" element={<ProductDetailsPage />} />
                         <Route path="/cart" element={<CartPage />} />
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/forgot-password" element={<ResetPasswordPage />} />
                         {/* User account */}
                         <Route element={<ProtectedRoute />}>
                             <Route path="/my-account" element={<AccountPage />}>

@@ -16,6 +16,7 @@ import Security from "./components/account/pages/Security";
 import Orders from "./components/account/pages/Orders";
 import OrderDetail from "./components/account/pages/OrderDetail"
 import MyAccount from "./components/account/pages/MyAccount.jsx";
+import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
 
 export {
   MyAccount,
@@ -35,5 +36,6 @@ export {
   SignupPage,
   AccountPage,
   AccountSettings,
-  OrderDetail
+  OrderDetail,
+  ResetPasswordPage
 };

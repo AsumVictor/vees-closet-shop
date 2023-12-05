@@ -13,7 +13,6 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 } else {
   origin = "https://veescloset.onrender.com";
 }
-
 app.use(
   cors({
     origin: origin,
@@ -37,6 +36,12 @@ const mongoStore = MongoStore.create({
   mongooseConnection: mongoose.connection,
   collection: "cart",
 });
+ 
+// <MdLockReset />
+// <LiaUnlockAltSolid />
+// <Si1Password />
+// <MdEmail />
+
 
 app.set("trust proxy", 1);
 app.use(
