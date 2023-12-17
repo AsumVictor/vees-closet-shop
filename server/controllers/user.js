@@ -10,6 +10,12 @@ const { isAuthenticated } = require("../middleware/auth");
 const AddressBook = require("../models/addressBook");
 const isStrongPassword = require("../helpers/isStrongPassword");
 const user = require("../models/user");
+const {
+  GenerateToken,
+  expiresIn,
+  getResetURL,
+} = require("../helpers/GenerateResetToken");
+
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_TOKEN, {
     expiresIn: "5m",
@@ -51,13 +57,6 @@ router.post(
 
       const newUser = await User.create(req.body);
       if (newUser) {
-        sendMail({
-          from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
-          to: req.body.email,
-          subject: "Email address verification",
-          text: "Verify your email",
-          html: null,
-        });
         sendToken(newUser, 200, res);
       }
     } catch (err) {
@@ -360,6 +359,125 @@ router.post(
       return next(new ErrorHandler(error.message, 500));
     }
   })
-)
+);
+
+// Request request password
+router.post(
+  "/request-reset",
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const { email } = req.query;
+      const user = await User.findOne({ email });
+
+      if (!email || !user) {
+        return res.status(200).json({
+          success: true,
+          message: `We've a sent a link to your email-${email}. Click to reset your password. `,
+        });
+      }
+
+      let token = await GenerateToken();
+
+      const hashToken = await user.hashToken(token);
+      user.resetPasswordToken = hashToken;
+      user.resetPasswordTime = expiresIn(10);
+      await user.save();
+
+      let link = getResetURL(token, email);
+
+      await sendMail({
+        from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
+        to: email,
+        subject: "Request to request password",
+        text: `Hi ${user.first_name}, Click on this link to reset your password. Link- ${link}. Link expires in 10min`,
+        html: null,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: `We've a sent a link to your email-${email}. Click to reset your password. `,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// Confirm Reset
+router.post(
+  "/reset",
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const { href, m } = req.query;
+
+      const user = await User.findOne({ email: m });
+
+      if (!href || !user) {
+        console.log("Invalid 1");
+
+        return next(
+          new ErrorHandler(
+            "You have click on invalid or expired link. Request to reset your password",
+            400
+          )
+        );
+      }
+
+      let valid = await user.compareToken(href);
+      if (!valid) {
+        console.log("Invalid 2");
+
+        return next(
+          new ErrorHandler(
+            "You have click on invalid or expired link. Request to reset your password",
+            400
+          )
+        );
+      }
+
+      if (user.resetPasswordTime.toISOString() < new Date().toISOString()) {
+        console.log("Invalid 3");
+
+        return next(
+          new ErrorHandler(
+            "You have click on invalid or expired link. Request to reset your password",
+            400
+          )
+        );
+      }
+
+      const { password, confirmPass } = req.body;
+      if (!password || !confirmPass) {
+        return next(new ErrorHandler("Error occured! Try again", 400));
+      }
+
+      if (password.trim() === "" || confirmPass.trim() === "") {
+        return next(new ErrorHandler("Error occured! Try again", 400));
+      }
+      if (password.trim() !== confirmPass.trim()) {
+        return next(new ErrorHandler("Passwords do not match", 400));
+      }
+      user.password = password;
+      user.resetPasswordToken = "";
+      user.resetPasswordTime = expiresIn(1);
+      await user.save();
+
+      await sendMail({
+        from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
+        to: m,
+        subject: "Account management- Password reset",
+        text: `Hi ${user.first_name}, You have reseted your password. Thank you. Login to continue shopping`,
+        html: null,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: `Hi ${user.first_name}, You have reseted your password. Thank you. Login to continue shopping`,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;

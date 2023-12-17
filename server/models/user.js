@@ -37,8 +37,13 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    resetPasswordToken: String,
-    resetPasswordTime: Date,
+    resetPasswordToken: {
+      type: String,
+      default: ''
+    },
+    resetPasswordTime: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -64,6 +69,16 @@ userSchema.methods.getJwtToken = function () {
 // compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// hash resetToken
+userSchema.methods.hashToken = async function (token) {
+  return await bcrypt.hash(token, 10)
+};
+
+// compare token
+userSchema.methods.compareToken = async function (token) {
+  return await bcrypt.compare(token, this.resetPasswordToken);
 };
 
 module.exports = mongoose.model("User-v2", userSchema);
