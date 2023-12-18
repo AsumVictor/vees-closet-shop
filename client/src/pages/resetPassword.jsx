@@ -24,7 +24,9 @@ function ResetPasswordPage() {
     setLoading(true);
     setError(null);
     try {
-      let res = await axios.post(`${server}user/reset?href=${href}&m=${email}`);
+      let res = await axios.post(`${server}user/reset?href=${href}&m=${email}`, {
+        password, confirmPass
+      });
       if (res.data.success) {
         toast.success(res.data.message);
         setPassword("");
