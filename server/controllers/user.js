@@ -15,7 +15,7 @@ const {
   expiresIn,
   getResetURL,
 } = require("../helpers/GenerateResetToken");
-const { requestResetPassword } = require("../helpers/emailTemplates");
+const { requestResetPassword, ConfirmResetPassword } = require("../helpers/emailTemplates");
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_TOKEN, {
