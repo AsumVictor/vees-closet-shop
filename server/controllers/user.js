@@ -413,7 +413,7 @@ router.post(
       const user = await User.findOne({ email: m });
 
       if (!href || !user) {
-        console.log("Invalid 1");
+        // console.log("Invalid 1");
 
         return next(
           new ErrorHandler(
@@ -425,7 +425,7 @@ router.post(
 
       let valid = await user.compareToken(href);
       if (!valid) {
-        console.log("Invalid 2");
+        // console.log("Invalid 2");
 
         return next(
           new ErrorHandler(
@@ -436,7 +436,7 @@ router.post(
       }
 
       if (user.resetPasswordTime.toISOString() < new Date().toISOString()) {
-        console.log("Invalid 3");
+        // console.log("Invalid 3");
 
         return next(
           new ErrorHandler(
