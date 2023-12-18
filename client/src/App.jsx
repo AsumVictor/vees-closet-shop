@@ -19,6 +19,7 @@ import {
   OrderDetail,
   MyAccount,
   ResetPasswordPage,
+  SetPasswordPage
 } from "./routes";
 import {
   AdminLayout,
@@ -62,6 +63,8 @@ function App() {
         <Routes>
           <Route element={<PageLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<HomePage />} />
+
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/men" element={<ShopMenPage />} />
             <Route path="/women" element={<ShopWomenPage />} />
@@ -70,7 +73,6 @@ function App() {
             <Route path="/product/:name" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/forgot-password" element={<ResetPasswordPage />} />
             {/* User account */}
             <Route element={<ProtectedRoute />}>
               <Route path="/my-account" element={<AccountPage />}>
@@ -86,6 +88,9 @@ function App() {
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgot-password" element={<ResetPasswordPage />} />
+            <Route path="/reset" element={<SetPasswordPage />} />
+
           </Route>
           <Route element={<AdminProtected />}>
             <Route path="admin" element={<AdminLayout />}>
