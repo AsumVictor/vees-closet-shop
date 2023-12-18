@@ -15,6 +15,7 @@ const {
   expiresIn,
   getResetURL,
 } = require("../helpers/GenerateResetToken");
+const { requestResetPassword } = require("../helpers/emailTemplates");
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_TOKEN, {
@@ -389,8 +390,8 @@ router.post(
         from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
         to: email,
         subject: "Request to request password",
-        text: `Hi ${user.first_name}, Click on this link to reset your password. Link- ${link}. Link expires in 10min`,
-        html: null,
+        // text: `Hi ${user.first_name}, Click on this link to reset your password. Link- ${link}. Link expires in 10min`,
+        html: requestResetPassword(user.first_name, link),
       });
 
       return res.status(200).json({
@@ -413,7 +414,6 @@ router.post(
       const user = await User.findOne({ email: m });
 
       if (!href || !user) {
-
         return next(
           new ErrorHandler(
             "You have click on invalid or expired link. Request to reset your password",
@@ -433,7 +433,6 @@ router.post(
       }
 
       if (user.resetPasswordTime.toISOString() < new Date().toISOString()) {
-
         return next(
           new ErrorHandler(
             "You have click on invalid or expired link. Request to reset your password",
@@ -462,8 +461,7 @@ router.post(
         from: "VEES CLOSET SHOP <victorasum31@gmail.com>",
         to: m,
         subject: "Account management- Password reset",
-        text: `Hi ${user.first_name}, You have reseted your password. Thank you. Login to continue shopping`,
-        html: null,
+        html: ConfirmResetPassword(user.first_name),
       });
 
       return res.status(200).json({
