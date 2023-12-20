@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Product description is required!"],
     },
+    rich_description: {
+      type: String,
+      required: [true, "Product rich description is required!"],
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
@@ -75,6 +79,10 @@ const productSchema = new mongoose.Schema(
       },
     ],
     isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    isPublished: {
       type: Boolean,
       default: false,
     },
