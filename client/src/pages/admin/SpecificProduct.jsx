@@ -14,6 +14,7 @@ import PulseLoader from "../../components/loaders/pulseLoader";
 import Error from "../../components/errorHandler/error";
 import { useSelector } from "react-redux";
 import AddVariantBtn from "../../components/inputs/AddVariantBtn.jsx";
+import TextEditor from "../../components/editor/TextEditor.jsx";
 
 function SpecificProduct() {
   const { id } = useParams();
@@ -24,6 +25,7 @@ function SpecificProduct() {
   const [isImgDlt, setImgDlt] = useState(false);
   const [product, setProduct] = useState(null);
   const { isCategory, category } = useSelector((state) => state.categories);
+
   const handleProductUpdate = (field, data) => {
     setProduct((prev) => {
       return {
@@ -225,10 +227,10 @@ function SpecificProduct() {
           </div>
 
           <div className="w-full mt-5">
-            <p>Product description * </p>
+            <p>Short description * </p>
             <div className="w-full grid grid-cols-12 justify-end items-end gap-1">
               <textarea
-                rows={15}
+                rows={3}
                 value={product.description}
                 onChange={(e) =>
                   handleProductUpdate("description", e.target.value)
@@ -243,6 +245,26 @@ function SpecificProduct() {
                   id={product._id}
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="w-full mt-5">
+            <p>Detailed description * </p>
+            <div className="w-full justify-end items-end gap-1 bg-slate-400 py-2">
+              <TextEditor
+                content={product?.rich_description}
+                handleChange={(prev) =>
+                  handleProductUpdate("rich_description", prev)
+                }
+              />
+            </div>
+            <div className="w-full flex justify-end flex-row col-span-full">
+              <UpdateButton
+                classExtnd={"h-[1cm]"}
+                field={"rich_description"}
+                data={product.rich_description}
+                id={product._id}
+              />
             </div>
           </div>
 
@@ -555,10 +577,16 @@ const UpdateButton = ({ id, field, data, classExtnd }) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      let res = await axios.put(`${server}product/update-product/${id}`, {
-        field: field,
-        data,
-      });
+      let res = await axios.put(
+        `${server}product/update-product/${id}`,
+        {
+          field: field,
+          data,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         setLoading(false);
         toast.success("Product information updated!", {
