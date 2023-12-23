@@ -312,15 +312,16 @@ function ProductDetails() {
         </div>
       </div>
 
-      <section className="w-full px-3">
-        <h2 className="mt-10 text-slate-800 text-[22px] font-[500] px-3 500px:px-10  underline underline-offset-4 decoration-primary-800">
-          Description
-        </h2>
-        <div className="w-full mt-3 px-2 550px:px-5 1100px:px-10 ">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta officia molestiae sit magnam error distinctio blanditiis doloribus iste, sint facere ipsa voluptatum, numquam sequi quasi dicta, inventore dolores! Nihil, repellendus.
-          
-        </div>
-      </section>
+      {product.rich_description && (
+        <section className="w-full px-3">
+          <h2 className="mt-10 text-slate-800 text-[22px] font-[500] px-3 500px:px-10  underline underline-offset-4 decoration-primary-800">
+            Description
+          </h2>
+          <div className="w-full 700px:w-9/12 mt-3 px-3 500px:px-10 "
+            dangerouslySetInnerHTML={{__html: product.rich_description}}
+          />
+        </section>
+      )}
 
       {relatedProduct.length > 0 && (
         <section className="w-full py-20 bg-white">

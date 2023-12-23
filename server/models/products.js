@@ -16,7 +16,6 @@ const productSchema = new mongoose.Schema(
     },
     rich_description: {
       type: String,
-      required: [true, "Product rich description is required!"],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
