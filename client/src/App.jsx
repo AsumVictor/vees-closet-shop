@@ -47,6 +47,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import AdminProtected from "./components/auth/adminRoutes";
 import { LoadCategories } from "./redux/actions/variations";
+import GoogleAnalytics from 'react-ga'
+
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +57,8 @@ function App() {
     dispatch(getNewProducts());
     dispatch(loadUser());
     dispatch(LoadCategories());
+    GoogleAnalytics.initialize(process.env.VITE_APP_GOOGLE_ANALYTICS_TRACKING_ID)
+
   }, []);
 
   return (
