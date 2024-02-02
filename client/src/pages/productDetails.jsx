@@ -12,6 +12,7 @@ import PulseLoader from "../components/loaders/pulseLoader";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import Error from "../components/errorHandler/error";
+import ReactGA from 'react-ga'
 
 function ProductDetails() {
   const params = useParams();
@@ -69,6 +70,7 @@ function ProductDetails() {
         setLoading(false);
       }
     };
+
     const getRealtedProduct = async () => {
       try {
         let res = await axios(
@@ -79,9 +81,12 @@ function ProductDetails() {
         }
       } catch (error) {}
     };
+
     setSubmissionError(null);
     getRealtedProduct();
     getProduct();
+    ReactGA.pageview(window.location.pathname)
+
   }, [params.name]);
 
   const addToCart = async () => {
@@ -109,6 +114,12 @@ function ProductDetails() {
           variation: cartData.variation,
         })
       );
+      ReactGA.event({
+        category: product.name,
+        action: 'CART',
+        label: 'Items to carts',
+        value: product.actual_price
+      })
       setIsAdding(false);
       setAddedToCard(true);
       setTimeout(() => {
@@ -170,6 +181,7 @@ function ProductDetails() {
           </div>
         </div>
       )}
+
       <h2 className="flex flex-row gap-2 px-2 500px:px-10">
         <Link to={"/"} className="underline">
           Home
