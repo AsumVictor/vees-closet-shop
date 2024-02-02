@@ -116,8 +116,8 @@ function ProductDetails() {
       );
       ReactGA.event({
         category: product.name,
-        action: 'CART',
-        label: 'Items to carts',
+        action: 'Items added to cart',
+        label: 'Items added to cart',
         value: product.actual_price
       })
       setIsAdding(false);
